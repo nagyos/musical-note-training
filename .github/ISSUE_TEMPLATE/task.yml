@@ -1,0 +1,55 @@
+name: Task
+description: Development task (maps to docs/tasks.md T-xxx)
+title: "T-xxx: "
+labels: ["type:task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Maps to [tasks.md](../docs/tasks.md). Use branch `issue/<issue_number>`.
+  - type: input
+    id: task_id
+    attributes:
+      label: Task ID
+      placeholder: "T-003"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0
+        - P1
+        - P2
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options:
+        - phase:0
+        - phase:1
+        - phase:2
+        - phase:3
+        - phase:4
+    validations:
+      required: true
+  - type: input
+    id: area
+    attributes:
+      label: Area
+      placeholder: "area:app, area:study, ..."
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What to implement and acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Links, dependencies, out of scope

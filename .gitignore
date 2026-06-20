@@ -1,6 +1,10 @@
 # Miscellaneous
 *.class
 *.lock
+!pubspec.lock
+.idea/
+*.iml
+.metadata
 *.log
 *.pyc
 *.swp

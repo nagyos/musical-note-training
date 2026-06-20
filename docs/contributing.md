@@ -1,0 +1,101 @@
+# 開発ルール（Contributing）
+
+個人開発でも、ブランチ・Issue・PR の型を揃えておくと後から迷いません。
+
+## ブランチ戦略
+
+```text
+main      … 本番リリース（ストア出荷タグと対応）
+develop   … 次リリースの統合先
+issue/#N  … 作業ブランチ（1 Issue = 1 ブランチを基本）
+```
+
+| ブランチ | 用途 | マージ先 |
+|----------|------|----------|
+| `main` | リリース済みコード | — |
+| `develop` | 日々の統合 | `main`（リリース時） |
+| `issue/12` | Issue #12 の実装 | `develop` |
+
+### 命名
+
+- 機能・タスク: `issue/<番号>`（例: `issue/3`）
+- 緊急修正（本番）: `hotfix/<短い説明>` → `main` と `develop` 両方へ
+
+### フロー
+
+1. `develop` から `issue/#N` を切る
+2. 実装 → `dart analyze` / `flutter test` を通す
+3. PR を `develop` 向けに作成（`Closes #N` を本文に記載）
+4. マージ後、作業ブランチを削除
+
+リリース時は `develop` → `main` の PR を作成し、マージ後に `v1.0.0` 等のタグを付ける。
+
+## Issue の書き方
+
+| 種類 | テンプレート | 例 |
+|------|--------------|-----|
+| 開発タスク | Task | T-003 Riverpod 導入 |
+| 不具合 | Bug report | 学習画面でクラッシュ |
+| 機能追加 | Feature request | フラッシュカード UI |
+
+**タスク ID**（`T-003` など）は Issue タイトルまたは本文に書く。`docs/tasks.md` と対応づける。
+
+### ラベル（推奨）
+
+Issue / PR に付ける。一覧は [github-setup.md](./github-setup.md)。
+
+- `type:*` … 種別（task, bug, feature, docs, chore）
+- `priority:*` … P0 / P1 / P2（tasks.md と同じ）
+- `phase:*` … phase-0 〜 phase-4、または `v1.0` など
+- `area:*` … catalog, study, notation など feature 単位
+- `status:*` … 任意（blocked 等）
+
+## コミットメッセージ
+
+[Conventional Commits](https://www.conventionalcommits.org/) を推奨:
+
+```text
+feat(study): add answer feedback animation
+fix(notation): align staff lines on tablet
+docs: add contributing guide
+chore(ci): run flutter test on PR
+```
+
+- 1 コミット = 1 論点（レビューしやすい粒度）
+- Issue 番号を末尾に付けてもよい: `feat(router): wire go_router (#3)`
+
+## PR チェックリスト
+
+- [ ] `flutter analyze` エラーなし
+- [ ] `flutter test` 通過
+- [ ] 該当タスク ID / Issue 番号を記載
+- [ ] UI 変更時はスクリーンショット（任意）
+- [ ] `docs/` やアーキテクチャに影響があれば更新
+
+## コード構成
+
+[architecture.md](./architecture.md) に従う。
+
+```text
+features → shared → core   （逆方向 import 禁止）
+```
+
+- 画面: `features/<name>/presentation/pages/`
+- 状態: `features/<name>/presentation/view_models/`（Riverpod Notifier）
+- 共通モデル: `shared/domain/models/`
+- ルーター・DI: `app/router/`, `app/di/` のみ
+
+## ローカル検証
+
+```bash
+flutter pub get
+dart analyze
+flutter test
+flutter run
+```
+
+## 関連
+
+- [github-setup.md](./github-setup.md) — ラベル・Milestone・Project 初期設定
+- [tasks.md](./tasks.md) — タスク一覧
+- [architecture.md](./architecture.md) — ディレクトリ構成
