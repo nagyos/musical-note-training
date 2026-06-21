@@ -102,3 +102,18 @@ void processData() {
   const y = 10; // ignore: constant_identifier_names
 }
 ```
+
+## Commit Message Guidelines
+
+When creating a commit message, strictly follow these rules (in addition to running analysis before committing):
+
+- Prefix must be in English using Conventional Commits style (chore:, feat:, fix:, docs:, etc.).
+- The description/content must be written in Japanese.
+- At the very end of the subject line, include the branch number and issue number in the format: `(issue/N) #N`
+
+Example good messages:
+
+chore: アプリの基盤構造・プラットフォームファイルとドキュメントを追加 (issue/1) #1
+feat(study): 学習フローに正解判定ロジックを追加 (issue/12) #12
+
+Always run `dart analyze` (or the analysis workflow) and fix issues before committing.

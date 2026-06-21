@@ -54,11 +54,13 @@ Issue / PR に付ける。一覧は [github-setup.md](./github-setup.md)。
 
 [Conventional Commits](https://www.conventionalcommits.org/) を推奨:
 
+- プレフィックスは英語（例: `chore:`, `feat:`, `fix:`, `docs:` など）
+- 内容は日本語で記述
+- 末尾にはブランチ番号と Issue 番号を付ける（例: `(issue/1) #1`）
+
 ```text
-feat(study): add answer feedback animation
-fix(notation): align staff lines on tablet
-docs: add contributing guide
-chore(ci): run flutter test on PR
+chore: アプリの基盤構造・プラットフォームファイルとドキュメントを追加 (issue/1) #1
+feat(study): 学習画面に回答フィードバックを追加 (issue/5) #5
 ```
 
 - 1 コミット = 1 論点（レビューしやすい粒度）
