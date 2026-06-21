@@ -1,6 +1,10 @@
 # Miscellaneous
 *.class
 *.lock
+!pubspec.lock
+.idea/
+*.iml
+.metadata
 *.log
 *.pyc
 *.swp
@@ -117,3 +121,25 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+# === Project-specific additions (pre T-003 minimal + dev setup) ===
+
+# Agent tooling / Grok skills (volatile dev environment files, added in later tasks)
+.agents/
+.grok/
+skills-lock.json
+
+# Common editor/IDE (in addition to above)
+.vscode/
+*.sublime-*
+
+# Environment / secrets
+*.env
+.env.*
+.env.local
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Misc local
+*.local
