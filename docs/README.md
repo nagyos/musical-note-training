@@ -10,6 +10,7 @@
 
 | ファイル | 内容 |
 |----------|------|
+| [../AGENTS.md](../AGENTS.md) | **AI エージェント向けルール**（Grok が自動読み込み。確認タイミング・Q&A 記録・事実ベースの進め方） |
 | [overview.md](./overview.md) | アプリ概要・コンセプト・技術スタック・収益モデル |
 | [functional-requirements.md](./functional-requirements.md) | 機能要件（MVP / 将来機能） |
 | [non-functional-requirements.md](./non-functional-requirements.md) | 非機能要件（性能・多言語・課金・広告など） |
@@ -43,3 +44,5 @@
 ## 更新方針
 
 要件やタスクは開発の進行に合わせて随時更新する。大きな方針変更は `overview.md` と `roadmap.md` を先に更新し、機能要件・タスクへ反映する。
+
+ユーザーとエージェントの確認事項は `decisions.md` の **Q&A ログ** に追記する（フォーマットは `AGENTS.md` 参照）。新規ドキュメントは原則作らない。

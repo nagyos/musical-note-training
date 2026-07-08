@@ -1,0 +1,8 @@
+[
+  {
+    "id": "note",
+    "type": "note",
+    "title": { "ja": "音符", "en": "Notes" },
+    "sortOrder": 0
+  }
+]

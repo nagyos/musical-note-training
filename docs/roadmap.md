@@ -145,3 +145,4 @@ Phase 4: 拡張（スケール・コード・多言語追加）
 - [タスク一覧](./tasks.md)
 - [機能要件](./functional-requirements.md)
 - [オプション機能](./optional-features.md)
+- [重要決定事項ログ](./decisions.md) — インフラ・DB・同期スコープなどの未決定事項をここに記録

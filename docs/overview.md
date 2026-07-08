@@ -44,7 +44,7 @@
 | フレームワーク | Flutter |
 | 言語 | Dart |
 | 状態管理 | 未定（Riverpod / Bloc など後で決定） |
-| ローカル DB | 未定（drift / isar / sqflite など） |
+| DB | Turso (libSQL) + embedded replica（Phase 0から） |
 | 楽譜描画 | 未定（CustomPainter / 既存パッケージ調査） |
 | 音声 | 未定（flutter_midi / just_audio + サンプル） |
 | 課金 | in_app_purchase |

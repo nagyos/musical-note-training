@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:musical_note_training/app/app.dart';
 
 void main() {
-  testWidgets('App shows home screen', (WidgetTester tester) async {
+  testWidgets('App shows home with category list', (WidgetTester tester) async {
     await tester.pumpWidget(
       const ProviderScope(
         child: MusicalNoteTrainingApp(),
@@ -13,7 +13,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Musical Note Training'), findsOneWidget);
-    expect(find.text('Staff'), findsOneWidget);
-    expect(find.text('Catalog'), findsOneWidget);
+    expect(find.text('Notes'), findsOneWidget);
   });
 }

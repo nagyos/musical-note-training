@@ -1,53 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/core/constants/app_constants.dart';
-import 'package:musical_note_training/shared/widgets/notation/staff_canvas.dart';
+import 'package:musical_note_training/core/extensions/localized_text_x.dart';
+import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/domain/models/category.dart';
 
-class HomePage extends StatelessWidget {
+final categoriesProvider = FutureProvider<List<Category>>((ref) {
+  return ref.read(cardRepositoryProvider).getCategories();
+});
+
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsync = ref.watch(categoriesProvider);
+
     return Scaffold(
-      appBar: AppBar(title: const Text(AppConstants.appName)),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const StaffCanvas(),
-            const SizedBox(height: 24),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              alignment: WrapAlignment.center,
-              children: [
-                _NavButton(label: 'Catalog', route: AppRoutes.catalog),
-                _NavButton(label: 'Study', route: AppRoutes.study),
-                _NavButton(label: 'Decks', route: AppRoutes.decks),
-                _NavButton(label: 'Weak items', route: AppRoutes.weakItems),
-                _NavButton(label: 'Settings', route: AppRoutes.settings),
-              ],
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text(AppConstants.appName),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.style_outlined),
+            tooltip: 'Decks',
+            onPressed: () => context.go(AppRoutes.decks),
+          ),
+          IconButton(
+            icon: const Icon(Icons.history_edu_outlined),
+            tooltip: 'Weak items',
+            onPressed: () => context.go(AppRoutes.weakItems),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'Settings',
+            onPressed: () => context.go(AppRoutes.settings),
+          ),
+        ],
+      ),
+      body: categoriesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => Center(child: Text('Failed to load: $error')),
+        data: (categories) {
+          if (categories.isEmpty) {
+            return const Center(child: Text('No categories'));
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            itemCount: categories.length,
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              return Card(
+                child: ListTile(
+                  leading: Icon(_iconFor(category.id)),
+                  title: Text(category.title.resolveFrom(context)),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => context.go(AppRoutes.catalogCategory(category.id)),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
-}
 
-class _NavButton extends StatelessWidget {
-  const _NavButton({required this.label, required this.route});
-
-  final String label;
-  final String route;
-
-  @override
-  Widget build(BuildContext context) {
-    return FilledButton.tonal(
-      onPressed: () => context.go(route),
-      child: Text(label),
-    );
+  IconData _iconFor(String categoryId) {
+    return switch (categoryId) {
+      'note' => Icons.music_note,
+      'rest' => Icons.pause_circle_outline,
+      'symbol' => Icons.tag,
+      'dynamic' => Icons.volume_up_outlined,
+      'tempo' => Icons.speed,
+      _ => Icons.category_outlined,
+    };
   }
 }
