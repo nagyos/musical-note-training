@@ -5,7 +5,7 @@ import 'package:musical_note_training/app/router/app_router.dart';
 import 'package:musical_note_training/features/study/domain/study_launch_service.dart';
 import 'package:musical_note_training/shared/data/database/app_database.dart';
 import 'package:musical_note_training/shared/data/repositories/asset_card_repository.dart';
-import 'package:musical_note_training/shared/data/repositories/empty_deck_repository.dart';
+import 'package:musical_note_training/shared/data/repositories/drift_deck_repository.dart';
 import 'package:musical_note_training/shared/data/repositories/empty_weak_item_repository.dart';
 import 'package:musical_note_training/shared/domain/repositories/card_repository.dart';
 import 'package:musical_note_training/shared/domain/repositories/deck_repository.dart';
@@ -26,7 +26,7 @@ final cardRepositoryProvider = Provider<CardRepository>(
 );
 
 final deckRepositoryProvider = Provider<DeckRepository>(
-  (ref) => const EmptyDeckRepository(),
+  (ref) => DriftDeckRepository(database: ref.watch(appDatabaseProvider)),
 );
 
 final weakItemRepositoryProvider = Provider<WeakItemRepository>(

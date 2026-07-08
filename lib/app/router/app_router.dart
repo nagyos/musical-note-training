@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/features/catalog/presentation/pages/catalog_lesson_list_page.dart';
 import 'package:musical_note_training/features/custom_card/presentation/pages/custom_card_page.dart';
+import 'package:musical_note_training/features/deck/presentation/pages/deck_card_picker_page.dart';
+import 'package:musical_note_training/features/deck/presentation/pages/deck_detail_page.dart';
 import 'package:musical_note_training/features/deck/presentation/pages/deck_list_page.dart';
 import 'package:musical_note_training/features/flash/presentation/pages/flash_page.dart';
 import 'package:musical_note_training/features/home/presentation/pages/home_page.dart';
@@ -42,8 +44,13 @@ GoRouter createAppRouter(Ref ref) {
         path: AppRoutes.study,
         builder: (context, state) {
           final lessonId = state.uri.queryParameters['lessonId'];
+          final deckId = state.uri.queryParameters['deckId'];
+
           if (lessonId != null && lessonId.isNotEmpty) {
             return StudyPage(lessonId: lessonId, source: StudySource.lesson);
+          }
+          if (deckId != null && deckId.isNotEmpty) {
+            return StudyPage(deckId: deckId, source: StudySource.deck);
           }
 
           return const Scaffold(
@@ -54,6 +61,22 @@ GoRouter createAppRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.decks,
         builder: (context, state) => const DeckListPage(),
+        routes: [
+          GoRoute(
+            path: ':deckId',
+            builder: (context, state) => DeckDetailPage(
+              deckId: state.pathParameters['deckId']!,
+            ),
+            routes: [
+              GoRoute(
+                path: 'cards/add',
+                builder: (context, state) => DeckCardPickerPage(
+                  deckId: state.pathParameters['deckId']!,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoutes.weakItems,
