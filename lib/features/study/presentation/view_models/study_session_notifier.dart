@@ -33,7 +33,23 @@ class StudySessionNotifier extends Notifier<StudySessionState?> {
     final current = state;
     if (current == null || current.phase != StudyPhase.questioning) return;
 
-    state = StudySessionLogic.submitAnswer(current, choice);
+    final next = StudySessionLogic.submitAnswer(current, choice);
+    state = next;
+
+    _recordWeakItemIfNeeded(next);
+  }
+
+  void _recordWeakItemIfNeeded(StudySessionState session) {
+    if (session.phase != StudyPhase.feedback) return;
+    if (session.wasCorrect != false) return;
+
+    final cardId = session.currentCard.id;
+    final answeredAt = DateTime.now().toUtc();
+    ref.read(weakItemRecorderProvider).onAnswer(
+          cardId: cardId,
+          isCorrect: false,
+          answeredAt: answeredAt,
+        );
   }
 
   void continueSession() {

@@ -3,10 +3,11 @@ import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/app/router/app_router.dart';
 import 'package:musical_note_training/features/study/domain/study_launch_service.dart';
+import 'package:musical_note_training/features/weak_items/domain/weak_item_recorder.dart';
 import 'package:musical_note_training/shared/data/database/app_database.dart';
 import 'package:musical_note_training/shared/data/repositories/asset_card_repository.dart';
 import 'package:musical_note_training/shared/data/repositories/drift_deck_repository.dart';
-import 'package:musical_note_training/shared/data/repositories/empty_weak_item_repository.dart';
+import 'package:musical_note_training/shared/data/repositories/drift_weak_item_repository.dart';
 import 'package:musical_note_training/shared/domain/repositories/card_repository.dart';
 import 'package:musical_note_training/shared/domain/repositories/deck_repository.dart';
 import 'package:musical_note_training/shared/domain/repositories/weak_item_repository.dart';
@@ -30,7 +31,7 @@ final deckRepositoryProvider = Provider<DeckRepository>(
 );
 
 final weakItemRepositoryProvider = Provider<WeakItemRepository>(
-  (ref) => const EmptyWeakItemRepository(),
+  (ref) => DriftWeakItemRepository(database: ref.watch(appDatabaseProvider)),
 );
 
 final studyLaunchServiceProvider = Provider<StudyLaunchService>(
@@ -39,6 +40,10 @@ final studyLaunchServiceProvider = Provider<StudyLaunchService>(
     deckRepository: ref.watch(deckRepositoryProvider),
     weakItemRepository: ref.watch(weakItemRepositoryProvider),
   ),
+);
+
+final weakItemRecorderProvider = Provider<WeakItemRecorder>(
+  (ref) => WeakItemRecorder(repository: ref.watch(weakItemRepositoryProvider)),
 );
 
 /// UI locale code until settings (T-103) provides a toggle.

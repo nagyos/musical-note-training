@@ -45,7 +45,11 @@ GoRouter createAppRouter(Ref ref) {
         builder: (context, state) {
           final lessonId = state.uri.queryParameters['lessonId'];
           final deckId = state.uri.queryParameters['deckId'];
+          final source = state.uri.queryParameters['source'];
 
+          if (source == 'weak') {
+            return const StudyPage(source: StudySource.weakItems);
+          }
           if (lessonId != null && lessonId.isNotEmpty) {
             return StudyPage(lessonId: lessonId, source: StudySource.lesson);
           }
