@@ -15,7 +15,7 @@
 | T-001 | Flutter プロジェクト作成（`flutter create`） | P0 | 完了 |
 | T-002 | ディレクトリ構成決定・scaffold | P0 | 完了 → [architecture.md](./architecture.md) |
 | T-003 | 状態管理ライブラリ選定・導入（Riverpod + go_router） | P0 | 完了 |
-| T-004 | ローカル DB 選定・導入 | P0 | 未着手 |
+| T-004 | ローカル DB 導入（drift + SQLite、将来 Turso 同期） | P0 | 完了 |
 | T-005 | lint / formatter 設定（analysis_options.yaml） | P1 | 未着手 |
 | T-006 | CI 設定（analyze + test） | P2 | 未着手 |
 
@@ -23,8 +23,8 @@
 
 | # | タスク | 優先度 | 状態 |
 |---|--------|--------|------|
-| T-010 | データモデル設計（Category / Card / Deck / WeakItem） | P0 | 未着手 |
-| T-011 | 楽譜描画 PoC（CustomPainter で五線譜 + 音符） | P0 | 未着手 |
+| T-010 | データモデル設計（Category / Card / Deck / WeakItem） | P0 | 完了 |
+| T-011 | 楽譜描画 PoC（CustomPainter で五線譜 + 音符） | P0 | 完了 |
 | T-012 | 音声再生 PoC（単音を鳴らす） | P1 | 未着手 |
 | T-013 | UI ワイヤーフレーム（ホーム / 学習 / デッキ / 設定） | P1 | 未着手 |
 | T-014 | i18n 基盤セットアップ（ARB + 日英） | P1 | 未着手 |
@@ -158,10 +158,12 @@
 1. ~~**T-001** Flutter プロジェクト作成~~ ✅
 2. ~~**T-002** ディレクトリ構成・scaffold~~ ✅
 3. ~~**T-003** Riverpod + go_router 導入~~ ✅
-4. **T-010** データモデル（`shared/domain/models/`）
-5. **T-011** 楽譜描画 PoC（`shared/widgets/notation/`）
-6. **T-100〜T-102** ホーム → catalog → study の縦スライス
-7. **T-120** 音符カードデータ + **T-125** 表示ロジック
+4. ~~**T-010** データモデル（`shared/domain/models/`）~~ ✅
+5. ~~**T-011** 楽譜描画 PoC（`shared/widgets/notation/`）~~ ✅
+6. ~~**T-004** ローカル DB（drift + SQLite）~~ ✅
+7. ~~**T-100〜T-102** 縦スライス（ホーム → レッスン → 学習）~~ ✅
+8. ~~**T-130〜T-134** 単語帳~~ ✅
+9. ~~**T-140〜T-142** 苦手管理~~ ✅ → **T-103 / T-150** 設定・i18n
 8. **T-130〜T-134** 単語帳 / **T-140〜T-142** 苦手管理
 
 ---
@@ -171,3 +173,4 @@
 - [ロードマップ](./roadmap.md)
 - [機能要件](./functional-requirements.md)
 - [非機能要件](./non-functional-requirements.md)
+- [重要決定事項ログ](./decisions.md) — フェーズ整理、DB/クラウド同期/インフラ決定をここで追跡

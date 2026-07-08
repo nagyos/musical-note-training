@@ -94,6 +94,26 @@ flutter test
 flutter run
 ```
 
+完了前は `dart analyze` と `flutter test` を必ず通す。設計・テスト方針は [AGENTS.md](../AGENTS.md) §7・§8 を参照。
+
+## パッケージ導入ログ
+
+パッケージやライブラリを追加したときは、**実行したコマンド**をここに追記する（再現性のため）。
+
+| 日付 | タスク | コマンド | 目的 |
+|------|--------|----------|------|
+| 2026-07-08 | T-004 | `flutter pub add drift drift_flutter sqlite3_flutter_libs path_provider path` | ローカル DB（drift + SQLite） |
+| 2026-07-08 | T-004 | `flutter pub add dev:drift_dev dev:build_runner` | drift のコード生成 |
+| 2026-07-08 | T-004 | `dart run build_runner build` | `app_database.g.dart` 生成 |
+
+### コード生成（drift スキーマ変更時）
+
+```bash
+dart run build_runner build
+```
+
+`lib/shared/data/database/app_database.dart` のテーブル定義を変えたら上記を実行する。
+
 ## 関連
 
 - [github-setup.md](./github-setup.md) — ラベル・Milestone・Project 初期設定

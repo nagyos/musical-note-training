@@ -73,7 +73,7 @@ lib/
 │   │   ├── models/                    # Card, Deck, Category, Lesson …
 │   │   └── repositories/              # 抽象インターフェース
 │   ├── data/
-│   │   ├── database/                  # drift / isar 等
+│   │   ├── database/                  # Turso (libSQL) + embedded replica
 │   │   ├── datasources/               # local / asset JSON
 │   │   ├── dto/                       # JSON / DB 行モデル
 │   │   └── repositories/              # 抽象の実装
@@ -124,6 +124,52 @@ test/
 
 integration_test/
 ```
+
+---
+
+## アーキテクチャスタイル（DDD との関係）
+
+**厳密な DDD ではなく、Flutter 向けの feature-module + レイヤード構成**を採用する。
+
+| 採用する考え方 | 採用しない（本プロジェクト規模では過剰） |
+|----------------|------------------------------------------|
+| ドメインモデル（`shared/domain/models/`） | 境界づけられたコンテキストの厳密分離 |
+| Repository 抽象と実装の分離 | 集約ルート・ドメインイベントの全面運用 |
+| feature 単位の責務分割 | Ubiquitous Language の形式張った運用 |
+| 複雑な feature だけ `domain/` にロジック | 全 feature に UseCase クラスを必須化 |
+
+**study** のクイズエンジンや **rhythm** の拍ロジックなど、ロジックが複雑になった feature から `domain/` を厚くする。  
+画面が薄い feature（home, settings）は `presentation/` のみでよい。
+
+→ **「DDD で全部やる」より「ドメイン中心のレイヤード + feature 分割」** がこのアプリに合う。
+
+---
+
+## 定数・マジックナンバーの置き場
+
+**必要最低限の粒度で「塊」として管理**する。全部を 1 ファイルに集めない。
+
+| 塊 | 置き場 | 例 |
+|----|--------|-----|
+| アプリ全体の余白スケール | `core/theme/app_spacing.dart` | `AppSpacing.sm`, `lg` |
+| 楽譜描画の比率・閾値 | `shared/widgets/notation/staff_metrics.dart` | `noteXRatio`, `stemUpThresholdStep` |
+| アプリ名など不変の識別子 | `core/constants/app_constants.dart` | 既存 |
+| 1 画面だけの一度きりの値 | その Widget 内 | 無理に共通化しない |
+
+`StaffLayout` / `StaffPainter` は **計算と描画** に専念し、チューニング値は `StaffMetrics` に集約する。
+
+---
+
+## コード品質・テスト（実装ルール）
+
+エージェント・開発者共通の詳細ルールは [AGENTS.md](../AGENTS.md) §7（設計原則）・§8（テスト方針）を参照。
+
+**要約**
+
+- クリーン・疎結合・単一責任を優先。`features → shared → core` を守る。
+- ドメインロジックは `domain/` の純 Dart。Widget / Painter にビジネスルールを書かない。
+- **domain / repository 推奨領域は TDD 必須**（`AGENTS.md` §8）。UI はクリティカルパスのみテスト。
+- 過剰設計は避ける。ルールが不適切な場合は `decisions.md` で見直す。
 
 ---
 
@@ -236,7 +282,7 @@ feature の domain ロジック（正誤判定・苦手スコア）は **必ず*
 | 状態管理 | Riverpod | architecture skill |
 | ルーティング | go_router | flutter-setup-declarative-routing |
 | モデル | freezed（推奨） | flutter-implement-json-serialization |
-| DB | drift または isar（T-004 で確定） | — |
+| DB | **MVP**: drift + SQLite（ローカル） / **将来**: Turso (libSQL) 同期 | — |
 | i18n | ARB | flutter-setup-localization |
 
 ---
@@ -248,7 +294,7 @@ feature の domain ロジック（正誤判定・苦手スコア）は **必ず*
 | `lib/main.dart` | ✅ エントリ |
 | `lib/app/` | ✅ app, bootstrap, routes, router, di |
 | `lib/core/` | ✅ theme, constants |
-| `lib/shared/` | ✅ study_source, staff_canvas |
+| `lib/shared/` | ✅ models, notation, `app_database` (drift) |
 | `lib/features/home/` | ✅ HomePage |
 | その他 feature | 📁 本 doc のパスに従い実装時に追加 |
 | `app/router/app_router.dart` | ✅ |

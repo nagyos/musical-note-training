@@ -2,17 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
-typedef AppRunner = void Function();
+import 'package:musical_note_training/shared/data/database/app_database.dart';
 
 /// Initializes app-wide services before [runApp].
-///
-/// Add database, preferences, and other async setup here as the app grows.
-Future<void> bootstrap(AppRunner runApp) async {
+Future<AppDatabase> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (kIsWeb) {
     usePathUrlStrategy();
   }
 
-  runApp();
+  return openAppDatabase();
 }
