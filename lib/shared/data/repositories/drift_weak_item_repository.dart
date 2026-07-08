@@ -9,10 +9,9 @@ import 'package:musical_note_training/shared/domain/repositories/weak_item_repos
 
 class DriftWeakItemRepository implements WeakItemRepository {
   DriftWeakItemRepository({
-    required AppDatabase database,
+    required this._database,
     IdGenerator? idGenerator,
-  })  : _database = database,
-        _idGenerator = idGenerator ?? const TimestampIdGenerator();
+  }) : _idGenerator = idGenerator ?? const TimestampIdGenerator();
 
   final AppDatabase _database;
   final IdGenerator _idGenerator;

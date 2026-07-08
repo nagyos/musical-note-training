@@ -11,10 +11,9 @@ import 'package:musical_note_training/shared/domain/repositories/deck_repository
 
 class DriftDeckRepository implements DeckRepository {
   DriftDeckRepository({
-    required AppDatabase database,
+    required this._database,
     IdGenerator? idGenerator,
-  })  : _database = database,
-        _idGenerator = idGenerator ?? const TimestampIdGenerator();
+  }) : _idGenerator = idGenerator ?? const TimestampIdGenerator();
 
   final AppDatabase _database;
   final IdGenerator _idGenerator;

@@ -15,7 +15,6 @@ class MusicalNoteTrainingApp extends ConsumerWidget {
       title: 'Musical Note Training',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
       routerConfig: router,
     );
   }

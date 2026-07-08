@@ -51,7 +51,7 @@ GoRouter createAppRouter(Ref ref) {
             return const StudyPage(source: StudySource.weakItems);
           }
           if (lessonId != null && lessonId.isNotEmpty) {
-            return StudyPage(lessonId: lessonId, source: StudySource.lesson);
+            return StudyPage(lessonId: lessonId);
           }
           if (deckId != null && deckId.isNotEmpty) {
             return StudyPage(deckId: deckId, source: StudySource.deck);

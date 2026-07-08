@@ -2,8 +2,7 @@ import 'package:musical_note_training/shared/domain/repositories/weak_item_repos
 
 /// Records study outcomes into weak-item storage.
 class WeakItemRecorder {
-  const WeakItemRecorder({required WeakItemRepository repository})
-      : _repository = repository;
+  const WeakItemRecorder({required this._repository});
 
   final WeakItemRepository _repository;
 

@@ -16,7 +16,7 @@
 | T-002 | ディレクトリ構成決定・scaffold | P0 | 完了 → [architecture.md](./architecture.md) |
 | T-003 | 状態管理ライブラリ選定・導入（Riverpod + go_router） | P0 | 完了 |
 | T-004 | ローカル DB 導入（drift + SQLite、将来 Turso 同期） | P0 | 完了 |
-| T-005 | lint / formatter 設定（analysis_options.yaml） | P1 | 未着手 |
+| T-005 | lint / formatter 設定（analysis_options.yaml） | P1 | 完了 |
 | T-006 | CI 設定（analyze + test） | P2 | 未着手 |
 
 ### 設計・PoC
