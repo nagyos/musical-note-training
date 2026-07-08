@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/extensions/localized_text_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
@@ -57,11 +58,12 @@ class _StudyPageState extends ConsumerState<StudyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final session = ref.watch(studySessionProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Study'),
+        title: Text(l10n.studyTitle),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.pop(),
@@ -105,20 +107,23 @@ class _QuestionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final card = session.currentCard;
-    final progressLabel = '${session.currentIndex + 1} / ${session.total}';
 
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(progressLabel, style: Theme.of(context).textTheme.labelLarge),
+          Text(
+            l10n.studyProgress(session.currentIndex + 1, session.total),
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
           const SizedBox(height: AppSpacing.md),
           if (card.notation != null) StaffCanvas(payload: card.notation),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            'この音符の名前は？',
+            l10n.studyQuestionPrompt,
             style: Theme.of(context).textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
@@ -150,8 +155,9 @@ class _FeedbackView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final card = session.currentCard;
-    final correct = card.answer.resolveFrom(context);
+    final correct = card.answer.resolve(session.locale);
     final isCorrect = session.wasCorrect ?? false;
 
     return Padding(
@@ -166,13 +172,13 @@ class _FeedbackView extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            isCorrect ? '正解！' : '不正解',
+            isCorrect ? l10n.answerCorrect : l10n.answerIncorrect,
             style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            '正解: $correct',
+            l10n.correctAnswerLabel(correct),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium,
           ),
@@ -187,7 +193,9 @@ class _FeedbackView extends StatelessWidget {
           const Spacer(),
           FilledButton(
             onPressed: onContinue,
-            child: Text(session.isLastCard ? '結果を見る' : '次へ'),
+            child: Text(
+              session.isLastCard ? l10n.studySeeResults : l10n.studyNext,
+            ),
           ),
         ],
       ),
@@ -202,6 +210,8 @@ class _CompletedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Column(
@@ -211,19 +221,19 @@ class _CompletedView extends StatelessWidget {
           const Icon(Icons.emoji_events, size: 56),
           const SizedBox(height: AppSpacing.md),
           Text(
-            'セッション完了',
+            l10n.studySessionComplete,
             style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            '$total 問終了しました',
+            l10n.studyQuestionsFinished(total),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.lg),
           FilledButton(
             onPressed: () => context.pop(),
-            child: const Text('戻る'),
+            child: Text(l10n.back),
           ),
         ],
       ),

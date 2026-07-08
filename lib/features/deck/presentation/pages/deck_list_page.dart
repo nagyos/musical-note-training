@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/deck/presentation/view_models/deck_providers.dart';
 import 'package:musical_note_training/features/deck/presentation/widgets/create_deck_dialog.dart';
@@ -13,20 +14,22 @@ class DeckListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final decksAsync = ref.watch(decksProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Decks')),
+      appBar: AppBar(title: Text(l10n.decksTitle)),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _createDeck(context, ref),
         child: const Icon(Icons.add),
       ),
       body: decksAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Failed to load decks: $error')),
+        error: (error, _) =>
+            Center(child: Text(l10n.loadDecksFailed('$error'))),
         data: (decks) {
           if (decks.isEmpty) {
-            return const Center(child: Text('デッキがありません。＋から作成'));
+            return Center(child: Text(l10n.noDecksHint));
           }
           return ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.md),

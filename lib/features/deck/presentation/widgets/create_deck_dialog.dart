@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/features/deck/domain/deck_validator.dart';
 
 Future<String?> showCreateDeckDialog(BuildContext context) async {
+  final l10n = context.l10n;
   final controller = TextEditingController();
   String? errorText;
 
@@ -12,11 +14,11 @@ Future<String?> showCreateDeckDialog(BuildContext context) async {
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            title: const Text('新しいデッキ'),
+            title: Text(l10n.newDeckTitle),
             content: TextField(
               controller: controller,
               decoration: InputDecoration(
-                labelText: '名前',
+                labelText: l10n.deckNameHint,
                 errorText: errorText,
               ),
               autofocus: true,
@@ -24,7 +26,7 @@ Future<String?> showCreateDeckDialog(BuildContext context) async {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('キャンセル'),
+                child: Text(l10n.cancel),
               ),
               FilledButton(
                 onPressed: () {
@@ -35,7 +37,7 @@ Future<String?> showCreateDeckDialog(BuildContext context) async {
                     setState(() => errorText = e.message);
                   }
                 },
-                child: const Text('作成'),
+                child: Text(l10n.create),
               ),
             ],
           );

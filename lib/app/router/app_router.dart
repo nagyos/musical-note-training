@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/app/router/routes.dart';
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/features/catalog/presentation/pages/catalog_lesson_list_page.dart';
 import 'package:musical_note_training/features/custom_card/presentation/pages/custom_card_page.dart';
 import 'package:musical_note_training/features/deck/presentation/pages/deck_card_picker_page.dart';
@@ -28,8 +29,8 @@ GoRouter createAppRouter(Ref ref) {
       ),
       GoRoute(
         path: AppRoutes.catalog,
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Select a category from Home')),
+        builder: (context, state) => Scaffold(
+          body: Center(child: Text(context.l10n.selectCategoryFromHome)),
         ),
         routes: [
           GoRoute(
@@ -57,8 +58,8 @@ GoRouter createAppRouter(Ref ref) {
             return StudyPage(deckId: deckId, source: StudySource.deck);
           }
 
-          return const Scaffold(
-            body: Center(child: Text('Invalid study parameters')),
+          return Scaffold(
+            body: Center(child: Text(context.l10n.invalidStudyParameters)),
           );
         },
       ),
@@ -103,9 +104,12 @@ GoRouter createAppRouter(Ref ref) {
         builder: (context, state) => const CustomCardPage(),
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      appBar: AppBar(title: const Text('Not found')),
-      body: Center(child: Text('No route for ${state.uri}')),
-    ),
+    errorBuilder: (context, state) {
+      final l10n = context.l10n;
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.routeNotFound)),
+        body: Center(child: Text(l10n.routeNotFoundMessage('${state.uri}'))),
+      );
+    },
   );
 }

@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
-import 'package:musical_note_training/core/extensions/localized_text_x.dart';
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/deck/presentation/view_models/deck_providers.dart';
+import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 
 class DeckDetailPage extends ConsumerWidget {
   const DeckDetailPage({super.key, required this.deckId});
@@ -15,14 +16,16 @@ class DeckDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final answerLocale = ref.watch(answerLocaleProvider);
     final deckAsync = ref.watch(deckProvider(deckId));
     final cardsAsync = ref.watch(deckResolvedCardsProvider(deckId));
 
     return Scaffold(
       appBar: AppBar(
         title: deckAsync.maybeWhen(
-          data: (deck) => Text(deck?.name ?? 'Deck'),
-          orElse: () => const Text('Deck'),
+          data: (deck) => Text(deck?.name ?? l10n.deckFallbackTitle),
+          orElse: () => Text(l10n.deckFallbackTitle),
         ),
         actions: [
           IconButton(
@@ -34,11 +37,12 @@ class DeckDetailPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.go(AppRoutes.deckAddCards(deckId)),
         icon: const Icon(Icons.add),
-        label: const Text('カード追加'),
+        label: Text(l10n.addCards),
       ),
       body: cardsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Failed to load cards: $error')),
+        error: (error, _) =>
+            Center(child: Text(l10n.loadDeckCardsFailed('$error'))),
         data: (cards) {
           return Column(
             children: [
@@ -50,13 +54,13 @@ class DeckDetailPage extends ConsumerWidget {
                     onPressed: cards.isEmpty
                         ? null
                         : () => context.go(AppRoutes.studyDeck(deckId)),
-                    child: Text('学習する（${cards.length} 枚）'),
+                    child: Text(l10n.studyDeck(cards.length)),
                   ),
                 ),
               ),
               Expanded(
                 child: cards.isEmpty
-                    ? const Center(child: Text('カードがありません'))
+                    ? Center(child: Text(l10n.noCardsInDeck))
                     : ListView.separated(
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.md,
@@ -68,7 +72,7 @@ class DeckDetailPage extends ConsumerWidget {
                           final card = cards[index];
                           return Card(
                             child: ListTile(
-                              title: Text(card.answer.resolveFrom(context)),
+                              title: Text(card.answer.resolve(answerLocale)),
                               subtitle: Text(card.id),
                               trailing: IconButton(
                                 icon: const Icon(Icons.remove_circle_outline),
@@ -101,19 +105,20 @@ class DeckDetailPage extends ConsumerWidget {
   }
 
   Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('デッキを削除'),
-        content: const Text('このデッキを削除しますか？'),
+        title: Text(l10n.deleteDeckTitle),
+        content: Text(l10n.deleteDeckMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('キャンセル'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('削除'),
+            child: Text(l10n.delete),
           ),
         ],
       ),

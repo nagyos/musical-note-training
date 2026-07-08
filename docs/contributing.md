@@ -118,6 +118,8 @@ flutter run
 | 2026-07-08 | T-004 | `flutter pub add drift drift_flutter sqlite3_flutter_libs path_provider path` | ローカル DB（drift + SQLite） |
 | 2026-07-08 | T-004 | `flutter pub add dev:drift_dev dev:build_runner` | drift のコード生成 |
 | 2026-07-08 | T-004 | `dart run build_runner build` | `app_database.g.dart` 生成 |
+| 2026-07-09 | T-014 | `flutter pub add flutter_localizations --sdk=flutter` | UI 多言語（ARB） |
+| 2026-07-09 | T-014 | `flutter pub add intl shared_preferences` | 日付フォーマット・設定永続化 |
 
 ### コード生成（drift スキーマ変更時）
 

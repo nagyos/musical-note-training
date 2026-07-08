@@ -45,6 +45,3 @@ final studyLaunchServiceProvider = Provider<StudyLaunchService>(
 final weakItemRecorderProvider = Provider<WeakItemRecorder>(
   (ref) => WeakItemRecorder(repository: ref.watch(weakItemRepositoryProvider)),
 );
-
-/// UI locale code until settings (T-103) provides a toggle.
-final appLocaleProvider = Provider<String>((ref) => 'ja');

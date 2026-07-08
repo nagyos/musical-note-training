@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:musical_note_training/app/di/providers.dart';
+import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 import 'package:musical_note_training/features/study/domain/study_launch_target.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/features/study/domain/study_session_logic.dart';
@@ -25,7 +26,7 @@ class StudySessionNotifier extends Notifier<StudySessionState?> {
     final cards = await ref.read(studyLaunchServiceProvider).loadCards(target);
     if (cards.isEmpty) return;
 
-    final locale = ref.read(appLocaleProvider);
+    final locale = ref.read(answerLocaleProvider);
     state = StudySessionLogic.startSession(lessonCards: cards, locale: locale);
   }
 

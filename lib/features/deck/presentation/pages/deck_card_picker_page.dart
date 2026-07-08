@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/app/di/providers.dart';
-import 'package:musical_note_training/core/extensions/localized_text_x.dart';
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/deck/presentation/view_models/deck_providers.dart';
+import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart' as domain;
 import 'package:musical_note_training/shared/domain/models/card_category_type.dart';
 
@@ -29,22 +30,24 @@ class _DeckCardPickerPageState extends ConsumerState<DeckCardPickerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final answerLocale = ref.watch(answerLocaleProvider);
     final cardsAsync = ref.watch(officialNoteCardsProvider);
     final inDeckAsync = ref.watch(deckCardsProvider(widget.deckId));
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('公式カードから追加'),
+        title: Text(l10n.addOfficialCardsTitle),
         actions: [
           TextButton(
             onPressed: _selected.isEmpty ? null : _save,
-            child: const Text('追加'),
+            child: Text(l10n.add),
           ),
         ],
       ),
       body: cardsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Failed to load: $error')),
+        error: (error, _) => Center(child: Text(l10n.loadFailed('$error'))),
         data: (cards) {
           final inDeck = inDeckAsync.maybeWhen(
             data: (deckCards) => deckCards.map((c) => c.cardId).toSet(),
@@ -73,9 +76,9 @@ class _DeckCardPickerPageState extends ConsumerState<DeckCardPickerPage> {
                           }
                         });
                       },
-                title: Text(card.answer.resolveFrom(context)),
+                title: Text(card.answer.resolve(answerLocale)),
                 subtitle: Text(card.id),
-                secondary: alreadyInDeck ? const Text('追加済') : null,
+                secondary: alreadyInDeck ? Text(l10n.cardAlreadyAdded) : null,
               );
             },
           );

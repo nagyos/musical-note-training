@@ -13,6 +13,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Musical Note Training'), findsOneWidget);
-    expect(find.text('Notes'), findsOneWidget);
+    expect(find.text('音符'), findsOneWidget);
   });
 }

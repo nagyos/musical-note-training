@@ -1,0 +1,113 @@
+{
+  "@@locale": "en",
+  "appTitle": "Musical Note Training",
+  "decksTooltip": "Decks",
+  "weakItemsTooltip": "Weak items",
+  "settingsTooltip": "Settings",
+  "loadFailed": "Failed to load: {error}",
+  "@loadFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "noCategories": "No categories",
+  "loadLessonsFailed": "Failed to load lessons: {error}",
+  "@loadLessonsFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "noLessonsYet": "No lessons yet",
+  "studyTitle": "Study",
+  "studyProgress": "{current} / {total}",
+  "@studyProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "studyQuestionPrompt": "What is this note?",
+  "answerCorrect": "Correct!",
+  "answerIncorrect": "Incorrect",
+  "correctAnswerLabel": "Answer: {answer}",
+  "@correctAnswerLabel": {
+    "placeholders": {
+      "answer": { "type": "String" }
+    }
+  },
+  "studyNext": "Next",
+  "studySeeResults": "See results",
+  "studySessionComplete": "Session complete",
+  "studyQuestionsFinished": "Finished {count} questions",
+  "@studyQuestionsFinished": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "back": "Back",
+  "invalidStudyParameters": "Invalid study parameters",
+  "weakItemsTitle": "Weak items",
+  "noWeakItems": "No weak items yet.\nThey are added automatically when you answer incorrectly.",
+  "reviewWeakItems": "Review weak items ({count})",
+  "@reviewWeakItems": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "weakItemStats": "Wrong {wrong} / Correct {correct} ({accuracy}%)",
+  "@weakItemStats": {
+    "placeholders": {
+      "wrong": { "type": "int" },
+      "correct": { "type": "int" },
+      "accuracy": { "type": "int" }
+    }
+  },
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsLanguageJa": "Japanese",
+  "settingsLanguageEn": "English",
+  "settingsNoteNames": "Note names",
+  "settingsNoteNamesSolfege": "Solfege (Do Re Mi)",
+  "settingsNoteNamesLetter": "Letter names (C D E)",
+  "decksTitle": "Decks",
+  "loadDecksFailed": "Failed to load decks: {error}",
+  "@loadDecksFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "noDecksHint": "No decks yet. Tap + to create one.",
+  "newDeckTitle": "New deck",
+  "deckNameHint": "Deck name",
+  "cancel": "Cancel",
+  "create": "Create",
+  "deckFallbackTitle": "Deck",
+  "addCards": "Add cards",
+  "loadDeckCardsFailed": "Failed to load cards: {error}",
+  "@loadDeckCardsFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "studyDeck": "Study ({count} cards)",
+  "@studyDeck": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "noCardsInDeck": "No cards in this deck",
+  "deleteDeckTitle": "Delete deck",
+  "deleteDeckMessage": "Delete this deck?",
+  "delete": "Delete",
+  "addOfficialCardsTitle": "Add official cards",
+  "add": "Add",
+  "cardAlreadyAdded": "Added",
+  "selectCategoryFromHome": "Select a category from Home",
+  "routeNotFound": "Not found",
+  "routeNotFoundMessage": "No route for {uri}",
+  "@routeNotFoundMessage": {
+    "placeholders": {
+      "uri": { "type": "String" }
+    }
+  }
+}

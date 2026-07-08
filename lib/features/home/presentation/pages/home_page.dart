@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
-import 'package:musical_note_training/core/constants/app_constants.dart';
+import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/extensions/localized_text_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/shared/domain/models/category.dart';
@@ -18,35 +18,36 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppConstants.appName),
+        title: Text(l10n.appTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.style_outlined),
-            tooltip: 'Decks',
+            tooltip: l10n.decksTooltip,
             onPressed: () => context.go(AppRoutes.decks),
           ),
           IconButton(
             icon: const Icon(Icons.history_edu_outlined),
-            tooltip: 'Weak items',
+            tooltip: l10n.weakItemsTooltip,
             onPressed: () => context.go(AppRoutes.weakItems),
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            tooltip: 'Settings',
+            tooltip: l10n.settingsTooltip,
             onPressed: () => context.go(AppRoutes.settings),
           ),
         ],
       ),
       body: categoriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Failed to load: $error')),
+        error: (error, _) => Center(child: Text(l10n.loadFailed('$error'))),
         data: (categories) {
           if (categories.isEmpty) {
-            return const Center(child: Text('No categories'));
+            return Center(child: Text(l10n.noCategories));
           }
           return ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.md),
