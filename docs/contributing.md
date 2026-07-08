@@ -23,10 +23,22 @@ issue/#N  … 作業ブランチ（1 Issue = 1 ブランチを基本）
 
 ### フロー
 
-1. `develop` から `issue/#N` を切る
-2. 実装 → `dart analyze` / `flutter test` を通す
-3. PR を `develop` 向けに作成（`Closes #N` を本文に記載）
-4. マージ後、作業ブランチを削除
+1. `develop` を最新にする（`git pull origin develop`）
+2. `develop` から `issue/#N` を切る
+3. 実装 → `dart analyze` / `flutter test` を通す
+4. `issue/#N` を **`develop` にマージ**（個人開発ではローカル fast-forward マージ可）
+5. `origin` へ `develop` と `issue/#N` を push
+6. マージ後、作業ブランチを削除（任意）
+
+**マージ先の承認ルール**
+
+| マージ | 承認 | 備考 |
+|--------|------|------|
+| `issue/#N` → `develop` | **不要** | 統合ブランチ。PR は記録用に作ってもよいがブロックしない |
+| `develop` → `main` | **必須**（PR レビュー） | ストア出荷・タグ付けの最終関門 |
+
+複数 Issue を連続で進めるときは、**依存順に `develop` へ統合してから**次の `issue/#N` を切る。  
+未マージの作業を `stash` で持ち越すとコンフリクトしやすいので、Issue 単位でコミット・マージする。
 
 リリース時は `develop` → `main` の PR を作成し、マージ後に `v1.0.0` 等のタグを付ける。
 
@@ -62,7 +74,8 @@ chore(ci): run flutter test on PR
 ```
 
 - 1 コミット = 1 論点（レビューしやすい粒度）
-- Issue 番号を末尾に付けてもよい: `feat(router): wire go_router (#3)`
+- Issue 番号を末尾に付けてもよい: `feat(router): wire go_router (issue/3) #3`
+- 日本語本文でもよい（例: `feat(study): 学習縦スライス (issue/3) #3`）
 
 ## PR チェックリスト
 

@@ -394,6 +394,26 @@ Phase 3+: 必要になる可能性大
 
 ---
 
+### [2026-07-09] Git 運用 — develop 統合と main マージの承認
+
+**質問**
+- feature ブランチをまだ `develop` にマージしていないことがコンフリクトの原因か？
+- `issue/N` → `develop` は承認なしでマージし、`develop` → `main` だけ PR 承認とする運用でよいか？
+
+**回答（ユーザー）**
+- 未マージがコンフリクト要因の可能性はある。`develop` へはマージしてよい。
+- `main` へのマージ時のみ PR 承認の段階を踏む。
+
+**決定**
+- `issue/N` → `develop`: テスト通過後にローカルマージ可（PR 承認不要。記録用 PR は任意）。
+- `develop` → `main`: 承認付き PR 必須（リリース関門）。
+- 複数 Issue は依存順に `develop` へ統合してから次の `issue/N` を切る。`stash` 持ち越しは避ける。
+
+**影響**
+- 更新: `docs/contributing.md` §ブランチ戦略、`AGENTS.md` §10
+
+---
+
 関連:
 - [AGENTS.md](../AGENTS.md) — エージェント向けルール・質問/記録テンプレート（自動読み込み）
 - [roadmap.md](./roadmap.md)

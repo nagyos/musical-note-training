@@ -247,7 +247,35 @@
 
 ---
 
-## 10. 関連ドキュメント
+## 10. Git / Issue 運用（エージェント向け）
+
+### ブランチとマージ
+
+```text
+develop から issue/N を切る → 実装 → develop にマージ → push → 次の issue/N
+develop → main はユーザー承認付き PR のみ（エージェントは勝手にマージしない）
+```
+
+| 操作 | ルール |
+|------|--------|
+| `issue/N` → `develop` | 承認不要。`dart analyze` + `flutter test` 通過後にマージ |
+| `develop` → `main` | **ユーザー確認後** PR マージ |
+| 着手前 | `develop` を pull。`grok inspect` で `AGENTS.md` を確認 |
+| 完了前 | `flutter test` + `dart analyze` 必須 |
+
+### 順序
+
+- Issue #2（Phase 0）→ #3（学習）→ #4（デッキ）→ #5（苦手）のように**依存順**で `develop` に統合してから次ブランチを切る。
+- 長期間の未コミット変更や `stash` の持ち越しは避ける（コンフリクトの主因になりやすい）。
+
+### コミット
+
+- 形式: `feat(scope): 概要 (issue/N) #N`（[contributing.md](./docs/contributing.md) 参照）
+- 1 コミット = 1 Issue 単位でもよい（個人開発・縦スライス単位）
+
+---
+
+## 11. 関連ドキュメント
 
 - [docs/README.md](./docs/README.md) — ドキュメント索引
 - [docs/decisions.md](./docs/decisions.md) — 決定事項・Q&A ログ
