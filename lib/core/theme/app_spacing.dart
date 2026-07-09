@@ -10,5 +10,5 @@ abstract final class AppSpacing {
   static const double studyChoiceButtonHeight = 52;
 
   /// Vertical offset per zigzag row in the study choice strip.
-  static const double studyChoiceZigzagRowStep = 14;
+  static const double studyChoiceZigzagRowStep = 18;
 }

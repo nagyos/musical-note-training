@@ -18,8 +18,10 @@ void main() {
       );
     });
 
-    test('zigzagRows matches choice count', () {
+    test('zigzagRows alternates bottom and top like C E G B / D F A', () {
       expect(StudyAnswerChoices.zigzagRows, hasLength(7));
+      // C E G B (even indices) low; D F A (odd indices) high
+      expect(StudyAnswerChoices.zigzagRows, [1, 0, 1, 0, 1, 0, 1]);
     });
   });
 }

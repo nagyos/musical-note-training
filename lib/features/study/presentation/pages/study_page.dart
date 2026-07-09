@@ -194,12 +194,9 @@ class _ZigzagChoiceStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rowStep = AppSpacing.studyChoiceZigzagRowStep;
-    final maxRow =
-        StudyAnswerChoices.zigzagRows.reduce((a, b) => a > b ? a : b);
-    final extraHeight = maxRow * rowStep;
 
     return SizedBox(
-      height: AppSpacing.studyChoiceButtonHeight + extraHeight,
+      height: AppSpacing.studyChoiceButtonHeight + rowStep,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -208,7 +205,10 @@ class _ZigzagChoiceStrip extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs / 2),
                 child: Transform.translate(
-                  offset: Offset(0, StudyAnswerChoices.zigzagRows[i] * rowStep),
+                  offset: Offset(
+                    0,
+                    StudyAnswerChoices.zigzagRows[i] * rowStep,
+                  ),
                   child: _ChoiceButton(
                     label: choices[i],
                     enabled: enabled && !eliminatedChoices.contains(choices[i]),
@@ -256,9 +256,12 @@ class _ChoiceButton extends StatelessWidget {
               ? colorScheme.onSurface.withValues(alpha: 0.45)
               : colorScheme.onSurface.withValues(alpha: 0.38),
         ),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.titleMedium,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
       ),
     );
