@@ -38,6 +38,22 @@
   "studyNext": "Next",
   "studySeeResults": "See results",
   "studySessionComplete": "Session complete",
+  "studyResultScore": "{correct} / {total} correct",
+  "@studyResultScore": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "studyWrongAnswersTitle": "Missed questions",
+  "studyWrongAnswerLine": "Your answer: {selected} → Correct: {correct}",
+  "@studyWrongAnswerLine": {
+    "placeholders": {
+      "selected": { "type": "String" },
+      "correct": { "type": "String" }
+    }
+  },
+  "studyRetry": "Try again",
   "studyQuestionsFinished": "Finished {count} questions",
   "@studyQuestionsFinished": {
     "placeholders": {

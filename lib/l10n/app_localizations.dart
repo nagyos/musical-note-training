@@ -200,6 +200,30 @@ abstract class AppLocalizations {
   /// **'Session complete'**
   String get studySessionComplete;
 
+  /// No description provided for @studyResultScore.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} / {total} correct'**
+  String studyResultScore(int correct, int total);
+
+  /// No description provided for @studyWrongAnswersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed questions'**
+  String get studyWrongAnswersTitle;
+
+  /// No description provided for @studyWrongAnswerLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer: {selected} → Correct: {correct}'**
+  String studyWrongAnswerLine(String selected, String correct);
+
+  /// No description provided for @studyRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get studyRetry;
+
   /// No description provided for @studyQuestionsFinished.
   ///
   /// In en, this message translates to:

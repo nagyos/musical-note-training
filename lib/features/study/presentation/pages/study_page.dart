@@ -8,6 +8,7 @@ import 'package:musical_note_training/core/extensions/localized_text_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/features/study/presentation/view_models/study_session_notifier.dart';
+import 'package:musical_note_training/features/study/presentation/widgets/study_completion_dialog.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_canvas.dart';
 
 enum StudySource { lesson, deck, weakItems }
@@ -29,6 +30,8 @@ class StudyPage extends ConsumerStatefulWidget {
 }
 
 class _StudyPageState extends ConsumerState<StudyPage> {
+  var _completionDialogShown = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +39,7 @@ class _StudyPageState extends ConsumerState<StudyPage> {
   }
 
   Future<void> _startSession() async {
+    _completionDialogShown = false;
     final notifier = ref.read(studySessionProvider.notifier);
     switch (widget.source) {
       case StudySource.lesson:
@@ -57,64 +61,75 @@ class _StudyPageState extends ConsumerState<StudyPage> {
     super.dispose();
   }
 
+  Future<void> _handleCompletion(StudySessionState session) async {
+    if (_completionDialogShown || !mounted) return;
+    _completionDialogShown = true;
+
+    final action = await showStudyCompletionDialog(context, session: session);
+    if (!mounted) return;
+
+    switch (action) {
+      case StudyCompletionAction.retry:
+        await _startSession();
+      case StudyCompletionAction.back:
+      case null:
+        context.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final session = ref.watch(studySessionProvider);
 
-    final isCompleted = session?.phase == StudyPhase.completed;
+    ref.listen<StudySessionState?>(studySessionProvider, (previous, next) {
+      if (next?.phase == StudyPhase.completed &&
+          previous?.phase != StudyPhase.completed) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _handleCompletion(next!);
+        });
+      }
+    });
+
+    final session = ref.watch(studySessionProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.studyTitle),
-        automaticallyImplyLeading: isCompleted,
-        leading: isCompleted
-            ? null
-            : IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => context.pop(),
-              ),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: session == null
           ? const Center(child: CircularProgressIndicator())
-          : _StudyBody(session: session),
+          : _StudySessionView(
+              session: session,
+              onSelect: ref.read(studySessionProvider.notifier).submitAnswer,
+              onContinue: ref.read(studySessionProvider.notifier).continueSession,
+            ),
     );
   }
 }
 
-class _StudyBody extends ConsumerWidget {
-  const _StudyBody({required this.session});
-
-  final StudySessionState session;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(studySessionProvider.notifier);
-
-    return switch (session.phase) {
-      StudyPhase.completed => _CompletedView(total: session.total),
-      StudyPhase.feedback => _FeedbackView(
-          session: session,
-          onContinue: notifier.continueSession,
-        ),
-      StudyPhase.questioning => _QuestionView(
-          session: session,
-          onSelect: notifier.submitAnswer,
-        ),
-    };
-  }
-}
-
-class _QuestionView extends StatelessWidget {
-  const _QuestionView({required this.session, required this.onSelect});
+class _StudySessionView extends StatelessWidget {
+  const _StudySessionView({
+    required this.session,
+    required this.onSelect,
+    required this.onContinue,
+  });
 
   final StudySessionState session;
   final ValueChanged<String> onSelect;
+  final VoidCallback onContinue;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final card = session.currentCard;
+    final isFeedback = session.isFeedback;
+    final correctAnswer = card.answer.resolve(session.locale);
+    final wasCorrect = session.wasCorrect ?? false;
+    final selected = session.selectedAnswer;
 
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -133,12 +148,19 @@ class _QuestionView extends StatelessWidget {
                 child: StaffCanvas(payload: card.notation),
               ),
             ),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.studyQuestionPrompt,
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.center,
-          ),
+          const SizedBox(height: AppSpacing.xl),
+          if (isFeedback)
+            _FeedbackHeader(
+              wasCorrect: wasCorrect,
+              correctAnswer: correctAnswer,
+              hint: wasCorrect ? null : card.hint?.resolveFrom(context),
+            )
+          else
+            Text(
+              l10n.studyQuestionPrompt,
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
             child: ListView.separated(
@@ -146,118 +168,150 @@ class _QuestionView extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
               itemBuilder: (context, index) {
                 final choice = session.choices[index];
-                return SizedBox(
-                  height: AppSpacing.studyChoiceButtonHeight,
-                  child: FilledButton.tonal(
-                    onPressed: () => onSelect(choice),
-                    child: Text(
-                      choice,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                return _ChoiceButton(
+                  label: choice,
+                  enabled: !isFeedback,
+                  highlight: _choiceHighlight(
+                    choice: choice,
+                    isFeedback: isFeedback,
+                    correctAnswer: correctAnswer,
+                    selected: selected,
+                    wasCorrect: wasCorrect,
                   ),
+                  onPressed: isFeedback ? null : () => onSelect(choice),
                 );
               },
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _FeedbackView extends StatelessWidget {
-  const _FeedbackView({required this.session, required this.onContinue});
-
-  final StudySessionState session;
-  final VoidCallback onContinue;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final card = session.currentCard;
-    final correct = card.answer.resolve(session.locale);
-    final isCorrect = session.wasCorrect ?? false;
-
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Icon(
-            isCorrect ? Icons.check_circle_outline : Icons.highlight_off,
-            color: isCorrect ? AppColors.success : AppColors.error,
-            size: 48,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            isCorrect ? l10n.answerCorrect : l10n.answerIncorrect,
-            style: Theme.of(context).textTheme.headlineSmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.correctAnswerLabel(correct),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          if (!isCorrect && card.hint != null) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              card.hint!.resolveFrom(context),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
+          if (isFeedback) ...[
+            const SizedBox(height: AppSpacing.md),
+            FilledButton(
+              onPressed: onContinue,
+              child: Text(
+                session.isLastCard ? l10n.studySeeResults : l10n.studyNext,
+              ),
             ),
           ],
-          const Spacer(),
-          FilledButton(
-            onPressed: onContinue,
-            child: Text(
-              session.isLastCard ? l10n.studySeeResults : l10n.studyNext,
-            ),
-          ),
         ],
       ),
     );
   }
+
+  _ChoiceHighlight? _choiceHighlight({
+    required String choice,
+    required bool isFeedback,
+    required String correctAnswer,
+    required String? selected,
+    required bool wasCorrect,
+  }) {
+    if (!isFeedback) return null;
+    if (choice == correctAnswer) return _ChoiceHighlight.correct;
+    if (!wasCorrect && choice == selected) return _ChoiceHighlight.incorrect;
+    return null;
+  }
 }
 
-class _CompletedView extends StatelessWidget {
-  const _CompletedView({required this.total});
+enum _ChoiceHighlight { correct, incorrect }
 
-  final int total;
+class _FeedbackHeader extends StatelessWidget {
+  const _FeedbackHeader({
+    required this.wasCorrect,
+    required this.correctAnswer,
+    this.hint,
+  });
+
+  final bool wasCorrect;
+  final String correctAnswer;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Icon(
-            Icons.check_circle_outline,
-            size: 56,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          const SizedBox(height: AppSpacing.md),
+    return Column(
+      children: [
+        Icon(
+          wasCorrect ? Icons.check_circle_outline : Icons.highlight_off,
+          color: wasCorrect ? AppColors.success : AppColors.error,
+          size: 36,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          wasCorrect ? l10n.answerCorrect : l10n.answerIncorrect,
+          style: Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+        if (!wasCorrect) ...[
+          const SizedBox(height: AppSpacing.xs),
           Text(
-            l10n.studySessionComplete,
-            style: Theme.of(context).textTheme.headlineSmall,
+            l10n.correctAnswerLabel(correctAnswer),
+            style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            l10n.studyQuestionsFinished(total),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          FilledButton(
-            onPressed: () => context.pop(),
-            child: Text(l10n.back),
-          ),
+          if (hint != null) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              hint!,
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ],
+      ],
+    );
+  }
+}
+
+class _ChoiceButton extends StatelessWidget {
+  const _ChoiceButton({
+    required this.label,
+    required this.onPressed,
+    required this.highlight,
+    this.enabled = true,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final bool enabled;
+  final _ChoiceHighlight? highlight;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final borderColor = switch (highlight) {
+      _ChoiceHighlight.correct => AppColors.success,
+      _ChoiceHighlight.incorrect => AppColors.error,
+      null => null,
+    };
+
+    return SizedBox(
+      height: AppSpacing.studyChoiceButtonHeight,
+      child: FilledButton.tonal(
+        onPressed: enabled ? onPressed : null,
+        style: FilledButton.styleFrom(
+          side: borderColor == null
+              ? null
+              : BorderSide(color: borderColor, width: 2),
+          backgroundColor: switch (highlight) {
+            _ChoiceHighlight.correct =>
+              AppColors.success.withValues(alpha: 0.12),
+            _ChoiceHighlight.incorrect =>
+              AppColors.error.withValues(alpha: 0.12),
+            null => null,
+          },
+          disabledBackgroundColor: switch (highlight) {
+            _ChoiceHighlight.correct =>
+              AppColors.success.withValues(alpha: 0.12),
+            _ChoiceHighlight.incorrect =>
+              AppColors.error.withValues(alpha: 0.12),
+            null => colorScheme.surfaceContainerHighest,
+          },
+          disabledForegroundColor: colorScheme.onSurface,
+        ),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
     );
   }

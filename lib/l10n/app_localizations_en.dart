@@ -68,6 +68,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get studySessionComplete => 'Session complete';
 
   @override
+  String studyResultScore(int correct, int total) {
+    return '$correct / $total correct';
+  }
+
+  @override
+  String get studyWrongAnswersTitle => 'Missed questions';
+
+  @override
+  String studyWrongAnswerLine(String selected, String correct) {
+    return 'Your answer: $selected → Correct: $correct';
+  }
+
+  @override
+  String get studyRetry => 'Try again';
+
+  @override
   String studyQuestionsFinished(int count) {
     return 'Finished $count questions';
   }

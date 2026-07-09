@@ -40,6 +40,22 @@ void main() {
 
       expect(answered.phase, StudyPhase.feedback);
       expect(answered.wasCorrect, isTrue);
+      expect(answered.correctCount, 1);
+      expect(answered.mistakes, isEmpty);
+    });
+
+    test('submitAnswer records mistakes', () {
+      final session = StudySessionLogic.startSession(
+        lessonCards: cards,
+        locale: 'ja',
+        random: Random(0),
+      );
+      final answered = StudySessionLogic.submitAnswer(session, 'wrong');
+
+      expect(answered.wasCorrect, isFalse);
+      expect(answered.correctCount, 0);
+      expect(answered.mistakes, hasLength(1));
+      expect(answered.mistakes.first.selectedAnswer, 'wrong');
     });
 
     test('advance moves to next question', () {

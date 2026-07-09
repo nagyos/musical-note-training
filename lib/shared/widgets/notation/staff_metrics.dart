@@ -22,9 +22,14 @@ abstract final class StaffMetrics {
   /// Gap between clef area and staff lines, as a fraction of [padding].
   static const double clefRightPaddingRatio = 0.25;
 
+  // --- SMuFL font (Bravura) ---
+  static const String notationFontFamily = 'Bravura';
+  static const int smuflTrebleClef = 0xE050;
+
   // --- Clef bounds (staffStep coordinates) ---
   static const int trebleClefTopStep = 8;
   static const int trebleClefBottomStep = -2;
+  static const double trebleClefFontSizeScale = 1.0;
 
   // --- Note heads (multiples of lineSpacing) ---
   static const double wholeNoteHeadScale = 0.42;
@@ -38,7 +43,6 @@ abstract final class StaffMetrics {
 
   // --- Paint / drawing ---
   static const double strokeWidth = 1.2;
-  static const double trebleClefFontSizeScale = 1.05;
   static const double noteHeadWidthScale = 2.4;
   static const double noteHeadHeightScale = 1.6;
   static const double noteHeadRotationRadians = math.pi / 6;

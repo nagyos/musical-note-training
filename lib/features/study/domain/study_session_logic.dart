@@ -63,10 +63,23 @@ abstract final class StudySessionLogic {
     String selected,
   ) {
     final correct = state.currentCard.answer.resolve(state.locale);
+    final wasCorrect = selected == correct;
+    final mistakes = wasCorrect
+        ? state.mistakes
+        : [
+            ...state.mistakes,
+            StudyMistake(
+              card: state.currentCard,
+              selectedAnswer: selected,
+            ),
+          ];
+
     return state.copyWith(
       phase: StudyPhase.feedback,
       selectedAnswer: selected,
-      wasCorrect: selected == correct,
+      wasCorrect: wasCorrect,
+      correctCount: state.correctCount + (wasCorrect ? 1 : 0),
+      mistakes: mistakes,
     );
   }
 
@@ -90,6 +103,8 @@ abstract final class StudySessionLogic {
         random: random,
       ),
       locale: state.locale,
+      correctCount: state.correctCount,
+      mistakes: state.mistakes,
     );
   }
 }

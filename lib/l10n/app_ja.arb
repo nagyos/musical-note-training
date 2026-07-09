@@ -16,6 +16,22 @@
   "studyNext": "次へ",
   "studySeeResults": "結果を見る",
   "studySessionComplete": "セッション完了",
+  "studyResultScore": "{correct} / {total} 問正解",
+  "@studyResultScore": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "studyWrongAnswersTitle": "間違えた問題",
+  "studyWrongAnswerLine": "あなたの回答: {selected} → 正解: {correct}",
+  "@studyWrongAnswerLine": {
+    "placeholders": {
+      "selected": { "type": "String" },
+      "correct": { "type": "String" }
+    }
+  },
+  "studyRetry": "もう一度",
   "studyQuestionsFinished": "{count} 問終了しました",
   "back": "戻る",
   "invalidStudyParameters": "学習パラメータが不正です",

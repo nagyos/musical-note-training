@@ -7,7 +7,7 @@ import 'package:musical_note_training/shared/domain/models/notation_payload.dart
 import 'package:musical_note_training/shared/widgets/notation/staff_layout.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_ledger.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
-import 'package:musical_note_training/shared/widgets/notation/treble_clef_path.dart';
+
 
 /// Draws a five-line staff with optional treble clef and notes.
 class StaffPainter extends CustomPainter {
@@ -82,10 +82,23 @@ class StaffPainter extends CustomPainter {
     Paint paint,
   ) {
     final bounds = layout.trebleClefBounds();
-    canvas.drawPath(
-      TrebleClefPath.fit(bounds),
-      paint..style = PaintingStyle.fill,
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: String.fromCharCode(StaffMetrics.smuflTrebleClef),
+        style: TextStyle(
+          fontFamily: StaffMetrics.notationFontFamily,
+          fontSize: bounds.height * StaffMetrics.trebleClefFontSizeScale,
+          color: paint.color,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    final offset = Offset(
+      bounds.left,
+      bounds.center.dy - textPainter.height / 2,
     );
+    textPainter.paint(canvas, offset);
   }
 
   void _drawNote(
