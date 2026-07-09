@@ -33,5 +33,16 @@ void main() {
       expect(payload.symbolMark, 'fermata');
       expect(payload.clef, isNull);
     });
+
+    test('isTempoOnly when tempoMark is set without clef', () {
+      const payload = NotationPayload(tempoMark: 'allegro');
+      expect(payload.isTempoOnly, isTrue);
+    });
+
+    test('fromJson parses tempo-only payload', () {
+      final payload = NotationPayload.fromJson({'tempoMark': 'andante'});
+      expect(payload.tempoMark, 'andante');
+      expect(payload.clef, isNull);
+    });
   });
 }

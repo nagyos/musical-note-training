@@ -49,13 +49,22 @@ void main() {
       ]);
     });
 
-    test('loadCategories includes note, rest, dynamic, and symbol', () async {
+    test('loads tempo seed with one lesson and five cards', () async {
+      final bundle = await datasource.loadCategoryBundle('tempo');
+
+      expect(bundle.lessons, hasLength(1));
+      expect(bundle.cards, hasLength(5));
+      expect(bundle.lessons.single.id, 'tempo-basic');
+    });
+
+    test('loadCategories includes all five seed categories', () async {
       final categories = await datasource.loadCategories();
       expect(categories.map((c) => c.id), [
         'note',
         'rest',
         'dynamic',
         'symbol',
+        'tempo',
       ]);
     });
   });

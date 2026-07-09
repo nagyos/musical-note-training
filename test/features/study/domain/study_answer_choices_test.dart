@@ -77,6 +77,29 @@ void main() {
       );
     });
 
+    test('localeForCategory always uses ja for tempo answers', () {
+      expect(
+        StudyAnswerChoices.localeForCategory(
+          category: CardCategoryType.tempo,
+          noteAnswerLocale: 'en',
+          uiLocale: 'en',
+        ),
+        'ja',
+      );
+    });
+
+    test('builds katakana tempo choices even when UI locale is en', () {
+      final locale = StudyAnswerChoices.localeForCategory(
+        category: CardCategoryType.tempo,
+        noteAnswerLocale: 'en',
+        uiLocale: 'en',
+      );
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.tempo, locale),
+        StudyAnswerChoices.temposJa,
+      );
+    });
+
     test('uses zigzag layout only for notes', () {
       expect(StudyAnswerChoices.usesZigzagLayout(CardCategoryType.note), isTrue);
       expect(

@@ -7,6 +7,7 @@ abstract final class ContentAssets {
     'rest': 'assets/content/rests.json',
     'dynamic': 'assets/content/dynamics.json',
     'symbol': 'assets/content/symbols.json',
+    'tempo': 'assets/content/tempos.json',
   };
 
   static String bundleForCategory(String categoryId) {

@@ -50,18 +50,37 @@ abstract final class StudyAnswerChoices {
     'Repeat start',
     'Repeat end',
   ];
+  static const temposJa = [
+    'ラルゴ',
+    'アンダンテ',
+    'モデラート',
+    'アレグロ',
+    'プレスト',
+  ];
+  static const temposEn = [
+    'Largo',
+    'Andante',
+    'Moderato',
+    'Allegro',
+    'Presto',
+  ];
 
   /// True for the upper row; false for the lower row (zigzag left to right).
   static bool isTopRow(int index) => index.isOdd;
 
   /// Notes follow [noteAnswerLocale] (solfege vs letter names).
+  /// Tempo shows Italian score text but answers are always katakana labels.
   /// Other categories follow [uiLocale] (app display language).
   static String localeForCategory({
     required CardCategoryType category,
     required String noteAnswerLocale,
     required String uiLocale,
   }) =>
-      category == CardCategoryType.note ? noteAnswerLocale : uiLocale;
+      switch (category) {
+        CardCategoryType.note => noteAnswerLocale,
+        CardCategoryType.tempo => 'ja',
+        _ => uiLocale,
+      };
 
   static List<String> forCategory(CardCategoryType category, String locale) {
     final isEn = locale == 'en';
@@ -75,9 +94,7 @@ abstract final class StudyAnswerChoices {
       CardCategoryType.symbol =>
         List.unmodifiable(isEn ? symbolsEn : symbolsJa),
       CardCategoryType.tempo =>
-        throw UnsupportedError(
-          'No fixed choices for category: ${category.name}',
-        ),
+        List.unmodifiable(isEn ? temposEn : temposJa),
     };
   }
 

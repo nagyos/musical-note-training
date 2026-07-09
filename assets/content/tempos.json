@@ -1,0 +1,67 @@
+{
+  "lessons": [
+    {
+      "id": "tempo-basic",
+      "categoryId": "tempo",
+      "title": { "ja": "基本の速度記号", "en": "Basic tempo marks" },
+      "sortOrder": 0
+    }
+  ],
+  "cards": [
+    {
+      "id": "tempo-largo",
+      "categoryType": "tempo",
+      "lessonId": "tempo-basic",
+      "notation": { "tempoMark": "largo" },
+      "answer": { "ja": "ラルゴ", "en": "Largo" },
+      "hint": { "ja": "とてもゆっくり", "en": "Very slow" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "tempo-andante",
+      "categoryType": "tempo",
+      "lessonId": "tempo-basic",
+      "notation": { "tempoMark": "andante" },
+      "answer": { "ja": "アンダンテ", "en": "Andante" },
+      "hint": { "ja": "歩くような速さ", "en": "Walking pace" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "tempo-moderato",
+      "categoryType": "tempo",
+      "lessonId": "tempo-basic",
+      "notation": { "tempoMark": "moderato" },
+      "answer": { "ja": "モデラート", "en": "Moderato" },
+      "hint": { "ja": "中くらいの速さ", "en": "Moderate speed" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "tempo-allegro",
+      "categoryType": "tempo",
+      "lessonId": "tempo-basic",
+      "notation": { "tempoMark": "allegro" },
+      "answer": { "ja": "アレグロ", "en": "Allegro" },
+      "hint": { "ja": "速め", "en": "Fast and lively" },
+      "sortOrder": 3,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "tempo-presto",
+      "categoryType": "tempo",
+      "lessonId": "tempo-basic",
+      "notation": { "tempoMark": "presto" },
+      "answer": { "ja": "プレスト", "en": "Presto" },
+      "hint": { "ja": "とても速い", "en": "Very fast" },
+      "sortOrder": 4,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    }
+  ]
+}
