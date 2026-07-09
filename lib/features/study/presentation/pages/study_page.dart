@@ -193,33 +193,74 @@ class _ZigzagChoiceStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rowStep = AppSpacing.studyChoiceZigzagRowStep;
+    final buttonHeight = AppSpacing.studyChoiceButtonHeight;
+    final rowGap = AppSpacing.studyChoiceRowGap;
 
-    return SizedBox(
-      height: AppSpacing.studyChoiceButtonHeight + rowStep,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (var i = 0; i < choices.length; i++)
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs / 2),
-                child: Transform.translate(
-                  offset: Offset(
-                    0,
-                    StudyAnswerChoices.zigzagRows[i] * rowStep,
-                  ),
-                  child: _ChoiceButton(
-                    label: choices[i],
-                    enabled: enabled && !eliminatedChoices.contains(choices[i]),
-                    isEliminated: eliminatedChoices.contains(choices[i]),
-                    onPressed: () => onSelect(choices[i]),
-                  ),
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _ChoiceRow(
+          choices: choices,
+          eliminatedChoices: eliminatedChoices,
+          enabled: enabled,
+          onSelect: onSelect,
+          topRow: true,
+          buttonHeight: buttonHeight,
+        ),
+        SizedBox(height: rowGap),
+        _ChoiceRow(
+          choices: choices,
+          eliminatedChoices: eliminatedChoices,
+          enabled: enabled,
+          onSelect: onSelect,
+          topRow: false,
+          buttonHeight: buttonHeight,
+        ),
+      ],
+    );
+  }
+}
+
+class _ChoiceRow extends StatelessWidget {
+  const _ChoiceRow({
+    required this.choices,
+    required this.eliminatedChoices,
+    required this.enabled,
+    required this.onSelect,
+    required this.topRow,
+    required this.buttonHeight,
+  });
+
+  final List<String> choices;
+  final Set<String> eliminatedChoices;
+  final bool enabled;
+  final ValueChanged<String> onSelect;
+  final bool topRow;
+  final double buttonHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (var i = 0; i < choices.length; i++)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs / 2),
+              child: SizedBox(
+                height: buttonHeight,
+                child: StudyAnswerChoices.isTopRow(i) == topRow
+                    ? _ChoiceButton(
+                        label: choices[i],
+                        enabled:
+                            enabled && !eliminatedChoices.contains(choices[i]),
+                        isEliminated: eliminatedChoices.contains(choices[i]),
+                        onPressed: () => onSelect(choices[i]),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

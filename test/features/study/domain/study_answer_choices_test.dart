@@ -18,10 +18,14 @@ void main() {
       );
     });
 
-    test('zigzagRows alternates bottom and top like C E G B / D F A', () {
-      expect(StudyAnswerChoices.zigzagRows, hasLength(7));
-      // C E G B (even indices) low; D F A (odd indices) high
-      expect(StudyAnswerChoices.zigzagRows, [1, 0, 1, 0, 1, 0, 1]);
+    test('isTopRow places D F A above C E G B', () {
+      expect(StudyAnswerChoices.isTopRow(0), isFalse); // C
+      expect(StudyAnswerChoices.isTopRow(1), isTrue); // D
+      expect(StudyAnswerChoices.isTopRow(2), isFalse); // E
+      expect(StudyAnswerChoices.isTopRow(3), isTrue); // F
+      expect(StudyAnswerChoices.isTopRow(4), isFalse); // G
+      expect(StudyAnswerChoices.isTopRow(5), isTrue); // A
+      expect(StudyAnswerChoices.isTopRow(6), isFalse); // B
     });
   });
 }

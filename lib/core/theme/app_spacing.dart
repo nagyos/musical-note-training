@@ -9,6 +9,6 @@ abstract final class AppSpacing {
   /// Minimum height for study answer choices (comfortable tap target).
   static const double studyChoiceButtonHeight = 52;
 
-  /// Vertical offset per zigzag row in the study choice strip.
-  static const double studyChoiceZigzagRowStep = 18;
+  /// Gap between upper and lower rows in the study choice strip.
+  static const double studyChoiceRowGap = 8;
 }
