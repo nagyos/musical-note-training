@@ -12,6 +12,10 @@ abstract final class TrebleStaffPitch {
     'note-a4': 3,
     'note-b4': 4,
     'note-c5': 5,
+    'note-d5': 6,
+    'note-e5': 7,
+    'note-f5': 8,
+    'note-g5': 9,
   };
 
   static int? staffStepForCardId(String cardId) => seedCardStaffSteps[cardId];

@@ -13,6 +13,10 @@ void main() {
       expect(TrebleStaffPitch.seedCardStaffSteps['note-a4'], 3);
       expect(TrebleStaffPitch.seedCardStaffSteps['note-b4'], 4);
       expect(TrebleStaffPitch.seedCardStaffSteps['note-c5'], 5);
+      expect(TrebleStaffPitch.seedCardStaffSteps['note-d5'], 6);
+      expect(TrebleStaffPitch.seedCardStaffSteps['note-e5'], 7);
+      expect(TrebleStaffPitch.seedCardStaffSteps['note-f5'], 8);
+      expect(TrebleStaffPitch.seedCardStaffSteps['note-g5'], 9);
     });
 
     test('staffStepForCardId returns null for unknown ids', () {

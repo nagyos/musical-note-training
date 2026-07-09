@@ -3,14 +3,32 @@
     {
       "id": "note-middle-c",
       "categoryId": "note",
-      "title": { "ja": "中央ド周辺", "en": "Middle C area" },
+      "title": { "ja": "中央ド周辺（ト音記号）", "en": "Middle C area (treble)" },
       "sortOrder": 0
     },
     {
       "id": "note-treble-staff",
       "categoryId": "note",
-      "title": { "ja": "五線上の音符", "en": "Notes on the staff" },
+      "title": { "ja": "ト音記号の五線上", "en": "Notes on the treble staff" },
       "sortOrder": 1
+    },
+    {
+      "id": "note-treble-upper",
+      "categoryId": "note",
+      "title": { "ja": "ト音記号・上の音", "en": "Higher notes (treble)" },
+      "sortOrder": 2
+    },
+    {
+      "id": "note-bass-staff",
+      "categoryId": "note",
+      "title": { "ja": "ヘ音記号の五線上", "en": "Notes on the bass staff" },
+      "sortOrder": 3
+    },
+    {
+      "id": "note-bass-middle-c",
+      "categoryId": "note",
+      "title": { "ja": "中央ド周辺（ヘ音記号）", "en": "Middle C area (bass)" },
+      "sortOrder": 4
     }
   ],
   "cards": [
@@ -123,6 +141,202 @@
       "answer": { "ja": "ド", "en": "C" },
       "hint": { "ja": "第3線と第4線のあいだ", "en": "Third space of the treble staff" },
       "sortOrder": 4,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-d5",
+      "categoryType": "note",
+      "lessonId": "note-treble-upper",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 6, "value": "quarter" }]
+      },
+      "answer": { "ja": "レ", "en": "D" },
+      "hint": { "ja": "五線譜の第4線", "en": "Fourth line of the treble staff" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-e5",
+      "categoryType": "note",
+      "lessonId": "note-treble-upper",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 7, "value": "quarter" }]
+      },
+      "answer": { "ja": "ミ", "en": "E" },
+      "hint": { "ja": "第4線と第5線のあいだ", "en": "Fourth space of the treble staff" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-f5",
+      "categoryType": "note",
+      "lessonId": "note-treble-upper",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 8, "value": "quarter" }]
+      },
+      "answer": { "ja": "ファ", "en": "F" },
+      "hint": { "ja": "五線譜の最上線", "en": "Top line of the treble staff" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-g5",
+      "categoryType": "note",
+      "lessonId": "note-treble-upper",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 9, "value": "quarter" }]
+      },
+      "answer": { "ja": "ソ", "en": "G" },
+      "hint": { "ja": "最上線の上（第1間）", "en": "Space just above the top staff line" },
+      "sortOrder": 3,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-g2",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 0, "value": "quarter" }]
+      },
+      "answer": { "ja": "ソ", "en": "G" },
+      "hint": { "ja": "ヘ音記号の最下線", "en": "Bottom line of the bass staff" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-a2",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 1, "value": "quarter" }]
+      },
+      "answer": { "ja": "ラ", "en": "A" },
+      "hint": { "ja": "最下線と第2線のあいだ", "en": "First space of the bass staff" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-b2",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 2, "value": "quarter" }]
+      },
+      "answer": { "ja": "シ", "en": "B" },
+      "hint": { "ja": "五線譜の第2線", "en": "Second line of the bass staff" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-c3",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 3, "value": "quarter" }]
+      },
+      "answer": { "ja": "ド", "en": "C" },
+      "hint": { "ja": "第2線と第3線のあいだ", "en": "Second space of the bass staff" },
+      "sortOrder": 3,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-d3",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 4, "value": "quarter" }]
+      },
+      "answer": { "ja": "レ", "en": "D" },
+      "hint": { "ja": "五線譜の第3線", "en": "Middle line of the bass staff" },
+      "sortOrder": 4,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-e3",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 5, "value": "quarter" }]
+      },
+      "answer": { "ja": "ミ", "en": "E" },
+      "hint": { "ja": "第3線と第4線のあいだ", "en": "Third space of the bass staff" },
+      "sortOrder": 5,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-f3",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 6, "value": "quarter" }]
+      },
+      "answer": { "ja": "ファ", "en": "F" },
+      "hint": { "ja": "五線譜の第4線", "en": "Fourth line of the bass staff" },
+      "sortOrder": 6,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-g3",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 7, "value": "quarter" }]
+      },
+      "answer": { "ja": "ソ", "en": "G" },
+      "hint": { "ja": "第4線と第5線のあいだ", "en": "Fourth space of the bass staff" },
+      "sortOrder": 7,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-a3",
+      "categoryType": "note",
+      "lessonId": "note-bass-staff",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 8, "value": "quarter" }]
+      },
+      "answer": { "ja": "ラ", "en": "A" },
+      "hint": { "ja": "五線譜の最上線", "en": "Top line of the bass staff" },
+      "sortOrder": 8,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "note-c4-bass",
+      "categoryType": "note",
+      "lessonId": "note-bass-middle-c",
+      "notation": {
+        "clef": "bass",
+        "elements": [{ "staffStep": 10, "value": "quarter" }]
+      },
+      "answer": { "ja": "ド", "en": "C" },
+      "hint": { "ja": "ヘ音記号の上の加線", "en": "Ledger line above the bass staff" },
+      "sortOrder": 0,
       "version": 1,
       "updatedAt": "2026-07-09T00:00:00.000Z"
     }

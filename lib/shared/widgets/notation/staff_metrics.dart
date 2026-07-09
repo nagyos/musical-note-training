@@ -19,6 +19,10 @@ abstract final class StaffMetrics {
   // --- SMuFL font (Bravura) ---
   static const String notationFontFamily = 'Bravura';
   static const int smuflTrebleClef = 0xE050;
+  static const int smuflBassClef = 0xE062;
+
+  /// Inset from canvas [padding] before either clef glyph's left edge.
+  static const double clefCanvasLeftMarginInSpaces = 0.5;
 
   // --- Treble clef (overlaps staff left edge; SMuFL / engraving convention) ---
   static const int trebleClefAnchorStep = 2;
@@ -34,6 +38,21 @@ abstract final class StaffMetrics {
 
   /// How far the clef tail extends left of the staff edge, in [lineSpacing] units.
   static const double trebleClefLeftOverhangScale = 0.25;
+
+  // --- Bass clef (F line anchor at step 6; tuned like treble clef) ---
+  static const int bassClefAnchorStep = 6;
+
+  static const double bassClefFontSizeInSpaces = 3.5;
+
+  /// F line (step 6) as a fraction from the top of the laid-out glyph (0–1).
+  static const double bassClefFLineAnchorRatio = 0.54;
+
+  static const double bassClefStaffWidthScale = 2.5;
+
+  static const double bassClefLeftOverhangScale = 0.25;
+
+  /// Optical nudge right so the glyph sits on the staff like the treble clef.
+  static const double bassClefHorizontalNudgeInSpaces = 0.22;
 
   // --- Note heads (multiples of lineSpacing) ---
   static const double wholeNoteHeadScale = 0.42;

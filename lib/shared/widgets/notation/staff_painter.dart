@@ -9,7 +9,7 @@ import 'package:musical_note_training/shared/widgets/notation/staff_ledger.dart'
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 
 
-/// Draws a five-line staff with optional treble clef and notes.
+/// Draws a five-line staff with treble or bass clef and notes.
 class StaffPainter extends CustomPainter {
   StaffPainter({
     required this.payload,
@@ -22,7 +22,7 @@ class StaffPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final layout = StaffLayout(size: size);
-    final notationLayout = StaffNotationLayout(layout);
+    final notationLayout = StaffNotationLayout(layout, clef: payload.clef);
     final paint = Paint()
       ..color = color
       ..strokeWidth = StaffMetrics.strokeWidth
@@ -37,8 +37,11 @@ class StaffPainter extends CustomPainter {
       );
     }
 
-    if (payload.clef == Clef.treble) {
-      _drawTrebleClef(canvas, notationLayout, paint);
+    switch (payload.clef) {
+      case Clef.treble:
+        _drawTrebleClef(canvas, notationLayout, paint);
+      case Clef.bass:
+        _drawBassClef(canvas, notationLayout, paint);
     }
 
     for (final element in payload.elements) {
@@ -96,6 +99,28 @@ class StaffPainter extends CustomPainter {
     )..layout();
 
     textPainter.paint(canvas, layout.trebleClefOffset(textPainter));
+  }
+
+  void _drawBassClef(
+    Canvas canvas,
+    StaffNotationLayout layout,
+    Paint paint,
+  ) {
+    final fontSize = layout.bassClefFontSize;
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: String.fromCharCode(StaffMetrics.smuflBassClef),
+        style: TextStyle(
+          fontFamily: StaffMetrics.notationFontFamily,
+          fontSize: fontSize,
+          height: 1,
+          color: paint.color,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    textPainter.paint(canvas, layout.bassClefOffset(textPainter));
   }
 
   void _drawNote(

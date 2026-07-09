@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:musical_note_training/shared/domain/models/card.dart';
+import 'package:musical_note_training/shared/domain/models/clef.dart';
+import 'package:musical_note_training/shared/domain/notation/bass_staff_pitch.dart';
 import 'package:musical_note_training/shared/domain/notation/treble_staff_pitch.dart';
 
 void main() {
@@ -20,9 +22,14 @@ void main() {
           .toList();
     });
 
-    test('each seed card staffStep matches treble pitch map', () {
+    test('each seed card staffStep matches pitch map for its clef', () {
       for (final card in cards) {
-        final expected = TrebleStaffPitch.staffStepForCardId(card.id);
+        final clef = card.notation?.clef;
+        final expected = switch (clef) {
+          Clef.treble => TrebleStaffPitch.staffStepForCardId(card.id),
+          Clef.bass => BassStaffPitch.staffStepForCardId(card.id),
+          _ => null,
+        };
         if (expected == null) continue;
 
         final actual = card.notation?.elements.first.staffStep;
@@ -34,9 +41,10 @@ void main() {
       }
     });
 
-    test('covers all eight seed note cards', () {
+    test('covers all registered seed note cards', () {
       final ids = cards.map((c) => c.id).toSet();
       expect(ids, containsAll(TrebleStaffPitch.seedCardStaffSteps.keys));
+      expect(ids, containsAll(BassStaffPitch.seedCardStaffSteps.keys));
     });
   });
 }

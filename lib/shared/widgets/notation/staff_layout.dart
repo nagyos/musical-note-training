@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import 'package:musical_note_training/shared/domain/models/notation_element.dart';
@@ -39,8 +41,13 @@ class StaffLayout {
 
   double get staffRight => size.width - padding;
 
-  /// Horizontal space the clef occupies before the first note.
-  double get clefAdvance => lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
+  /// Horizontal space the treble clef occupies before the first note.
+  double get trebleClefAdvance =>
+      lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
+
+  /// Horizontal space the bass clef occupies before the first note.
+  double get bassClefAdvance =>
+      lineSpacing * StaffMetrics.bassClefStaffWidthScale;
 
   double yForStaffStep(int staffStep) {
     return bottomLineY - staffStep * _halfLine;
@@ -56,12 +63,18 @@ class StaffLayout {
 
 /// Maps notation domain models to canvas geometry.
 class StaffNotationLayout {
-  StaffNotationLayout(this.layout);
+  StaffNotationLayout(this.layout, {required this.clef});
 
   final StaffLayout layout;
+  final Clef clef;
+
+  double get clefAdvance => switch (clef) {
+        Clef.treble => layout.trebleClefAdvance,
+        Clef.bass => layout.bassClefAdvance,
+      };
 
   Offset noteCenter(NotationElement element) {
-    final noteAreaLeft = layout.staffLeft + layout.clefAdvance;
+    final noteAreaLeft = layout.staffLeft + clefAdvance;
     final noteSpan = layout.staffRight - noteAreaLeft;
     final x = noteAreaLeft + noteSpan * StaffMetrics.noteXRatio;
     final y = layout.yForStaffStep(element.staffStep);
@@ -106,12 +119,41 @@ class StaffNotationLayout {
   double get trebleClefAnchorY =>
       layout.yForStaffStep(StaffMetrics.trebleClefAnchorStep);
 
+  double get _clefMinLeftX =>
+      layout.padding +
+      layout.lineSpacing * StaffMetrics.clefCanvasLeftMarginInSpaces;
+
   Offset trebleClefOffset(TextPainter textPainter) {
     final bounds = trebleClefBounds();
     return Offset(
-      bounds.left,
+      math.max(bounds.left, _clefMinLeftX),
       trebleClefAnchorY -
           textPainter.height * StaffMetrics.trebleClefGLineAnchorRatio,
+    );
+  }
+
+  double get bassClefFontSize =>
+      layout.lineSpacing * StaffMetrics.bassClefFontSizeInSpaces;
+
+  Rect bassClefBounds() {
+    final left =
+        layout.staffLeft - layout.lineSpacing * StaffMetrics.bassClefLeftOverhangScale;
+    final right =
+        layout.staffLeft + layout.lineSpacing * StaffMetrics.bassClefStaffWidthScale;
+    return Rect.fromLTRB(left, layout.padding, right, layout.size.height - layout.padding);
+  }
+
+  double get bassClefAnchorY =>
+      layout.yForStaffStep(StaffMetrics.bassClefAnchorStep);
+
+  Offset bassClefOffset(TextPainter textPainter) {
+    final bounds = bassClefBounds();
+    final x = bounds.left +
+        layout.lineSpacing * StaffMetrics.bassClefHorizontalNudgeInSpaces;
+    return Offset(
+      math.max(x, _clefMinLeftX),
+      bassClefAnchorY -
+          textPainter.height * StaffMetrics.bassClefFLineAnchorRatio,
     );
   }
 }

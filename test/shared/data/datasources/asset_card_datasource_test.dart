@@ -8,14 +8,17 @@ void main() {
   group('AssetCardDatasource', () {
     const datasource = AssetCardDatasource();
 
-    test('loads note seed with two lessons and eight cards', () async {
+    test('loads note seed with five lessons and twenty-two cards', () async {
       final bundle = await datasource.loadCategoryBundle('note');
 
-      expect(bundle.lessons, hasLength(2));
-      expect(bundle.cards, hasLength(8));
+      expect(bundle.lessons, hasLength(5));
+      expect(bundle.cards, hasLength(22));
       expect(bundle.lessons.map((l) => l.id), [
         'note-middle-c',
         'note-treble-staff',
+        'note-treble-upper',
+        'note-bass-staff',
+        'note-bass-middle-c',
       ]);
     });
   });
