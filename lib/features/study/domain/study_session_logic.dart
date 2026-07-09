@@ -89,7 +89,7 @@ abstract final class StudySessionLogic {
       phase: StudyPhase.questioning,
       choices: buildChoices(
         locale: state.locale,
-        category: state.cards.first.categoryType,
+        category: state.cards[nextIndex].categoryType,
       ),
       locale: state.locale,
       correctCount: state.correctCount,

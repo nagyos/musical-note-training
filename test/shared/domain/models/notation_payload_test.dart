@@ -1,0 +1,25 @@
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:musical_note_training/shared/domain/models/clef.dart';
+import 'package:musical_note_training/shared/domain/models/notation_payload.dart';
+
+void main() {
+  group('NotationPayload', () {
+    test('isDynamicOnly when dynamicMark is set without clef', () {
+      const payload = NotationPayload(dynamicMark: 'f');
+      expect(payload.isDynamicOnly, isTrue);
+    });
+
+    test('is not dynamic-only when clef is present', () {
+      const payload = NotationPayload(clef: Clef.treble);
+      expect(payload.isDynamicOnly, isFalse);
+    });
+
+    test('fromJson parses dynamic-only payload', () {
+      final payload = NotationPayload.fromJson({'dynamicMark': 'mp'});
+      expect(payload.dynamicMark, 'mp');
+      expect(payload.clef, isNull);
+      expect(payload.elements, isEmpty);
+    });
+  });
+}

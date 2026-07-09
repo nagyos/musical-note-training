@@ -22,7 +22,10 @@ class StaffPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final layout = StaffLayout(size: size);
-    final notationLayout = StaffNotationLayout(layout, clef: payload.clef);
+    final clef = payload.clef;
+    if (clef == null) return;
+
+    final notationLayout = StaffNotationLayout(layout, clef: clef);
     final paint = Paint()
       ..color = color
       ..strokeWidth = StaffMetrics.strokeWidth
@@ -37,7 +40,7 @@ class StaffPainter extends CustomPainter {
       );
     }
 
-    switch (payload.clef) {
+    switch (clef) {
       case Clef.treble:
         _drawTrebleClef(canvas, notationLayout, paint);
       case Clef.bass:
