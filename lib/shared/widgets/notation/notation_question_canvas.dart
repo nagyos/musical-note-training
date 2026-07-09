@@ -5,6 +5,7 @@ import 'package:musical_note_training/shared/widgets/notation/dynamic_mark_canva
 import 'package:musical_note_training/shared/widgets/notation/staff_canvas.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 import 'package:musical_note_training/shared/widgets/notation/symbol_mark_canvas.dart';
+import 'package:musical_note_training/shared/widgets/notation/tempo_mark_canvas.dart';
 
 /// Picks the correct notation renderer for a quiz card payload.
 class NotationQuestionCanvas extends StatelessWidget {
@@ -19,6 +20,9 @@ class NotationQuestionCanvas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (payload.isTempoOnly) {
+      return TempoMarkCanvas(mark: payload.tempoMark!, height: height);
+    }
     if (payload.isSymbolOnly) {
       return SymbolMarkCanvas(mark: payload.symbolMark!, height: height);
     }

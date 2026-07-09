@@ -55,6 +55,17 @@ void main() {
       );
     });
 
+    test('forCategory returns five tempo names', () {
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.tempo, 'ja'),
+        StudyAnswerChoices.temposJa,
+      );
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.tempo, 'en'),
+        StudyAnswerChoices.temposEn,
+      );
+    });
+
     test('uses zigzag layout only for notes', () {
       expect(StudyAnswerChoices.usesZigzagLayout(CardCategoryType.note), isTrue);
       expect(

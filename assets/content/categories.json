@@ -22,5 +22,11 @@
     "type": "symbol",
     "title": { "ja": "記号", "en": "Symbols" },
     "sortOrder": 3
+  },
+  {
+    "id": "tempo",
+    "type": "tempo",
+    "title": { "ja": "速度", "en": "Tempo" },
+    "sortOrder": 4
   }
 ]
