@@ -88,8 +88,10 @@ chore(ci): run flutter test on PR
 ```
 
 - 1 コミット = 1 論点（レビューしやすい粒度）
-- Issue 番号を末尾に付けてもよい: `feat(router): wire go_router (issue/3) #3`
+- **Issue 作業のコミットは末尾に `#N` を必須**（GitHub が Issue 画面にコミットを紐づける）。`N` はブランチ `issue/N` と同じ番号
+- 形式: `feat(scope): 概要 (issue/N) #N` — 例: `feat(study): 学習縦スライス (issue/3) #3`
 - 日本語本文でもよい（例: `feat(study): 学習縦スライス (issue/3) #3`）
+- 1 コミットで複数 Issue を閉じる場合のみ `#8 #9` のように並記可（通常は 1 Issue = 1 `#N`）
 
 ## PR チェックリスト
 

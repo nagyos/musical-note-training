@@ -277,6 +277,7 @@ develop → main はユーザー承認付き PR のみ（エージェントは�
 ### コミット
 
 - 形式: `feat(scope): 概要 (issue/N) #N`（[contributing.md](./docs/contributing.md) 参照）
+- **末尾の `#N` は必須**（GitHub Issue 画面へのコミット表示用）。`issue/N` ブランチの `N` と一致させる
 - 1 コミット = 1 Issue 単位でもよい（個人開発・縦スライス単位）
 
 ---
