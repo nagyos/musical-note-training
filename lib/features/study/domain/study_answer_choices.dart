@@ -34,6 +34,22 @@ abstract final class StudyAnswerChoices {
     'Forte',
     'Fortissimo',
   ];
+  static const symbolsJa = [
+    'シャープ',
+    'フラット',
+    'ナチュラル',
+    'フェルマータ',
+    'リピート始め',
+    'リピート終わり',
+  ];
+  static const symbolsEn = [
+    'Sharp',
+    'Flat',
+    'Natural',
+    'Fermata',
+    'Repeat start',
+    'Repeat end',
+  ];
 
   /// True for the upper row; false for the lower row (zigzag left to right).
   static bool isTopRow(int index) => index.isOdd;
@@ -56,7 +72,9 @@ abstract final class StudyAnswerChoices {
         List.unmodifiable(isEn ? restsEn : restsJa),
       CardCategoryType.dynamic =>
         List.unmodifiable(isEn ? dynamicsEn : dynamicsJa),
-      CardCategoryType.symbol || CardCategoryType.tempo =>
+      CardCategoryType.symbol =>
+        List.unmodifiable(isEn ? symbolsEn : symbolsJa),
+      CardCategoryType.tempo =>
         throw UnsupportedError(
           'No fixed choices for category: ${category.name}',
         ),

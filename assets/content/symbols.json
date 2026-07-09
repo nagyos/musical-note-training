@@ -1,0 +1,84 @@
+{
+  "lessons": [
+    {
+      "id": "symbol-accidental",
+      "categoryId": "symbol",
+      "title": { "ja": "臨時記号", "en": "Accidentals" },
+      "sortOrder": 0
+    },
+    {
+      "id": "symbol-expression",
+      "categoryId": "symbol",
+      "title": { "ja": "表現・反復記号", "en": "Expression & repeats" },
+      "sortOrder": 1
+    }
+  ],
+  "cards": [
+    {
+      "id": "symbol-sharp",
+      "categoryType": "symbol",
+      "lessonId": "symbol-accidental",
+      "notation": { "symbolMark": "sharp" },
+      "answer": { "ja": "シャープ", "en": "Sharp" },
+      "hint": { "ja": "半音上げる", "en": "Raises by a semitone" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "symbol-flat",
+      "categoryType": "symbol",
+      "lessonId": "symbol-accidental",
+      "notation": { "symbolMark": "flat" },
+      "answer": { "ja": "フラット", "en": "Flat" },
+      "hint": { "ja": "半音下げる", "en": "Lowers by a semitone" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "symbol-natural",
+      "categoryType": "symbol",
+      "lessonId": "symbol-accidental",
+      "notation": { "symbolMark": "natural" },
+      "answer": { "ja": "ナチュラル", "en": "Natural" },
+      "hint": { "ja": "臨時記号を取り消す", "en": "Cancels an accidental" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "symbol-fermata",
+      "categoryType": "symbol",
+      "lessonId": "symbol-expression",
+      "notation": { "symbolMark": "fermata" },
+      "answer": { "ja": "フェルマータ", "en": "Fermata" },
+      "hint": { "ja": "その音を少し伸ばす", "en": "Hold the note a little longer" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "symbol-repeat-start",
+      "categoryType": "symbol",
+      "lessonId": "symbol-expression",
+      "notation": { "symbolMark": "repeatStart" },
+      "answer": { "ja": "リピート始め", "en": "Repeat start" },
+      "hint": { "ja": "ここから繰り返す", "en": "Repeat from here" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "symbol-repeat-end",
+      "categoryType": "symbol",
+      "lessonId": "symbol-expression",
+      "notation": { "symbolMark": "repeatEnd" },
+      "answer": { "ja": "リピート終わり", "en": "Repeat end" },
+      "hint": { "ja": "始めに戻って繰り返す", "en": "Go back to the start and repeat" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    }
+  ]
+}

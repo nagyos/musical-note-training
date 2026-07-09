@@ -16,5 +16,11 @@
     "type": "dynamic",
     "title": { "ja": "強弱", "en": "Dynamics" },
     "sortOrder": 2
+  },
+  {
+    "id": "symbol",
+    "type": "symbol",
+    "title": { "ja": "記号", "en": "Symbols" },
+    "sortOrder": 3
   }
 ]

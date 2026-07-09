@@ -66,6 +66,17 @@ void main() {
       );
     });
 
+    test('forCategory returns six symbol names', () {
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.symbol, 'ja'),
+        StudyAnswerChoices.symbolsJa,
+      );
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.symbol, 'en'),
+        StudyAnswerChoices.symbolsEn,
+      );
+    });
+
     test('uses zigzag layout only for notes', () {
       expect(StudyAnswerChoices.usesZigzagLayout(CardCategoryType.note), isTrue);
       expect(

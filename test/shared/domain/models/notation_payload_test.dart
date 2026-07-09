@@ -21,5 +21,17 @@ void main() {
       expect(payload.clef, isNull);
       expect(payload.elements, isEmpty);
     });
+
+    test('isSymbolOnly when symbolMark is set without clef', () {
+      const payload = NotationPayload(symbolMark: 'sharp');
+      expect(payload.isSymbolOnly, isTrue);
+      expect(payload.isDynamicOnly, isFalse);
+    });
+
+    test('fromJson parses symbol-only payload', () {
+      final payload = NotationPayload.fromJson({'symbolMark': 'fermata'});
+      expect(payload.symbolMark, 'fermata');
+      expect(payload.clef, isNull);
+    });
   });
 }
