@@ -19,17 +19,27 @@ class StaffLayout {
   final double padding;
 
   double get lineSpacing {
+    final staffHalfSteps = (lineCount - 1) * 2;
+    final totalHalfSteps = staffHalfSteps +
+        StaffMetrics.ledgerSlotsBelow +
+        StaffMetrics.ledgerSlotsAbove;
     final availableHeight = size.height - padding * 2;
-    return availableHeight / (lineCount - 1);
+    return availableHeight / (totalHalfSteps / 2);
   }
+
+  double get _halfLine => lineSpacing / 2;
+
+  double get bottomLineY =>
+      size.height -
+      padding -
+      StaffMetrics.ledgerSlotsBelow * _halfLine;
 
   double get staffLeft => padding + size.width * StaffMetrics.clefAreaWidthRatio;
 
   double get staffRight => size.width - padding;
 
   double yForStaffStep(int staffStep) {
-    final bottomLineY = size.height - padding;
-    return bottomLineY - staffStep * (lineSpacing / 2);
+    return bottomLineY - staffStep * _halfLine;
   }
 
   List<Offset> linePositions() {

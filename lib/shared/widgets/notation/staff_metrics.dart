@@ -9,6 +9,10 @@ abstract final class StaffMetrics {
   static const double padding = 16;
   static const double defaultCanvasHeight = 140;
 
+  /// Half-line slots reserved below step 0 / above step 8 for ledger notes.
+  static const int ledgerSlotsBelow = 2;
+  static const int ledgerSlotsAbove = 2;
+
   /// Width reserved for the clef as a fraction of total canvas width.
   static const double clefAreaWidthRatio = 0.12;
 
@@ -42,6 +46,6 @@ abstract final class StaffMetrics {
   static const double restWidthScale = 2.2;
   static const double restHeightScale = 0.35;
 
-  /// Ledger line width as a fraction of the distance between note and staff edge.
-  static const double ledgerLineWidthScale = 2.8;
+  /// Ledger half-width as a multiple of the note-head half-width.
+  static const double ledgerHalfWidthNoteScale = 0.55;
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:musical_note_training/shared/domain/models/note_value.dart';
+import 'package:musical_note_training/shared/domain/models/notation_element.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_layout.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 
 void main() {
   group('StaffLayout', () {
@@ -12,6 +15,20 @@ void main() {
       final higher = layout.yForStaffStep(4);
 
       expect(higher, lessThan(bottom));
+    });
+
+    test('keeps middle C ledger note inside canvas', () {
+      const layout = StaffLayout(size: Size(320, 140));
+      final notationLayout = StaffNotationLayout(layout);
+      const element = NotationElement(staffStep: -2, value: NoteValue.quarter);
+
+      final center = notationLayout.noteCenter(element);
+      final radius = notationLayout.noteHeadRadius(element);
+      final headHalfHeight =
+          radius * StaffMetrics.noteHeadHeightScale / 2;
+
+      expect(center.dy - headHalfHeight, greaterThanOrEqualTo(0));
+      expect(center.dy + headHalfHeight, lessThanOrEqualTo(140));
     });
   });
 
