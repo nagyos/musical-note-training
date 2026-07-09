@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/features/deck/presentation/view_models/deck_providers.dart';
 import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart' as domain;
@@ -36,7 +37,7 @@ class _DeckCardPickerPageState extends ConsumerState<DeckCardPickerPage> {
     final inDeckAsync = ref.watch(deckCardsProvider(widget.deckId));
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppPageAppBar(
         title: Text(l10n.addOfficialCardsTitle),
         actions: [
           TextButton(

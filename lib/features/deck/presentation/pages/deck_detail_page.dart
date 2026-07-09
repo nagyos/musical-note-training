@@ -6,6 +6,7 @@ import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/features/deck/presentation/view_models/deck_providers.dart';
 import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 
@@ -22,7 +23,7 @@ class DeckDetailPage extends ConsumerWidget {
     final cardsAsync = ref.watch(deckResolvedCardsProvider(deckId));
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppPageAppBar(
         title: deckAsync.maybeWhen(
           data: (deck) => Text(deck?.name ?? l10n.deckFallbackTitle),
           orElse: () => Text(l10n.deckFallbackTitle),
@@ -35,7 +36,7 @@ class DeckDetailPage extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go(AppRoutes.deckAddCards(deckId)),
+        onPressed: () => context.push(AppRoutes.deckAddCards(deckId)),
         icon: const Icon(Icons.add),
         label: Text(l10n.addCards),
       ),
@@ -53,7 +54,7 @@ class DeckDetailPage extends ConsumerWidget {
                   child: FilledButton(
                     onPressed: cards.isEmpty
                         ? null
-                        : () => context.go(AppRoutes.studyDeck(deckId)),
+                        : () => context.push(AppRoutes.studyDeck(deckId)),
                     child: Text(l10n.studyDeck(cards.length)),
                   ),
                 ),
@@ -129,6 +130,11 @@ class DeckDetailPage extends ConsumerWidget {
 
     await ref.read(deckRepositoryProvider).deleteDeck(deckId);
     ref.invalidate(decksProvider);
-    if (context.mounted) context.go(AppRoutes.decks);
+    if (!context.mounted) return;
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go(AppRoutes.decks);
+    }
   }
 }

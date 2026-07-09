@@ -6,6 +6,7 @@ import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/features/deck/presentation/view_models/deck_providers.dart';
 import 'package:musical_note_training/features/deck/presentation/widgets/create_deck_dialog.dart';
 
@@ -18,7 +19,7 @@ class DeckListPage extends ConsumerWidget {
     final decksAsync = ref.watch(decksProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.decksTitle)),
+      appBar: AppPageAppBar(title: Text(l10n.decksTitle)),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _createDeck(context, ref),
         child: const Icon(Icons.add),
@@ -44,7 +45,7 @@ class DeckListPage extends ConsumerWidget {
                       ? null
                       : Text(deck.description!),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go(AppRoutes.deckDetail(deck.id)),
+                  onTap: () => context.push(AppRoutes.deckDetail(deck.id)),
                 ),
               );
             },

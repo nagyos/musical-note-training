@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/features/settings/domain/note_name_style.dart';
 import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 
@@ -16,7 +17,7 @@ class SettingsPage extends ConsumerWidget {
     final notifier = ref.read(appSettingsProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.settingsTitle)),
+      appBar: AppPageAppBar(title: Text(l10n.settingsTitle)),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [

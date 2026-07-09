@@ -62,13 +62,18 @@ class _StudyPageState extends ConsumerState<StudyPage> {
     final l10n = context.l10n;
     final session = ref.watch(studySessionProvider);
 
+    final isCompleted = session?.phase == StudyPhase.completed;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.studyTitle),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => context.pop(),
-        ),
+        automaticallyImplyLeading: isCompleted,
+        leading: isCompleted
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => context.pop(),
+              ),
       ),
       body: session == null
           ? const Center(child: CircularProgressIndicator())

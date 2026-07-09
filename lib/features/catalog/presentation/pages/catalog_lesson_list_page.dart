@@ -7,6 +7,7 @@ import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/extensions/localized_text_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/shared/domain/models/category.dart';
 import 'package:musical_note_training/shared/domain/models/lesson.dart';
 
@@ -40,9 +41,7 @@ class CatalogLessonListPage extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppPageAppBar(title: Text(title)),
       body: lessonsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) =>
@@ -61,7 +60,7 @@ class CatalogLessonListPage extends ConsumerWidget {
                 child: ListTile(
                   title: Text(lesson.title.resolveFrom(context)),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go(AppRoutes.studyLesson(lesson.id)),
+                  onTap: () => context.push(AppRoutes.studyLesson(lesson.id)),
                 ),
               );
             },

@@ -28,17 +28,17 @@ class HomePage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.style_outlined),
             tooltip: l10n.decksTooltip,
-            onPressed: () => context.go(AppRoutes.decks),
+            onPressed: () => context.push(AppRoutes.decks),
           ),
           IconButton(
             icon: const Icon(Icons.history_edu_outlined),
             tooltip: l10n.weakItemsTooltip,
-            onPressed: () => context.go(AppRoutes.weakItems),
+            onPressed: () => context.push(AppRoutes.weakItems),
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             tooltip: l10n.settingsTooltip,
-            onPressed: () => context.go(AppRoutes.settings),
+            onPressed: () => context.push(AppRoutes.settings),
           ),
         ],
       ),
@@ -60,7 +60,8 @@ class HomePage extends ConsumerWidget {
                   leading: Icon(_iconFor(category.id)),
                   title: Text(category.title.resolveFrom(context)),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go(AppRoutes.catalogCategory(category.id)),
+                  onTap: () =>
+                      context.push(AppRoutes.catalogCategory(category.id)),
                 ),
               );
             },

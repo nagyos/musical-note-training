@@ -6,6 +6,7 @@ import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 import 'package:musical_note_training/features/weak_items/presentation/view_models/weak_item_providers.dart';
 
@@ -19,7 +20,7 @@ class WeakItemsPage extends ConsumerWidget {
     final entriesAsync = ref.watch(weakItemEntriesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.weakItemsTitle)),
+      appBar: AppPageAppBar(title: Text(l10n.weakItemsTitle)),
       body: entriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => Center(child: Text(l10n.loadFailed('$error'))),
@@ -35,7 +36,7 @@ class WeakItemsPage extends ConsumerWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed: () => context.go(AppRoutes.studyWeakItems),
+                    onPressed: () => context.push(AppRoutes.studyWeakItems),
                     child: Text(l10n.reviewWeakItems(entries.length)),
                   ),
                 ),
