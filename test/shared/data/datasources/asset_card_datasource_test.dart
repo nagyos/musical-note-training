@@ -38,9 +38,25 @@ void main() {
       expect(bundle.lessons.single.id, 'dynamic-basic');
     });
 
-    test('loadCategories includes note, rest, and dynamic', () async {
+    test('loads symbol seed with two lessons and six cards', () async {
+      final bundle = await datasource.loadCategoryBundle('symbol');
+
+      expect(bundle.lessons, hasLength(2));
+      expect(bundle.cards, hasLength(6));
+      expect(bundle.lessons.map((l) => l.id), [
+        'symbol-accidental',
+        'symbol-expression',
+      ]);
+    });
+
+    test('loadCategories includes note, rest, dynamic, and symbol', () async {
       final categories = await datasource.loadCategories();
-      expect(categories.map((c) => c.id), ['note', 'rest', 'dynamic']);
+      expect(categories.map((c) => c.id), [
+        'note',
+        'rest',
+        'dynamic',
+        'symbol',
+      ]);
     });
   });
 }
