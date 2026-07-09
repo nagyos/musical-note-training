@@ -29,6 +29,17 @@ void main() {
       expect(clefBounds.right, greaterThan(layout.staffLeft));
     });
 
+    test('treble clef font size fits within staff span', () {
+      const layout = StaffLayout(size: Size(320, 140));
+      final notationLayout = StaffNotationLayout(layout);
+      final staffSpan = layout.lineSpacing * (StaffMetrics.lineCount - 1);
+
+      expect(
+        notationLayout.trebleClefFontSize,
+        lessThanOrEqualTo(staffSpan * 1.1),
+      );
+    });
+
     test('keeps middle C ledger note inside canvas', () {
       const layout = StaffLayout(size: Size(320, 140));
       final notationLayout = StaffNotationLayout(layout);

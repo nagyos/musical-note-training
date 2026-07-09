@@ -91,19 +91,29 @@ class StaffNotationLayout {
     return element.staffStep >= StaffMetrics.stemUpThresholdStep;
   }
 
+  double get trebleClefFontSize =>
+      layout.lineSpacing * StaffMetrics.trebleClefFontSizeInSpaces;
+
   Rect trebleClefBounds() {
-    final top = layout.yForStaffStep(StaffMetrics.trebleClefTopStep);
-    final bottom = layout.yForStaffStep(StaffMetrics.trebleClefBottomStep);
     final left = layout.staffLeft -
         layout.lineSpacing * StaffMetrics.trebleClefLeftOverhangScale;
     final right =
         layout.staffLeft + layout.lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
-    return Rect.fromLTRB(left, top, right, bottom);
+    return Rect.fromLTRB(left, layout.padding, right, layout.size.height - layout.padding);
   }
 
   /// Y coordinate of the G line used to anchor the treble clef glyph.
   double get trebleClefAnchorY =>
       layout.yForStaffStep(StaffMetrics.trebleClefAnchorStep);
+
+  Offset trebleClefOffset(TextPainter textPainter) {
+    final bounds = trebleClefBounds();
+    return Offset(
+      bounds.left,
+      trebleClefAnchorY -
+          textPainter.height * StaffMetrics.trebleClefGLineAnchorRatio,
+    );
+  }
 }
 
 /// Demo payload for the home screen PoC (treble clef, middle C as quarter note).

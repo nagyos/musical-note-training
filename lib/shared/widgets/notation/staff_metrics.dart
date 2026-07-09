@@ -21,19 +21,19 @@ abstract final class StaffMetrics {
   static const int smuflTrebleClef = 0xE050;
 
   // --- Treble clef (overlaps staff left edge; SMuFL / engraving convention) ---
-  static const int trebleClefTopStep = 8;
-  static const int trebleClefBottomStep = -2;
-
-  /// G-line (staff step 2) vertical anchor within the glyph (0 = top, 1 = bottom).
   static const int trebleClefAnchorStep = 2;
-  static const double trebleClefGLineAnchorRatio = 0.36;
+
+  /// Bravura g-clef optical height in staff-line spacings (~4 is standard).
+  static const double trebleClefFontSizeInSpaces = 3.35;
+
+  /// G-line (step 2) as a fraction from the top of the laid-out glyph (0–1).
+  static const double trebleClefGLineAnchorRatio = 0.56;
 
   /// How far the clef extends right across the staff, in [lineSpacing] units.
   static const double trebleClefStaffWidthScale = 2.5;
 
   /// How far the clef tail extends left of the staff edge, in [lineSpacing] units.
   static const double trebleClefLeftOverhangScale = 0.25;
-  static const double trebleClefFontSizeScale = 1.0;
 
   // --- Note heads (multiples of lineSpacing) ---
   static const double wholeNoteHeadScale = 0.42;

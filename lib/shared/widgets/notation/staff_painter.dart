@@ -81,25 +81,21 @@ class StaffPainter extends CustomPainter {
     StaffNotationLayout layout,
     Paint paint,
   ) {
-    final bounds = layout.trebleClefBounds();
+    final fontSize = layout.trebleClefFontSize;
     final textPainter = TextPainter(
       text: TextSpan(
         text: String.fromCharCode(StaffMetrics.smuflTrebleClef),
         style: TextStyle(
           fontFamily: StaffMetrics.notationFontFamily,
-          fontSize: bounds.height * StaffMetrics.trebleClefFontSizeScale,
+          fontSize: fontSize,
+          height: 1,
           color: paint.color,
         ),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
 
-    final anchorY = layout.trebleClefAnchorY;
-    final offset = Offset(
-      bounds.left,
-      anchorY - textPainter.height * StaffMetrics.trebleClefGLineAnchorRatio,
-    );
-    textPainter.paint(canvas, offset);
+    textPainter.paint(canvas, layout.trebleClefOffset(textPainter));
   }
 
   void _drawNote(
