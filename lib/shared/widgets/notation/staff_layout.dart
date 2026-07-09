@@ -146,6 +146,14 @@ class StaffNotationLayout {
   double get bassClefAnchorY =>
       layout.yForStaffStep(StaffMetrics.bassClefAnchorStep);
 
+  Offset restGlyphOffset(NotationElement element, TextPainter textPainter) {
+    final anchorY = layout.yForStaffStep(element.staffStep);
+    return Offset(
+      noteCenter(element).dx - textPainter.width / 2,
+      anchorY - textPainter.height * StaffMetrics.restAnchorRatio(element.value),
+    );
+  }
+
   Offset bassClefOffset(TextPainter textPainter) {
     final bounds = bassClefBounds();
     final x = bounds.left +

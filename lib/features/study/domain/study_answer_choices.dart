@@ -1,12 +1,40 @@
-/// Fixed diatonic answer choices for note study sessions.
+import 'package:musical_note_training/shared/domain/models/card_category_type.dart';
+
+/// Fixed answer choices per official content category.
 abstract final class StudyAnswerChoices {
   static const solfege = ['ド', 'レ', 'ミ', 'ファ', 'ソ', 'ラ', 'シ'];
   static const letters = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
-  /// True for the upper row (D F A); false for the lower row (C E G B).
+  static const restsJa = [
+    '全休符',
+    '二分休符',
+    '四分休符',
+    '八分休符',
+    '十六分休符',
+  ];
+
+  static const restsEn = [
+    'Whole rest',
+    'Half rest',
+    'Quarter rest',
+    'Eighth rest',
+    'Sixteenth rest',
+  ];
+
+  /// True for the upper row; false for the lower row (zigzag left to right).
   static bool isTopRow(int index) => index.isOdd;
 
-  static List<String> forLocale(String locale) {
-    return locale == 'en' ? List.unmodifiable(letters) : List.unmodifiable(solfege);
+  static List<String> forCategory(CardCategoryType category, String locale) {
+    final isEn = locale == 'en';
+    return switch (category) {
+      CardCategoryType.note =>
+        List.unmodifiable(isEn ? letters : solfege),
+      CardCategoryType.rest =>
+        List.unmodifiable(isEn ? restsEn : restsJa),
+      CardCategoryType.symbol ||
+      CardCategoryType.dynamic ||
+      CardCategoryType.tempo =>
+        const [],
+    };
   }
 }

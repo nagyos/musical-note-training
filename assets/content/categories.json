@@ -4,5 +4,11 @@
     "type": "note",
     "title": { "ja": "音符", "en": "Notes" },
     "sortOrder": 0
+  },
+  {
+    "id": "rest",
+    "type": "rest",
+    "title": { "ja": "休符", "en": "Rests" },
+    "sortOrder": 1
   }
 ]

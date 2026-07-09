@@ -1,0 +1,88 @@
+{
+  "lessons": [
+    {
+      "id": "rest-long",
+      "categoryId": "rest",
+      "title": { "ja": "長い休符", "en": "Long rests" },
+      "sortOrder": 0
+    },
+    {
+      "id": "rest-short",
+      "categoryId": "rest",
+      "title": { "ja": "短い休符", "en": "Short rests" },
+      "sortOrder": 1
+    }
+  ],
+  "cards": [
+    {
+      "id": "rest-whole",
+      "categoryType": "rest",
+      "lessonId": "rest-long",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 6, "value": "whole", "isRest": true }]
+      },
+      "answer": { "ja": "全休符", "en": "Whole rest" },
+      "hint": { "ja": "五線譜の第4線の下にぶら下がる", "en": "Hangs below the fourth line" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "rest-half",
+      "categoryType": "rest",
+      "lessonId": "rest-long",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 4, "value": "half", "isRest": true }]
+      },
+      "answer": { "ja": "二分休符", "en": "Half rest" },
+      "hint": { "ja": "五線譜の第3線の上に乗る", "en": "Sits on the third line" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "rest-quarter",
+      "categoryType": "rest",
+      "lessonId": "rest-long",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 3, "value": "quarter", "isRest": true }]
+      },
+      "answer": { "ja": "四分休符", "en": "Quarter rest" },
+      "hint": { "ja": "クルリと曲がった形", "en": "A small curved shape" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "rest-eighth",
+      "categoryType": "rest",
+      "lessonId": "rest-short",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 2, "value": "eighth", "isRest": true }]
+      },
+      "answer": { "ja": "八分休符", "en": "Eighth rest" },
+      "hint": { "ja": "四分休符に旗が1本", "en": "Like a quarter rest with one flag" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "rest-sixteenth",
+      "categoryType": "rest",
+      "lessonId": "rest-short",
+      "notation": {
+        "clef": "treble",
+        "elements": [{ "staffStep": 2, "value": "sixteenth", "isRest": true }]
+      },
+      "answer": { "ja": "十六分休符", "en": "Sixteenth rest" },
+      "hint": { "ja": "八分休符に旗がもう1本", "en": "Like an eighth rest with another flag" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/features/study/domain/study_session_logic.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
@@ -114,6 +115,19 @@ void main() {
       expect(next.eliminatedChoices, isEmpty);
     });
 
+    test('startSession uses rest choices for rest cards', () {
+      final restCards = [
+        _card('rest-whole', '全休符', categoryType: CardCategoryType.rest),
+        _card('rest-half', '二分休符', categoryType: CardCategoryType.rest),
+      ];
+      final session = StudySessionLogic.startSession(
+        lessonCards: restCards,
+        locale: 'ja',
+      );
+
+      expect(session.choices, StudyAnswerChoices.restsJa);
+    });
+
     test('advanceAfterCorrect completes session on last card', () {
       final session = StudySessionLogic.startSession(
         lessonCards: [cards.first],
@@ -128,11 +142,15 @@ void main() {
   });
 }
 
-Card _card(String id, String jaAnswer) {
+Card _card(
+  String id,
+  String jaAnswer, {
+  CardCategoryType categoryType = CardCategoryType.note,
+}) {
   final now = DateTime.utc(2026, 7, 8);
   return Card(
     id: id,
-    categoryType: CardCategoryType.note,
+    categoryType: categoryType,
     lessonId: 'note-middle-c',
     answer: LocalizedText(values: {'ja': jaAnswer, 'en': jaAnswer}),
     sortOrder: 0,

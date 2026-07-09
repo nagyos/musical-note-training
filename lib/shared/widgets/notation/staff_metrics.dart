@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:musical_note_training/shared/domain/models/note_value.dart';
+
 /// Layout and geometry constants for staff notation rendering.
 ///
 /// Ratios are relative to [StaffLayout.lineSpacing] or canvas [Size] unless noted.
@@ -70,8 +72,33 @@ abstract final class StaffMetrics {
   static const double noteHeadHeightScale = 1.6;
   static const double noteHeadRotationRadians = math.pi / 6;
   static const double stemHorizontalInset = 1;
-  static const double restWidthScale = 2.2;
-  static const double restHeightScale = 0.35;
+  // --- Rests (SMuFL / Bravura) ---
+  static const int smuflWholeRest = 0xE4E3;
+  static const int smuflHalfRest = 0xE4E4;
+  static const int smuflQuarterRest = 0xE4E5;
+  static const int smuflEighthRest = 0xE4E6;
+  static const int smuflSixteenthRest = 0xE4E7;
+
+  static int smuflRestFor(NoteValue value) => switch (value) {
+        NoteValue.whole => smuflWholeRest,
+        NoteValue.half => smuflHalfRest,
+        NoteValue.quarter => smuflQuarterRest,
+        NoteValue.eighth => smuflEighthRest,
+        NoteValue.sixteenth => smuflSixteenthRest,
+      };
+
+  static double restFontSizeInSpaces(NoteValue value) => switch (value) {
+        NoteValue.whole || NoteValue.half => 1.35,
+        NoteValue.quarter => 1.25,
+        _ => 1.15,
+      };
+
+  /// Vertical anchor as a fraction from glyph top (0–1) to [staffStep] y.
+  static double restAnchorRatio(NoteValue value) => switch (value) {
+        NoteValue.whole => 0.35,
+        NoteValue.half => 0.65,
+        _ => 0.5,
+      };
 
   /// Ledger half-width as a multiple of the note-head half-width.
   static const double ledgerHalfWidthNoteScale = 0.55;

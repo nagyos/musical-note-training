@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
+import 'package:musical_note_training/shared/domain/models/card_category_type.dart';
 
 /// Pure functions for study session transitions (unit-testable).
 abstract final class StudySessionLogic {
@@ -12,8 +13,11 @@ abstract final class StudySessionLogic {
     return copy;
   }
 
-  static List<String> buildChoices({required String locale}) {
-    return StudyAnswerChoices.forLocale(locale);
+  static List<String> buildChoices({
+    required String locale,
+    required CardCategoryType category,
+  }) {
+    return StudyAnswerChoices.forCategory(category, locale);
   }
 
   static StudySessionState startSession({
@@ -26,7 +30,10 @@ abstract final class StudySessionLogic {
       cards: shuffled,
       currentIndex: 0,
       phase: StudyPhase.questioning,
-      choices: buildChoices(locale: locale),
+      choices: buildChoices(
+        locale: locale,
+        category: shuffled.first.categoryType,
+      ),
       locale: locale,
     );
   }
@@ -80,7 +87,10 @@ abstract final class StudySessionLogic {
       cards: state.cards,
       currentIndex: nextIndex,
       phase: StudyPhase.questioning,
-      choices: buildChoices(locale: state.locale),
+      choices: buildChoices(
+        locale: state.locale,
+        category: state.cards.first.categoryType,
+      ),
       locale: state.locale,
       correctCount: state.correctCount,
       mistakes: state.mistakes,
