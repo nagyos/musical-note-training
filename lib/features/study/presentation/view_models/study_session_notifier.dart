@@ -33,30 +33,29 @@ class StudySessionNotifier extends Notifier<StudySessionState?> {
   void submitAnswer(String choice) {
     final current = state;
     if (current == null || current.phase != StudyPhase.questioning) return;
+    if (current.eliminatedChoices.contains(choice)) return;
 
     final next = StudySessionLogic.submitAnswer(current, choice);
     state = next;
 
-    _recordWeakItemIfNeeded(next);
+    if (next.phase == StudyPhase.revealingCorrect) {
+      _recordAnswer(cardId: next.currentCard.id, isCorrect: true);
+      Future.delayed(StudySessionTiming.correctRevealDuration, () {
+        final currentState = state;
+        if (currentState?.phase != StudyPhase.revealingCorrect) return;
+        state = StudySessionLogic.advanceAfterCorrect(currentState!);
+      });
+    } else {
+      _recordAnswer(cardId: next.currentCard.id, isCorrect: false);
+    }
   }
 
-  void _recordWeakItemIfNeeded(StudySessionState session) {
-    if (session.phase != StudyPhase.feedback) return;
-    if (session.wasCorrect != false) return;
-
-    final cardId = session.currentCard.id;
-    final answeredAt = DateTime.now().toUtc();
+  void _recordAnswer({required String cardId, required bool isCorrect}) {
     ref.read(weakItemRecorderProvider).onAnswer(
           cardId: cardId,
-          isCorrect: false,
-          answeredAt: answeredAt,
+          isCorrect: isCorrect,
+          answeredAt: DateTime.now().toUtc(),
         );
-  }
-
-  void continueSession() {
-    final current = state;
-    if (current == null || current.phase != StudyPhase.feedback) return;
-    state = StudySessionLogic.advance(current);
   }
 
   void reset() => state = null;

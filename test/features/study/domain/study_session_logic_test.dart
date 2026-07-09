@@ -29,7 +29,7 @@ void main() {
       expect(session.choices, contains(session.currentCard.answer.resolve('ja')));
     });
 
-    test('submitAnswer marks correct response', () {
+    test('submitAnswer reveals correct without advancing immediately', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
         locale: 'ja',
@@ -38,38 +38,85 @@ void main() {
       final correct = session.currentCard.answer.resolve('ja');
       final answered = StudySessionLogic.submitAnswer(session, correct);
 
-      expect(answered.phase, StudyPhase.feedback);
-      expect(answered.wasCorrect, isTrue);
+      expect(answered.phase, StudyPhase.revealingCorrect);
       expect(answered.correctCount, 1);
-      expect(answered.mistakes, isEmpty);
+      expect(answered.currentIndex, session.currentIndex);
     });
 
-    test('submitAnswer records mistakes', () {
+    test('submitAnswer eliminates wrong choices and stays on card', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
         locale: 'ja',
         random: Random(0),
       );
-      final answered = StudySessionLogic.submitAnswer(session, 'wrong');
+      final wrong = session.choices.firstWhere(
+        (c) => c != session.currentCard.answer.resolve('ja'),
+      );
+      final answered = StudySessionLogic.submitAnswer(session, wrong);
 
-      expect(answered.wasCorrect, isFalse);
-      expect(answered.correctCount, 0);
+      expect(answered.phase, StudyPhase.questioning);
+      expect(answered.eliminatedChoices, contains(wrong));
       expect(answered.mistakes, hasLength(1));
-      expect(answered.mistakes.first.selectedAnswer, 'wrong');
     });
 
-    test('advance moves to next question', () {
+    test('submitAnswer records only the first mistake per card', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
         locale: 'ja',
         random: Random(0),
       );
       final correct = session.currentCard.answer.resolve('ja');
-      final feedback = StudySessionLogic.submitAnswer(session, correct);
-      final next = StudySessionLogic.advance(feedback, random: Random(0));
+      final wrongChoices = session.choices.where((c) => c != correct).toList();
+
+      final afterFirst =
+          StudySessionLogic.submitAnswer(session, wrongChoices.first);
+      final afterSecond =
+          StudySessionLogic.submitAnswer(afterFirst, wrongChoices[1]);
+
+      expect(afterSecond.mistakes, hasLength(1));
+      expect(afterSecond.eliminatedChoices, hasLength(2));
+    });
+
+    test('submitAnswer ignores eliminated choices', () {
+      final session = StudySessionLogic.startSession(
+        lessonCards: cards,
+        locale: 'ja',
+        random: Random(0),
+      );
+      final correct = session.currentCard.answer.resolve('ja');
+      final wrong = session.choices.firstWhere((c) => c != correct);
+      final afterWrong = StudySessionLogic.submitAnswer(session, wrong);
+      final retap = StudySessionLogic.submitAnswer(afterWrong, wrong);
+
+      expect(retap.eliminatedChoices, afterWrong.eliminatedChoices);
+      expect(retap.mistakes, afterWrong.mistakes);
+    });
+
+    test('advanceAfterCorrect moves to next question', () {
+      final session = StudySessionLogic.startSession(
+        lessonCards: cards,
+        locale: 'ja',
+        random: Random(0),
+      );
+      final correct = session.currentCard.answer.resolve('ja');
+      final revealed = StudySessionLogic.submitAnswer(session, correct);
+      final next = StudySessionLogic.advanceAfterCorrect(revealed, random: Random(0));
 
       expect(next.phase, StudyPhase.questioning);
       expect(next.currentIndex, 1);
+      expect(next.eliminatedChoices, isEmpty);
+    });
+
+    test('advanceAfterCorrect completes session on last card', () {
+      final session = StudySessionLogic.startSession(
+        lessonCards: [cards.first],
+        locale: 'ja',
+      );
+      final correct = session.currentCard.answer.resolve('ja');
+      final revealed = StudySessionLogic.submitAnswer(session, correct);
+      final done = StudySessionLogic.advanceAfterCorrect(revealed);
+
+      expect(done.phase, StudyPhase.completed);
     });
   });
 }

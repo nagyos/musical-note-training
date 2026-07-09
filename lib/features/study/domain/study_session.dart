@@ -2,11 +2,11 @@ import 'package:musical_note_training/shared/domain/models/card.dart';
 
 enum StudyPhase {
   questioning,
-  feedback,
+  revealingCorrect,
   completed,
 }
 
-/// A card answered incorrectly during the current session.
+/// A card answered incorrectly during the current session (first wrong pick only).
 class StudyMistake {
   const StudyMistake({
     required this.card,
@@ -15,6 +15,11 @@ class StudyMistake {
 
   final Card card;
   final String selectedAnswer;
+}
+
+/// Delay before auto-advancing after a correct answer.
+abstract final class StudySessionTiming {
+  static const Duration correctRevealDuration = Duration(milliseconds: 700);
 }
 
 /// In-memory state for a single catalog lesson quiz run.
@@ -27,8 +32,7 @@ class StudySessionState {
     required this.locale,
     this.correctCount = 0,
     this.mistakes = const [],
-    this.wasCorrect,
-    this.selectedAnswer,
+    this.eliminatedChoices = const {},
   });
 
   final List<Card> cards;
@@ -38,19 +42,19 @@ class StudySessionState {
   final String locale;
   final int correctCount;
   final List<StudyMistake> mistakes;
-  final bool? wasCorrect;
-  final String? selectedAnswer;
+
+  /// Wrong answers picked for the current card; buttons stay disabled.
+  final Set<String> eliminatedChoices;
 
   Card get currentCard => cards[currentIndex];
 
   int get total => cards.length;
 
-  int get answeredCount =>
-      phase == StudyPhase.questioning ? currentIndex : currentIndex + 1;
+  int get answeredCount => currentIndex + (phase == StudyPhase.questioning ? 0 : 1);
 
   bool get isLastCard => currentIndex >= cards.length - 1;
 
-  bool get isFeedback => phase == StudyPhase.feedback;
+  bool get isRevealingCorrect => phase == StudyPhase.revealingCorrect;
 
   StudySessionState copyWith({
     List<Card>? cards,
@@ -60,10 +64,7 @@ class StudySessionState {
     String? locale,
     int? correctCount,
     List<StudyMistake>? mistakes,
-    bool? wasCorrect,
-    String? selectedAnswer,
-    bool clearSelectedAnswer = false,
-    bool clearWasCorrect = false,
+    Set<String>? eliminatedChoices,
   }) {
     return StudySessionState(
       cards: cards ?? this.cards,
@@ -73,9 +74,7 @@ class StudySessionState {
       locale: locale ?? this.locale,
       correctCount: correctCount ?? this.correctCount,
       mistakes: mistakes ?? this.mistakes,
-      wasCorrect: clearWasCorrect ? null : (wasCorrect ?? this.wasCorrect),
-      selectedAnswer:
-          clearSelectedAnswer ? null : (selectedAnswer ?? this.selectedAnswer),
+      eliminatedChoices: eliminatedChoices ?? this.eliminatedChoices,
     );
   }
 }

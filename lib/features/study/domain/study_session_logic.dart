@@ -62,9 +62,21 @@ abstract final class StudySessionLogic {
     StudySessionState state,
     String selected,
   ) {
+    if (state.phase != StudyPhase.questioning) return state;
+    if (state.eliminatedChoices.contains(selected)) return state;
+
     final correct = state.currentCard.answer.resolve(state.locale);
-    final wasCorrect = selected == correct;
-    final mistakes = wasCorrect
+    if (selected == correct) {
+      return state.copyWith(
+        phase: StudyPhase.revealingCorrect,
+        correctCount: state.correctCount + 1,
+      );
+    }
+
+    final alreadyMistaken = state.mistakes.any(
+      (m) => m.card.id == state.currentCard.id,
+    );
+    final mistakes = alreadyMistaken
         ? state.mistakes
         : [
             ...state.mistakes,
@@ -75,16 +87,16 @@ abstract final class StudySessionLogic {
           ];
 
     return state.copyWith(
-      phase: StudyPhase.feedback,
-      selectedAnswer: selected,
-      wasCorrect: wasCorrect,
-      correctCount: state.correctCount + (wasCorrect ? 1 : 0),
+      eliminatedChoices: {...state.eliminatedChoices, selected},
       mistakes: mistakes,
     );
   }
 
-  static StudySessionState advance(StudySessionState state, {Random? random}) {
-    if (state.phase != StudyPhase.feedback) return state;
+  static StudySessionState advanceAfterCorrect(
+    StudySessionState state, {
+    Random? random,
+  }) {
+    if (state.phase != StudyPhase.revealingCorrect) return state;
 
     if (state.isLastCard) {
       return state.copyWith(phase: StudyPhase.completed);
