@@ -252,20 +252,25 @@
 ### ブランチとマージ
 
 ```text
-develop から issue/N を切る → 実装 → develop にマージ → push → 次の issue/N
+develop から issue/N を切る → 実装・push（feature ブランチ上で反復）
+  → 動作確認（flutter run 等）で問題なさそうなら develop にマージ
 develop → main はユーザー承認付き PR のみ（エージェントは勝手にマージしない）
 ```
 
 | 操作 | ルール |
 |------|--------|
-| `issue/N` → `develop` | 承認不要。`dart analyze` + `flutter test` 通過後にマージ |
+| `issue/N` 上での作業 | エージェントのデフォルト。**`develop` へはマージしない** |
+| `issue/N` → `develop` | **ユーザーが問題なしと判断した後**（または明示指示後）。`dart analyze` + `flutter test` 通過が前提 |
 | `develop` → `main` | **ユーザー確認後** PR マージ |
 | 着手前 | `develop` を pull。`grok inspect` で `AGENTS.md` を確認 |
-| 完了前 | `flutter test` + `dart analyze` 必須 |
+| マージ前 | `flutter test` + `dart analyze` 必須。UI・微調整は feature ブランチで `flutter run` 確認 |
+
+**エージェント禁止**: テストが通っただけで自動的に `develop` へマージしない。微調整・見た目確認が未完の変更を `develop` に入れない。
 
 ### 順序
 
-- Issue #2（Phase 0）→ #3（学習）→ #4（デッキ）→ #5（苦手）のように**依存順**で `develop` に統合してから次ブランチを切る。
+- 1 Issue ＝ 1 `issue/N` ブランチ。ブランチ上でコミット・push し、**確認できてから** `develop` に統合する。
+- 依存がある Issue は、先の `issue/N` が `develop` に入ってから次を切る（例: Phase 0 → 学習 → デッキ）。
 - 長期間の未コミット変更や `stash` の持ち越しは避ける（コンフリクトの主因になりやすい）。
 
 ### コミット
