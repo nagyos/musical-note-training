@@ -23,13 +23,16 @@ issue/#N  … 作業ブランチ（1 Issue = 1 ブランチを基本）
 
 ### フロー
 
-1. `develop` を最新にする（`git pull origin develop`）
-2. `develop` から `issue/#N` を切る
-3. 実装 → `dart analyze` / `flutter test` を通す
-4. **`origin` へ `issue/#N` を push**（`develop` にはまだマージしない）
-5. **feature ブランチ上で動作確認**（`flutter run` 等）。微調整は同ブランチでコミット・push を繰り返す
-6. 問題なさそうなら `issue/#N` を **`develop` にマージ**（ローカル fast-forward マージ可）→ `origin/develop` を push
-7. マージ後、作業ブランチを削除（任意）
+1. **GitHub で Issue を作成する**（`gh issue create` または Web UI）。番号 **#N** を確定してからブランチを切る
+2. `develop` を最新にする（`git pull origin develop`）
+3. `develop` から **`issue/#N` を切る**（`N` は手順 1 の Issue 番号と一致させる）
+4. 実装 → `dart analyze` / `flutter test` を通す
+5. **`origin` へ `issue/#N` を push**（`develop` にはまだマージしない）
+6. **feature ブランチ上で動作確認**（`flutter run` 等）。微調整は同ブランチでコミット・push を繰り返す
+7. 問題なさそうなら `issue/#N` を **`develop` にマージ**（ローカル fast-forward マージ可）→ `origin/develop` を push
+8. マージ後、Issue を close・作業ブランチを削除（任意）
+
+**禁止**: GitHub Issue なしで `issue/N` ブランチだけ作って実装を進めない。ローカルブランチ番号と GitHub `#N` は必ず対応させる。
 
 **マージ先の承認ルール**
 
@@ -53,13 +56,13 @@ issue/#N  … 作業ブランチ（1 Issue = 1 ブランチを基本）
 
 **タスク ID**（`T-003` など）は Issue タイトルまたは本文に書く。`docs/tasks.md` と対応づける。
 
-**本文はタイトルだけにしない。** 後から見返せるよう、最低限次を書く。
+**本文はタイトルだけにしない。** 後から見返せるよう、最低限次を書く（[AGENTS.md](../AGENTS.md) §3・§4）。
 
 | セクション | 内容 |
 |------------|------|
 | 背景 | なぜ今やるか |
 | 問題 | 現象・困りごと（事実ベース） |
-| 方針 / 受け入れ条件 | 何をもって完了とするか |
+| 受け入れ条件 | 何をもって完了とするか（チェックリスト） |
 
 Bug report / Task テンプレートの項目を埋めれば足りる。詳細は [AGENTS.md](../AGENTS.md) §3・§4。
 

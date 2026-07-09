@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
 import 'package:musical_note_training/core/theme/app_colors.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/features/study/presentation/view_models/study_session_notifier.dart';
 import 'package:musical_note_training/features/study/presentation/widgets/study_completion_dialog.dart';
@@ -164,23 +165,59 @@ class _StudySessionView extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.md),
-          Expanded(
-            child: ListView.separated(
-              itemCount: session.choices.length,
-              separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
-              itemBuilder: (context, index) {
-                final choice = session.choices[index];
-                final isEliminated = session.eliminatedChoices.contains(choice);
-                return _ChoiceButton(
-                  label: choice,
-                  enabled: canAnswer && !isEliminated,
-                  isEliminated: isEliminated,
-                  onPressed: () => onSelect(choice),
-                );
-              },
-            ),
+          const Spacer(),
+          _ZigzagChoiceStrip(
+            choices: session.choices,
+            eliminatedChoices: session.eliminatedChoices,
+            enabled: canAnswer,
+            onSelect: onSelect,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ZigzagChoiceStrip extends StatelessWidget {
+  const _ZigzagChoiceStrip({
+    required this.choices,
+    required this.eliminatedChoices,
+    required this.enabled,
+    required this.onSelect,
+  });
+
+  final List<String> choices;
+  final Set<String> eliminatedChoices;
+  final bool enabled;
+  final ValueChanged<String> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    final rowStep = AppSpacing.studyChoiceZigzagRowStep;
+    final maxRow =
+        StudyAnswerChoices.zigzagRows.reduce((a, b) => a > b ? a : b);
+    final extraHeight = maxRow * rowStep;
+
+    return SizedBox(
+      height: AppSpacing.studyChoiceButtonHeight + extraHeight,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (var i = 0; i < choices.length; i++)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs / 2),
+                child: Transform.translate(
+                  offset: Offset(0, StudyAnswerChoices.zigzagRows[i] * rowStep),
+                  child: _ChoiceButton(
+                    label: choices[i],
+                    enabled: enabled && !eliminatedChoices.contains(choices[i]),
+                    isEliminated: eliminatedChoices.contains(choices[i]),
+                    onPressed: () => onSelect(choices[i]),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

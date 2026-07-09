@@ -17,7 +17,7 @@ void main() {
   ];
 
   group('StudySessionLogic', () {
-    test('startSession shuffles and builds choices', () {
+    test('startSession shuffles cards and exposes fixed seven choices', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
         locale: 'ja',
@@ -26,7 +26,14 @@ void main() {
 
       expect(session.phase, StudyPhase.questioning);
       expect(session.cards, hasLength(3));
-      expect(session.choices, contains(session.currentCard.answer.resolve('ja')));
+      expect(
+        session.choices,
+        ['ド', 'レ', 'ミ', 'ファ', 'ソ', 'ラ', 'シ'],
+      );
+      expect(
+        session.choices,
+        contains(session.currentCard.answer.resolve('ja')),
+      );
     });
 
     test('submitAnswer reveals correct without advancing immediately', () {
