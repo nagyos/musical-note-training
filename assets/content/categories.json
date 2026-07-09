@@ -10,5 +10,11 @@
     "type": "rest",
     "title": { "ja": "休符", "en": "Rests" },
     "sortOrder": 1
+  },
+  {
+    "id": "dynamic",
+    "type": "dynamic",
+    "title": { "ja": "強弱", "en": "Dynamics" },
+    "sortOrder": 2
   }
 ]

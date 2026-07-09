@@ -1,0 +1,67 @@
+{
+  "lessons": [
+    {
+      "id": "dynamic-basic",
+      "categoryId": "dynamic",
+      "title": { "ja": "基本の強弱", "en": "Basic dynamics" },
+      "sortOrder": 0
+    }
+  ],
+  "cards": [
+    {
+      "id": "dynamic-p",
+      "categoryType": "dynamic",
+      "lessonId": "dynamic-basic",
+      "notation": { "dynamicMark": "p" },
+      "answer": { "ja": "ピアノ", "en": "Piano" },
+      "hint": { "ja": "弱く", "en": "Soft" },
+      "sortOrder": 0,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "dynamic-mp",
+      "categoryType": "dynamic",
+      "lessonId": "dynamic-basic",
+      "notation": { "dynamicMark": "mp" },
+      "answer": { "ja": "ミーツォピアノ", "en": "Mezzo piano" },
+      "hint": { "ja": "やや弱く", "en": "Moderately soft" },
+      "sortOrder": 1,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "dynamic-mf",
+      "categoryType": "dynamic",
+      "lessonId": "dynamic-basic",
+      "notation": { "dynamicMark": "mf" },
+      "answer": { "ja": "ミーツォフォルテ", "en": "Mezzo forte" },
+      "hint": { "ja": "やや強く", "en": "Moderately loud" },
+      "sortOrder": 2,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "dynamic-f",
+      "categoryType": "dynamic",
+      "lessonId": "dynamic-basic",
+      "notation": { "dynamicMark": "f" },
+      "answer": { "ja": "フォルテ", "en": "Forte" },
+      "hint": { "ja": "強く", "en": "Loud" },
+      "sortOrder": 3,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    },
+    {
+      "id": "dynamic-ff",
+      "categoryType": "dynamic",
+      "lessonId": "dynamic-basic",
+      "notation": { "dynamicMark": "ff" },
+      "answer": { "ja": "フォルティッシモ", "en": "Fortissimo" },
+      "hint": { "ja": "とても強く", "en": "Very loud" },
+      "sortOrder": 4,
+      "version": 1,
+      "updatedAt": "2026-07-09T00:00:00.000Z"
+    }
+  ]
+}

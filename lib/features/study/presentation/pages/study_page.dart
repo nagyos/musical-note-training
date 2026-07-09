@@ -9,6 +9,7 @@ import 'package:musical_note_training/features/study/domain/study_answer_choices
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/features/study/presentation/view_models/study_session_notifier.dart';
 import 'package:musical_note_training/features/study/presentation/widgets/study_completion_dialog.dart';
+import 'package:musical_note_training/shared/widgets/notation/dynamic_mark_canvas.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_canvas.dart';
 
 enum StudySource { lesson, deck, weakItems }
@@ -143,7 +144,9 @@ class _StudySessionView extends StatelessWidget {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                    child: StaffCanvas(payload: card.notation),
+                    child: card.notation!.isDynamicOnly
+                        ? DynamicMarkCanvas(mark: card.notation!.dynamicMark!)
+                        : StaffCanvas(payload: card.notation),
                   ),
                   if (session.isRevealingCorrect)
                     Positioned.fill(
@@ -165,13 +168,33 @@ class _StudySessionView extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-          const Spacer(),
-          _ZigzagChoiceStrip(
-            choices: session.choices,
-            eliminatedChoices: session.eliminatedChoices,
-            enabled: canAnswer,
-            onSelect: onSelect,
-          ),
+          if (StudyAnswerChoices.usesZigzagLayout(card.categoryType))
+            const Spacer(),
+          StudyAnswerChoices.usesZigzagLayout(card.categoryType)
+              ? _ZigzagChoiceStrip(
+                  choices: session.choices,
+                  eliminatedChoices: session.eliminatedChoices,
+                  enabled: canAnswer,
+                  onSelect: onSelect,
+                )
+              : Expanded(
+                  child: ListView.separated(
+                    itemCount: session.choices.length,
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: AppSpacing.sm),
+                    itemBuilder: (context, index) {
+                      final choice = session.choices[index];
+                      final isEliminated =
+                          session.eliminatedChoices.contains(choice);
+                      return _ChoiceButton(
+                        label: choice,
+                        enabled: canAnswer && !isEliminated,
+                        isEliminated: isEliminated,
+                        onPressed: () => onSelect(choice),
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );

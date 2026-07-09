@@ -20,6 +20,20 @@ abstract final class StudyAnswerChoices {
     'Eighth rest',
     'Sixteenth rest',
   ];
+  static const dynamicsJa = [
+    'ピアノ',
+    'ミーツォピアノ',
+    'ミーツォフォルテ',
+    'フォルテ',
+    'フォルティッシモ',
+  ];
+  static const dynamicsEn = [
+    'Piano',
+    'Mezzo piano',
+    'Mezzo forte',
+    'Forte',
+    'Fortissimo',
+  ];
 
   /// True for the upper row; false for the lower row (zigzag left to right).
   static bool isTopRow(int index) => index.isOdd;
@@ -40,10 +54,15 @@ abstract final class StudyAnswerChoices {
         List.unmodifiable(isEn ? letters : solfege),
       CardCategoryType.rest =>
         List.unmodifiable(isEn ? restsEn : restsJa),
-      CardCategoryType.symbol ||
-      CardCategoryType.dynamic ||
-      CardCategoryType.tempo =>
-        const [],
+      CardCategoryType.dynamic =>
+        List.unmodifiable(isEn ? dynamicsEn : dynamicsJa),
+      CardCategoryType.symbol || CardCategoryType.tempo =>
+        throw UnsupportedError(
+          'No fixed choices for category: ${category.name}',
+        ),
     };
   }
+
+  static bool usesZigzagLayout(CardCategoryType category) =>
+      category == CardCategoryType.note;
 }

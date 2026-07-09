@@ -55,6 +55,25 @@ void main() {
       );
     });
 
+    test('forCategory returns five dynamic names', () {
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.dynamic, 'ja'),
+        StudyAnswerChoices.dynamicsJa,
+      );
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.dynamic, 'en'),
+        StudyAnswerChoices.dynamicsEn,
+      );
+    });
+
+    test('uses zigzag layout only for notes', () {
+      expect(StudyAnswerChoices.usesZigzagLayout(CardCategoryType.note), isTrue);
+      expect(
+        StudyAnswerChoices.usesZigzagLayout(CardCategoryType.dynamic),
+        isFalse,
+      );
+    });
+
     test('isTopRow places D F A above C E G B', () {
       expect(StudyAnswerChoices.isTopRow(0), isFalse);
       expect(StudyAnswerChoices.isTopRow(1), isTrue);

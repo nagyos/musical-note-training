@@ -139,7 +139,7 @@ void main() {
 
   group('demoMiddleCQuarter', () {
     test('uses treble clef with one quarter note', () {
-      expect(demoMiddleCQuarter.clef.name, 'treble');
+      expect(demoMiddleCQuarter.clef?.name, 'treble');
       expect(demoMiddleCQuarter.elements, hasLength(1));
       expect(demoMiddleCQuarter.elements.first.staffStep, -2);
     });

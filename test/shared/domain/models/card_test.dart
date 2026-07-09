@@ -22,7 +22,7 @@ void main() {
       });
 
       expect(card.id, 'note-c4');
-      expect(card.notation?.clef.name, 'treble');
+      expect(card.notation?.clef?.name, 'treble');
       expect(card.notation?.elements.first.staffStep, -2);
       expect(card.answer.resolve('ja'), 'ド');
       expect(card.sync.version, 1);
