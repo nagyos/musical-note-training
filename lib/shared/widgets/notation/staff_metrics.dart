@@ -41,4 +41,7 @@ abstract final class StaffMetrics {
   static const double stemHorizontalInset = 1;
   static const double restWidthScale = 2.2;
   static const double restHeightScale = 0.35;
+
+  /// Ledger line width as a fraction of the distance between note and staff edge.
+  static const double ledgerLineWidthScale = 2.8;
 }

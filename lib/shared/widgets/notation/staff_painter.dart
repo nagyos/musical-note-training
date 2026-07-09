@@ -5,6 +5,7 @@ import 'package:musical_note_training/shared/domain/models/note_value.dart';
 import 'package:musical_note_training/shared/domain/models/notation_element.dart';
 import 'package:musical_note_training/shared/domain/models/notation_payload.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_layout.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_ledger.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 
 /// Draws a five-line staff with optional treble clef and notes.
@@ -40,11 +41,35 @@ class StaffPainter extends CustomPainter {
     }
 
     for (final element in payload.elements) {
+      if (!element.isRest) {
+        _drawLedgerLines(canvas, layout, notationLayout, element, paint);
+      }
       if (element.isRest) {
         _drawRest(canvas, notationLayout, element, paint);
       } else {
         _drawNote(canvas, notationLayout, element, paint);
       }
+    }
+  }
+
+  void _drawLedgerLines(
+    Canvas canvas,
+    StaffLayout layout,
+    StaffNotationLayout notationLayout,
+    NotationElement element,
+    Paint paint,
+  ) {
+    final center = notationLayout.noteCenter(element);
+    final halfWidth =
+        layout.lineSpacing * StaffMetrics.ledgerLineWidthScale / 2;
+
+    for (final step in StaffLedger.ledgerStepsForNote(element.staffStep)) {
+      final y = layout.yForStaffStep(step);
+      canvas.drawLine(
+        Offset(center.dx - halfWidth, y),
+        Offset(center.dx + halfWidth, y),
+        paint,
+      );
     }
   }
 

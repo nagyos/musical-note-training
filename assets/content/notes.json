@@ -34,7 +34,7 @@
       "lessonId": "note-middle-c",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 0, "value": "quarter" }]
+        "elements": [{ "staffStep": -1, "value": "quarter" }]
       },
       "answer": { "ja": "レ", "en": "D" },
       "hint": { "ja": "下加線と第1線のあいだ", "en": "Between the ledger line and the bottom staff line" },
@@ -48,7 +48,7 @@
       "lessonId": "note-middle-c",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 2, "value": "quarter" }]
+        "elements": [{ "staffStep": 0, "value": "quarter" }]
       },
       "answer": { "ja": "ミ", "en": "E" },
       "hint": { "ja": "五線譜の最下線", "en": "Bottom line of the staff" },
@@ -62,7 +62,7 @@
       "lessonId": "note-treble-staff",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 4, "value": "quarter" }]
+        "elements": [{ "staffStep": 1, "value": "quarter" }]
       },
       "answer": { "ja": "ファ", "en": "F" },
       "hint": { "ja": "最下線と第2線のあいだ", "en": "First space of the treble staff" },
@@ -76,7 +76,7 @@
       "lessonId": "note-treble-staff",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 6, "value": "quarter" }]
+        "elements": [{ "staffStep": 2, "value": "quarter" }]
       },
       "answer": { "ja": "ソ", "en": "G" },
       "hint": { "ja": "五線譜の第2線", "en": "Second line of the staff" },
@@ -90,7 +90,7 @@
       "lessonId": "note-treble-staff",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 8, "value": "quarter" }]
+        "elements": [{ "staffStep": 3, "value": "quarter" }]
       },
       "answer": { "ja": "ラ", "en": "A" },
       "hint": { "ja": "第2線と第3線のあいだ", "en": "Second space of the treble staff" },
@@ -104,7 +104,7 @@
       "lessonId": "note-treble-staff",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 10, "value": "quarter" }]
+        "elements": [{ "staffStep": 4, "value": "quarter" }]
       },
       "answer": { "ja": "シ", "en": "B" },
       "hint": { "ja": "五線譜の第3線", "en": "Middle line of the staff" },
@@ -118,7 +118,7 @@
       "lessonId": "note-treble-staff",
       "notation": {
         "clef": "treble",
-        "elements": [{ "staffStep": 12, "value": "quarter" }]
+        "elements": [{ "staffStep": 5, "value": "quarter" }]
       },
       "answer": { "ja": "ド", "en": "C" },
       "hint": { "ja": "第3線と第4線のあいだ", "en": "Third space of the treble staff" },
