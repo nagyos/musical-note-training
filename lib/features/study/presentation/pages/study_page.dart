@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
+import 'package:musical_note_training/core/theme/app_colors.dart';
 import 'package:musical_note_training/core/extensions/localized_text_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
@@ -120,7 +121,13 @@ class _QuestionView extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
           ),
           const SizedBox(height: AppSpacing.md),
-          if (card.notation != null) StaffCanvas(payload: card.notation),
+          if (card.notation != null)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                child: StaffCanvas(payload: card.notation),
+              ),
+            ),
           const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.studyQuestionPrompt,
@@ -134,9 +141,15 @@ class _QuestionView extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
               itemBuilder: (context, index) {
                 final choice = session.choices[index];
-                return FilledButton.tonal(
-                  onPressed: () => onSelect(choice),
-                  child: Text(choice),
+                return SizedBox(
+                  height: AppSpacing.studyChoiceButtonHeight,
+                  child: FilledButton.tonal(
+                    onPressed: () => onSelect(choice),
+                    child: Text(
+                      choice,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
                 );
               },
             ),
@@ -166,8 +179,8 @@ class _FeedbackView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Icon(
-            isCorrect ? Icons.check_circle : Icons.cancel,
-            color: isCorrect ? Colors.green : Colors.red,
+            isCorrect ? Icons.check_circle_outline : Icons.highlight_off,
+            color: isCorrect ? AppColors.success : AppColors.error,
             size: 48,
           ),
           const SizedBox(height: AppSpacing.md),
@@ -218,7 +231,11 @@ class _CompletedView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Icon(Icons.emoji_events, size: 56),
+          Icon(
+            Icons.check_circle_outline,
+            size: 56,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(height: AppSpacing.md),
           Text(
             l10n.studySessionComplete,

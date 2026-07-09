@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:musical_note_training/app/di/providers.dart';
 import 'package:musical_note_training/app/router/routes.dart';
 import 'package:musical_note_training/core/extensions/l10n_x.dart';
-import 'package:musical_note_training/core/extensions/localized_text_x.dart';
 import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
 import 'package:musical_note_training/features/weak_items/presentation/view_models/weak_item_providers.dart';

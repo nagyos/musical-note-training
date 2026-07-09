@@ -5,4 +5,7 @@ abstract final class AppSpacing {
   static const double md = 16;
   static const double lg = 24;
   static const double xl = 32;
+
+  /// Minimum height for study answer choices (comfortable tap target).
+  static const double studyChoiceButtonHeight = 52;
 }
