@@ -17,6 +17,18 @@ void main() {
       expect(higher, lessThan(bottom));
     });
 
+    test('staff lines start at padding with clef overlapping left edge', () {
+      const layout = StaffLayout(size: Size(320, 140));
+      final notationLayout = StaffNotationLayout(layout);
+
+      expect(layout.staffLeft, StaffMetrics.padding);
+      expect(layout.linePositions().first.dx, StaffMetrics.padding);
+
+      final clefBounds = notationLayout.trebleClefBounds();
+      expect(clefBounds.left, lessThan(layout.staffLeft));
+      expect(clefBounds.right, greaterThan(layout.staffLeft));
+    });
+
     test('keeps middle C ledger note inside canvas', () {
       const layout = StaffLayout(size: Size(320, 140));
       final notationLayout = StaffNotationLayout(layout);

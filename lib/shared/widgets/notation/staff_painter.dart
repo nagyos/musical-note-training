@@ -94,9 +94,10 @@ class StaffPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     )..layout();
 
+    final anchorY = layout.trebleClefAnchorY;
     final offset = Offset(
       bounds.left,
-      bounds.center.dy - textPainter.height / 2,
+      anchorY - textPainter.height * StaffMetrics.trebleClefGLineAnchorRatio,
     );
     textPainter.paint(canvas, offset);
   }

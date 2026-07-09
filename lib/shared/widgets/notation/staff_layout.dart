@@ -34,9 +34,13 @@ class StaffLayout {
       padding -
       StaffMetrics.ledgerSlotsBelow * _halfLine;
 
-  double get staffLeft => padding + size.width * StaffMetrics.clefAreaWidthRatio;
+  /// Left edge of the five staff lines (clef overlaps this region).
+  double get staffLeft => padding;
 
   double get staffRight => size.width - padding;
+
+  /// Horizontal space the clef occupies before the first note.
+  double get clefAdvance => lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
 
   double yForStaffStep(int staffStep) {
     return bottomLineY - staffStep * _halfLine;
@@ -57,8 +61,9 @@ class StaffNotationLayout {
   final StaffLayout layout;
 
   Offset noteCenter(NotationElement element) {
-    final x = layout.staffLeft +
-        (layout.staffRight - layout.staffLeft) * StaffMetrics.noteXRatio;
+    final noteAreaLeft = layout.staffLeft + layout.clefAdvance;
+    final noteSpan = layout.staffRight - noteAreaLeft;
+    final x = noteAreaLeft + noteSpan * StaffMetrics.noteXRatio;
     final y = layout.yForStaffStep(element.staffStep);
     return Offset(x, y);
   }
@@ -89,13 +94,16 @@ class StaffNotationLayout {
   Rect trebleClefBounds() {
     final top = layout.yForStaffStep(StaffMetrics.trebleClefTopStep);
     final bottom = layout.yForStaffStep(StaffMetrics.trebleClefBottomStep);
-    return Rect.fromLTRB(
-      layout.padding,
-      top,
-      layout.staffLeft - layout.padding * StaffMetrics.clefRightPaddingRatio,
-      bottom,
-    );
+    final left = layout.staffLeft -
+        layout.lineSpacing * StaffMetrics.trebleClefLeftOverhangScale;
+    final right =
+        layout.staffLeft + layout.lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
+    return Rect.fromLTRB(left, top, right, bottom);
   }
+
+  /// Y coordinate of the G line used to anchor the treble clef glyph.
+  double get trebleClefAnchorY =>
+      layout.yForStaffStep(StaffMetrics.trebleClefAnchorStep);
 }
 
 /// Demo payload for the home screen PoC (treble clef, middle C as quarter note).

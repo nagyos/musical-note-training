@@ -13,22 +13,26 @@ abstract final class StaffMetrics {
   static const int ledgerSlotsBelow = 2;
   static const int ledgerSlotsAbove = 2;
 
-  /// Width reserved for the clef as a fraction of total canvas width.
-  static const double clefAreaWidthRatio = 0.12;
-
-  /// Horizontal position of the note head along the staff span (0 = left, 1 = right).
+  /// Horizontal position of the note head in the area right of the clef (0–1).
   static const double noteXRatio = 0.55;
-
-  /// Gap between clef area and staff lines, as a fraction of [padding].
-  static const double clefRightPaddingRatio = 0.25;
 
   // --- SMuFL font (Bravura) ---
   static const String notationFontFamily = 'Bravura';
   static const int smuflTrebleClef = 0xE050;
 
-  // --- Clef bounds (staffStep coordinates) ---
+  // --- Treble clef (overlaps staff left edge; SMuFL / engraving convention) ---
   static const int trebleClefTopStep = 8;
   static const int trebleClefBottomStep = -2;
+
+  /// G-line (staff step 2) vertical anchor within the glyph (0 = top, 1 = bottom).
+  static const int trebleClefAnchorStep = 2;
+  static const double trebleClefGLineAnchorRatio = 0.36;
+
+  /// How far the clef extends right across the staff, in [lineSpacing] units.
+  static const double trebleClefStaffWidthScale = 2.5;
+
+  /// How far the clef tail extends left of the staff edge, in [lineSpacing] units.
+  static const double trebleClefLeftOverhangScale = 0.25;
   static const double trebleClefFontSizeScale = 1.0;
 
   // --- Note heads (multiples of lineSpacing) ---
