@@ -2,6 +2,63 @@
 
 個人開発でも、ブランチ・Issue・PR の型を揃えておくと後から迷いません。
 
+## 作業ディレクトリ（1 リポジトリのみ）
+
+**正（canonical）**: `/mnt/c/Users/s.tagawa/Dev/musical-note-training`
+
+| 役割 | パス |
+|------|------|
+| Cursor / エディタ | 上記（Windows: `C:\Users\s.tagawa\Dev\musical-note-training`） |
+| WSL ターミナル（`stagawa@SHOKI-DESKTOP`） | **同上** |
+| エージェントの編集・コミット | **同上** |
+
+**使わない**: `/home/stagawa/Dev/musical-note-training`（`~/Dev/...`）  
+同一 GitHub リモートでも **別 `.git`**。こちらで `flutter run` すると Cursor / エージェントのコミットとずれる。
+
+```bash
+cd /mnt/c/Users/s.tagawa/Dev/musical-note-training
+pwd
+git rev-parse --show-toplevel   # 上記と一致すること
+```
+
+詳細: [AGENTS.md](../AGENTS.md) §0
+
+### WSL で `flutter run -d linux`（`/mnt/c` 上のリポジトリ）
+
+WSL の Windows ドライブ（`/mnt/c` = drvfs）は **`chmod` が使えない**ため、そのままだと Linux ビルドが失敗することがある（`impellerc` / CMake の `Operation not permitted`）。
+
+**恒久対策（推奨）** — Windows 側 PowerShell で WSL を一度終了してから設定:
+
+```ini
+# C:\Users\s.tagawa\.wslconfig または /etc/wsl.conf の [automount]
+options = "metadata"
+```
+
+```powershell
+wsl --shutdown
+```
+
+再起動後、次で `chmod` が通るか確認:
+
+```bash
+touch /mnt/c/Users/s.tagawa/Dev/musical-note-training/.perm_test
+chmod 644 /mnt/c/Users/s.tagawa/Dev/musical-note-training/.perm_test
+rm /mnt/c/Users/s.tagawa/Dev/musical-note-training/.perm_test
+```
+
+**暫定対策** — `build` を Linux ネイティブ領域へシンボリックリンク（リポジトリ直下で 1 回）:
+
+```bash
+cd /mnt/c/Users/s.tagawa/Dev/musical-note-training
+rm -rf build linux/build
+mkdir -p ~/.cache/flutter-build/musical-note-training/{build,linux-build}
+ln -sfn ~/.cache/flutter-build/musical-note-training/build build
+ln -sfn ~/.cache/flutter-build/musical-note-training/linux-build linux/build
+flutter run -d linux
+```
+
+`metadata` 有効化後はシンボリックリンクを外して通常の `build/` に戻してよい。
+
 ## ブランチ戦略
 
 ```text
@@ -26,9 +83,9 @@ issue/#N  … 作業ブランチ（1 Issue = 1 ブランチを基本）
 1. **GitHub で Issue を作成する**（`gh issue create` または Web UI）。番号 **#N** を確定してからブランチを切る
 2. `develop` を最新にする（`git pull origin develop`）
 3. `develop` から **`issue/#N` を切る**（`N` は手順 1 の Issue 番号と一致させる）
-4. 実装 → `dart analyze` / `flutter test` を通す
-5. **`origin` へ `issue/#N` を push**（`develop` にはまだマージしない）
-6. **feature ブランチ上で動作確認**（`flutter run` 等）。微調整は同ブランチでコミット・push を繰り返す
+4. 実装 → `dart analyze` / `flutter test` を通す → **ローカルコミット**（微調整は `git commit --amend` でまとめてよい）
+5. **ローカルで動作確認**（`flutter run` 等）。デザイン・挙動に問題があれば同ブランチで修正 → amend
+6. **ユーザーが OK を出したら** `origin` へ `issue/#N` を push（エージェントは確認前に push しない）
 7. 問題なさそうなら `issue/#N` を **`develop` にマージ**（ローカル fast-forward マージ可）→ `origin/develop` を push
 8. マージ後、Issue を close・作業ブランチを削除（任意）
 
@@ -36,8 +93,9 @@ issue/#N  … 作業ブランチ（1 Issue = 1 ブランチを基本）
 
 **マージ先の承認ルール**
 
-| マージ | 承認 | 備考 |
-|--------|------|------|
+| 操作 | 承認 | 備考 |
+|------|------|------|
+| `git push`（`issue/#N`） | **動作・デザイン確認後**（ユーザー判断） | テスト通過だけでは push しない。エージェントは確認前に push しない |
 | `issue/#N` → `develop` | **動作確認後**（ユーザー判断） | テスト通過だけではマージしない。エージェントは明示指示なしでマージしない |
 | `develop` → `main` | **必須**（PR レビュー） | ストア出荷・タグ付けの最終関門 |
 
@@ -78,20 +136,19 @@ Issue / PR に付ける。一覧は [github-setup.md](./github-setup.md)。
 
 ## コミットメッセージ
 
-[Conventional Commits](https://www.conventionalcommits.org/) を推奨:
+[Conventional Commits](https://www.conventionalcommits.org/) の型に従う。**概要は基本日本語**（`feat` / `fix` / `docs` などの type・scope、SMuFL 等の専門用語は英語可）。
 
 ```text
-feat(study): add answer feedback animation
-fix(notation): align staff lines on tablet
-docs: add contributing guide
-chore(ci): run flutter test on PR
+feat(study): 回答フィードバックアニメーションを追加
+fix(notation): タブレットで五線の位置を調整
+docs: 開発ルールを追記
+chore(ci): PR で flutter test を実行
 ```
 
 - 1 コミット = 1 論点（レビューしやすい粒度）
 - **Issue 作業のコミットは末尾に `#N` を必須**（GitHub が Issue 画面にコミットを紐づける）。`N` はブランチ `issue/N` と同じ番号
 - 形式: `feat(scope): 概要 #N` — 例: `feat(study): 学習縦スライス #3`
 - コミット本文に `(issue/N)` は**付けない**（`#N` だけで足りる）
-- 日本語本文でもよい（例: `feat(study): 学習縦スライス #3`）
 - 1 コミットで複数 Issue を閉じる場合のみ `#8 #9` のように並記可（通常は 1 Issue = 1 `#N`）
 
 ## PR チェックリスト

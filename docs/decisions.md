@@ -425,7 +425,7 @@ Phase 3+: 必要になる可能性大
 - Issue 本文はタイトルだけでなく背景・問題など最低限を書く。
 
 **決定**
-- エージェントは **`issue/N` 上でコミット・push まで**がデフォルト。`develop` へのマージはユーザー確認後または明示指示後。
+- エージェントは **`issue/N` 上でローカルコミットまで**がデフォルト（push はユーザー確認後。詳細は 2026-07-09「push はユーザー確認後のみ」）。`develop` へのマージはユーザー確認後または明示指示後。
 - マージ前: `dart analyze` + `flutter test` に加え、UI 変更は `flutter run` 等での目視確認を推奨。
 - Issue Description に背景・問題・受け入れ条件を書く（タイトルのみ禁止）。
 
@@ -525,19 +525,92 @@ Phase 3+: 必要になる可能性大
 
 ---
 
-### [2026-07-09] コンテンツ追加の進め方（エージェント自律・マージはユーザー）
+### [2026-07-09] コンテンツ追加の進め方（エージェント自律・push/マージはユーザー）
 
 **回答（ユーザー）**
 - コンテンツ追加は適宜 GitHub Issue → ブランチ → 実装まで進めてよい
 - どのカテゴリーから着手するか毎回聞かなくてよい
-- ユーザーが各ブランチで動作確認し、問題なければ順に `develop` へマージする
+- ユーザーが各ブランチで動作確認し、問題なければ順に push → `develop` へマージする
 
 **決定**
-- エージェント: Issue 作成 → `issue/N` 実装 → push まで自律的に実施。**`develop` マージはユーザー確認後**（#19 はユーザー承認でマージ済み）
+- エージェント: Issue 作成 → `issue/N` 実装 → **ローカルコミットまで**自律的に実施（amend 可）
+- **`git push` はユーザーが動作・デザイン確認後に OK を出してから**（または明示指示後）
+- **`develop` マージもユーザー確認後**（#19 はユーザー承認でマージ済み）
 - 優先順は固定しない。初心者向け・`tasks.md` の未着手から合理的に選ぶ
 
 **影響**
 - 更新: `AGENTS.md` §10、`docs/tasks.md`
+
+---
+
+### [2026-07-09] Git 運用 — push はユーザー確認後のみ（エージェント禁止）
+
+**質問**
+- エージェントが確認前に `git push` してしまった。コミットまでにとどめ、確認 OK 後に push する方針を明記してほしい。
+
+**回答（ユーザー）**
+- 勝手に push せず、**コミットまで**にとどめる
+- 動作・デザインなど問題ないことが確認できたときのみ push → マージに進む
+- 余計なコミットを増やしたくないので、ローカルで amend 等して履歴を整え、ユーザーが OK を出してから push する
+
+**決定**
+- エージェントのデフォルト作業範囲: **`issue/N` 上での実装 + ローカルコミット**（`git commit --amend` 可）
+- **エージェント禁止**: ユーザー確認前の `git push`、`develop` へのマージ
+- push のタイミング: ユーザーが `flutter run` 等で確認し OK（または「push して」等の明示指示）後
+- 2026-07-09 エントリ「push まで自律的に」の記述は本決定で **push を除外**（解釈を修正）
+
+**根拠・補足**
+- 以前のエージェントが確認前に push したのは本ルール違反
+
+**影響**
+- 更新: `AGENTS.md` §10、`docs/contributing.md` §フロー・§マージ先の承認ルール、上記コンテンツ追加エントリ
+
+---
+
+### [2026-07-11] 作業ディレクトリ — canonical は `/mnt/c/Users/...`
+
+**質問**
+- WSL ターミナル（`stagawa@SHOKI-DESKTOP`）は `~/Dev/musical-note-training` を使っていた。Cursor / エージェントは `/mnt/c/Users/s.tagawa/Dev/musical-note-training`。どちらを正とするか。
+
+**回答（ユーザー）**
+- Cursor で開いている **`/mnt/c/Users/...` 側にターミナルも合わせる**
+
+**決定**
+- **canonical**: `/mnt/c/Users/s.tagawa/Dev/musical-note-training`（Windows: `C:\Users\s.tagawa\Dev\musical-note-training`）
+- WSL ターミナルも必ず上記へ `cd` する
+- **`~/Dev/musical-note-training` は使わない**（別 `.git` のため pull が必要になり、エージェントのローカルコミットとずれる）
+- `~/Dev` クローンの削除・リネームはユーザー判断（未決定）
+
+**根拠・補足**
+- 二重クローンが原因で、エージェントの commit とユーザーの `flutter run` が別ツリーになっていた
+- ローカルコミットのみの運用（push 前確認）では、エディタ・ターミナル・エージェントが同一パスであることが必須
+
+**影響**
+- 更新: `AGENTS.md` §0、`docs/contributing.md` §作業ディレクトリ
+
+---
+
+### [2026-07-11] WSL — `/mnt/c` で Flutter Linux ビルドが失敗する
+
+**質問**
+- canonical を `/mnt/c/Users/...` に揃えたが、`flutter run -d linux` で `impellerc` / CMake が `Operation not permitted` になる。
+
+**回答（ユーザー）**
+- （事象報告。対処はエージェントが調査）
+
+**決定**
+- **原因**: WSL drvfs（`/mnt/c`）は `chmod` 非対応。Flutter Linux ビルドはシェーダー出力等で `chmod` が必要
+- **canonical パスは `/mnt/c/...` のまま維持**（Git / Cursor / エージェントの同期優先）
+- **Linux 実行時の対処**（いずれか）:
+  1. WSL `[automount] options = "metadata"` + `wsl --shutdown`（推奨・恒久）
+  2. `build` / `linux/build` を `~/.cache/flutter-build/...` へシンボリックリンク（暫定・検証済みで `flutter build linux` 成功）
+
+**根拠・補足**
+- `/mnt/c` 上で `chmod` → exit 1、`/tmp` 上では成功（再現確認）
+- `~/Dev` へ戻すとビルドは通るが、別 `.git` 問題が再発するため不採用
+
+**影響**
+- 更新: `docs/contributing.md` §WSL で `flutter run -d linux`
 
 ---
 

@@ -7,6 +7,31 @@
 
 ---
 
+## 0. 作業ディレクトリ（必須・1 リポジトリのみ）
+
+**正（canonical）**: `/mnt/c/Users/s.tagawa/Dev/musical-note-training`
+
+| 役割 | パス |
+|------|------|
+| Cursor / エディタ | 上記（Windows: `C:\Users\s.tagawa\Dev\musical-note-training`） |
+| WSL ターミナル（`stagawa@SHOKI-DESKTOP`） | **同上**（`cd` で必ずここへ） |
+| エージェントの編集・コミット | **同上** |
+
+**別クローン（使わない）**: `/home/stagawa/Dev/musical-note-training`（`~/Dev/...`）  
+同じ GitHub リモートでも **別 `.git`**。こちらで作業すると Cursor 側と commit がずれる。
+
+**エージェント**
+- コマンド実行前に `pwd` が canonical か確認。違う場合は**作業を止め**、パスを揃えるよう依頼する。
+- 動作確認用の **`git push` はしない**（ローカルコミットでエディタとターミナルが同じツリーを共有する）。
+
+**ユーザー（ターミナル）**
+```bash
+cd /mnt/c/Users/s.tagawa/Dev/musical-note-training
+# 確認: pwd と git rev-parse --show-toplevel が一致すること
+```
+
+---
+
 ## 1. 基本方針
 
 ### 事実ベースで進める
@@ -252,34 +277,41 @@
 ### ブランチとマージ
 
 ```text
-develop から issue/N を切る → 実装・push（feature ブランチ上で反復）
-  → 動作確認（flutter run 等）で問題なさそうなら develop にマージ
+develop から issue/N を切る → 実装・ローカルコミット（amend 可）
+  → ユーザーが flutter run 等で動作・デザインを確認
+  → OK 後に push → 問題なければ develop にマージ
 develop → main はユーザー承認付き PR のみ（エージェントは勝手にマージしない）
 ```
 
 | 操作 | ルール |
 |------|--------|
-| `issue/N` 上での作業 | エージェントのデフォルト。**`develop` へはマージしない** |
+| `issue/N` 上での作業 | エージェントのデフォルト。**ローカルコミットまで**。`git push` はしない |
+| `git push` | **ユーザーが動作・デザイン確認後に OK を出した後**（または「push して」等の明示指示後）のみ |
 | `issue/N` → `develop` | **ユーザーが問題なしと判断した後**（または明示指示後）。`dart analyze` + `flutter test` 通過が前提 |
 | `develop` → `main` | **ユーザー確認後** PR マージ |
 | 着手前 | GitHub Issue 作成 → `#N` 確定 → `develop` を pull → `issue/N` を切る |
 | マージ前 | `flutter test` + `dart analyze` 必須。UI・微調整は feature ブランチで `flutter run` 確認 |
 
-**エージェント禁止**: テストが通っただけで自動的に `develop` へマージしない。微調整・見た目確認が未完の変更を `develop` に入れない。
+**エージェント禁止**:
+- テスト通過だけで `git push` しない（ユーザー確認前の push 禁止）
+- テスト通過だけで自動的に `develop` へマージしない
+- 微調整・見た目確認が未完の変更を `develop` に入れない
 
 ### 順序
 
 - **着手前に GitHub Issue を作成**し、番号 `#N` を確定してから `issue/N` ブランチを切る（Issue なしのブランチだけ作らない）。
-- 1 Issue ＝ 1 `issue/N` ブランチ（`N` は GitHub Issue 番号と一致）。ブランチ上でコミット・push し、**確認できてから** `develop` に統合する。
+- 1 Issue ＝ 1 `issue/N` ブランチ（`N` は GitHub Issue 番号と一致）。ブランチ上で**ローカルコミット**し、ユーザー確認後に push → **確認できてから** `develop` に統合する。
 - 依存がある Issue は、先の `issue/N` が `develop` に入ってから次を切る（例: Phase 0 → 学習 → デッキ）。
-- **コンテンツ拡充**: 着手順の都度確認は不要。GitHub Issue 作成 → `issue/N` 実装 → push まで自律的に進め、**マージはユーザーがブランチ確認後**に行う。
+- **コンテンツ拡充**: 着手順の都度確認は不要。GitHub Issue 作成 → `issue/N` 実装 → **ローカルコミットまで**自律的に進める。**push・マージはユーザーがブランチ確認後**に行う。
 - 長期間の未コミット変更や `stash` の持ち越しは避ける（コンフリクトの主因になりやすい）。
 
 ### コミット
 
 - 形式: `feat(scope): 概要 #N`（[contributing.md](./docs/contributing.md) 参照）。`(issue/N)` はコミットに付けない
+- **概要は基本日本語**（type・scope・SMuFL 等の専門用語は英語可）
 - **末尾の `#N` は必須**（GitHub Issue 画面へのコミット表示用）。`issue/N` ブランチの `N` と一致させる
 - 1 コミット = 1 Issue 単位でもよい（個人開発・縦スライス単位）
+- 確認前の微調整は **`git commit --amend`** で履歴をまとめてよい（余計なコミットを増やさない）
 
 ---
 
