@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
 import 'package:musical_note_training/shared/domain/notation/dynamic_mark_glyph.dart';
 
@@ -38,6 +39,19 @@ void main() {
     test('covers all registered seed dynamic cards', () {
       final ids = cards.map((c) => c.id).toSet();
       expect(ids, containsAll(DynamicMarkGlyph.seedCardMarks.keys));
+    });
+
+    test('answers match fixed choice labels', () {
+      for (final card in cards) {
+        expect(
+          StudyAnswerChoices.dynamicsJa,
+          contains(card.answer.resolve('ja')),
+        );
+        expect(
+          StudyAnswerChoices.dynamicsEn,
+          contains(card.answer.resolve('en')),
+        );
+      }
     });
   });
 }

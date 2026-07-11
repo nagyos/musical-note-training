@@ -20,57 +20,59 @@ abstract final class StudyAnswerChoices {
     'Eighth rest',
     'Sixteenth rest',
   ];
+
   static const dynamicsJa = [
-    'ピアノ',
-    'ミーツォピアノ',
-    'ミーツォフォルテ',
-    'フォルテ',
-    'フォルティッシモ',
+    'ピアノ（弱く）',
+    'ミーツォピアノ（少し弱く）',
+    'ミーツォフォルテ（少し強く）',
+    'フォルテ（強く）',
+    'フォルティッシモ（非常に強く）',
   ];
   static const dynamicsEn = [
-    'Piano',
-    'Mezzo piano',
-    'Mezzo forte',
-    'Forte',
-    'Fortissimo',
+    'Piano (Soft)',
+    'Mezzo piano (Moderately soft)',
+    'Mezzo forte (Moderately loud)',
+    'Forte (Loud)',
+    'Fortissimo (Very loud)',
   ];
+
   static const symbolsJa = [
-    'シャープ',
-    'フラット',
-    'ナチュラル',
-    'フェルマータ',
-    'リピート始め',
-    'リピート終わり',
+    'シャープ（音を半音高める）',
+    'フラット（音を半音低める）',
+    'ナチュラル（元来の高さに戻す）',
+    'フェルマータ（その音を伸ばす）',
+    'リピート始め（ここから繰り返す）',
+    'リピート終わり（始めに戻って繰り返す）',
   ];
   static const symbolsEn = [
-    'Sharp',
-    'Flat',
-    'Natural',
-    'Fermata',
-    'Repeat start',
-    'Repeat end',
+    'Sharp (Raises by a semitone)',
+    'Flat (Lowers by a semitone)',
+    'Natural (Cancels an accidental)',
+    'Fermata (Hold the note longer)',
+    'Repeat start (Repeat from here)',
+    'Repeat end (Go back and repeat)',
   ];
+
   static const temposJa = [
-    'ラルゴ',
-    'アンダンテ',
-    'モデラート',
-    'アレグロ',
-    'プレスト',
+    '幅広くゆるやかに',
+    '歩くような速さで',
+    '中くらいの速さで',
+    '快速に・陽気に',
+    '極めて速く',
   ];
   static const temposEn = [
-    'Largo',
-    'Andante',
-    'Moderato',
-    'Allegro',
-    'Presto',
+    'Very slow and broad',
+    'At a walking pace',
+    'At a moderate tempo',
+    'Fast and lively',
+    'Very fast',
   ];
 
   /// True for the upper row; false for the lower row (zigzag left to right).
   static bool isTopRow(int index) => index.isOdd;
 
   /// Notes follow [noteAnswerLocale] (solfege vs letter names).
-  /// Tempo shows Italian score text but answers are always katakana labels.
-  /// Other categories follow [uiLocale] (app display language).
+  /// Tempo, dynamic, and symbol choices follow [uiLocale].
   static String localeForCategory({
     required CardCategoryType category,
     required String noteAnswerLocale,
@@ -78,7 +80,6 @@ abstract final class StudyAnswerChoices {
   }) =>
       switch (category) {
         CardCategoryType.note => noteAnswerLocale,
-        CardCategoryType.tempo => 'ja',
         _ => uiLocale,
       };
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
 import 'package:musical_note_training/shared/domain/notation/symbol_mark_glyph.dart';
 
@@ -38,6 +39,19 @@ void main() {
     test('covers all registered seed symbol cards', () {
       final ids = cards.map((c) => c.id).toSet();
       expect(ids, containsAll(SymbolMarkGlyph.seedCardMarks.keys));
+    });
+
+    test('answers match fixed choice labels', () {
+      for (final card in cards) {
+        expect(
+          StudyAnswerChoices.symbolsJa,
+          contains(card.answer.resolve('ja')),
+        );
+        expect(
+          StudyAnswerChoices.symbolsEn,
+          contains(card.answer.resolve('en')),
+        );
+      }
     });
   });
 }

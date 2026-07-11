@@ -55,7 +55,7 @@ void main() {
       );
     });
 
-    test('forCategory returns five dynamic names', () {
+    test('forCategory returns dynamic name and meaning labels', () {
       expect(
         StudyAnswerChoices.forCategory(CardCategoryType.dynamic, 'ja'),
         StudyAnswerChoices.dynamicsJa,
@@ -66,7 +66,7 @@ void main() {
       );
     });
 
-    test('forCategory returns six symbol names', () {
+    test('forCategory returns symbol name and meaning labels', () {
       expect(
         StudyAnswerChoices.forCategory(CardCategoryType.symbol, 'ja'),
         StudyAnswerChoices.symbolsJa,
@@ -77,26 +77,33 @@ void main() {
       );
     });
 
-    test('localeForCategory always uses ja for tempo answers', () {
+    test('localeForCategory uses ui locale for tempo answers', () {
       expect(
         StudyAnswerChoices.localeForCategory(
           category: CardCategoryType.tempo,
           noteAnswerLocale: 'en',
           uiLocale: 'en',
         ),
+        'en',
+      );
+      expect(
+        StudyAnswerChoices.localeForCategory(
+          category: CardCategoryType.tempo,
+          noteAnswerLocale: 'en',
+          uiLocale: 'ja',
+        ),
         'ja',
       );
     });
 
-    test('builds katakana tempo choices even when UI locale is en', () {
-      final locale = StudyAnswerChoices.localeForCategory(
-        category: CardCategoryType.tempo,
-        noteAnswerLocale: 'en',
-        uiLocale: 'en',
+    test('forCategory returns tempo meaning labels per locale', () {
+      expect(
+        StudyAnswerChoices.forCategory(CardCategoryType.tempo, 'ja'),
+        StudyAnswerChoices.temposJa,
       );
       expect(
-        StudyAnswerChoices.forCategory(CardCategoryType.tempo, locale),
-        StudyAnswerChoices.temposJa,
+        StudyAnswerChoices.forCategory(CardCategoryType.tempo, 'en'),
+        StudyAnswerChoices.temposEn,
       );
     });
 

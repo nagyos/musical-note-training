@@ -646,6 +646,57 @@ Phase 3+: 必要になる可能性大
 
 ---
 
+### [2026-07-12] #25 学習選択肢 UX（速度・強弱・記号）
+
+**質問**
+- 速度・強弱・記号カテゴリの選択肢ラベルをどうするか。#23 は merge 前に #25 に含めるか。
+
+**回答（ユーザー）**
+- 速度: 問題は楽譜上のイタリア語表示でよい。選択肢はカタカナ名ではなく**意味**のみ（表示と同じ文字だと即正解になるため）。
+- 強弱・記号: 選択肢は**名前（意味）**形式。
+- #21/#22 は develop マージ済みのため **#25 でまとめて修正**。#23 は **案 A**（#25 に含めてから merge）。
+- 意味の文言は権威ある参照サイトと揃える（下記「公式コンテンツの参照元」）。
+- リピート終わりは将来「リピート始めの記号に戻る」と明示した方が親切かもしれないが、**当面は参照サイトと同じ文言**。
+
+**決定**
+- **#25** で `StudyAnswerChoices` と各 JSON の `answer` を同期更新。
+- 速度: `hint` と同義の意味のみを選択肢・正解に使う。`localeForCategory` は `uiLocale` に従う。
+- 強弱・記号: `名前（意味）`（英: `Name (meaning)`）。`answer` も同形式。
+- #23 単独の develop マージは行わない。
+
+**影響**
+- 更新: `study_answer_choices.dart`, `dynamics.json`, `symbols.json`, `tempos.json`, 関連テスト
+- Issue: GitHub **#25**
+
+---
+
+### [2026-07-12] 公式コンテンツの参照元（意味・用語）
+
+**質問**
+- 記号の意味や今後のコンテンツ文言を、どの一次情報から共通参照するか。
+
+**回答（ユーザー）**
+- 権威のある公式サイトを探し、記号情報・今後のコンテンツもそこから参照したい。
+- 多言語（日英）対応できるものがよい。Wikipedia が候補。
+- ルールかドキュメントに「1 次情報はここから」と書いておきたい。
+
+**決定**
+- **用語の意味・説明（日英）**: [Wikipedia](https://www.wikipedia.org/) を第一参照とする。言語別の代表ページ:
+  - 日: [演奏記号](https://ja.wikipedia.org/wiki/%E6%BC%94%E5%A5%8F%E8%A8%98%E5%8F%B7)（速度・表現）、[強弱法](https://ja.wikipedia.org/wiki/%E5%BC%B7%E5%BC%B1%E6%B3%95)、[変化記号](https://ja.wikipedia.org/wiki/%E5%A4%89%E5%8C%96%E8%A8%98%E5%8F%B7)、[反復記号](https://ja.wikipedia.org/wiki/%E5%8F%8D%E5%BE%A9%E8%A8%98%E5%8F%B7)（該当時）
+  - 英: [Glossary of music terminology](https://en.wikipedia.org/wiki/Glossary_of_music_terminology)、[Dynamics (music)](https://en.wikipedia.org/wiki/Dynamics_(music))、[Repeat sign](https://en.wikipedia.org/wiki/Repeat_sign)、各用語個別記事
+- **グリフ形状・SMuFL コードポイント**: [SMuFL](https://w3c.github.io/smufl/) / Bravura（描画・`symbolMark` 識別用）。意味の定義には使わない。
+- 新規カード追加時: 上記 Wikipedia の該当節の文言をベースに `hint` / 選択肢意味を書く。独自言い換えは `decisions.md` に理由を残す。
+- **将来メモ（未実装）**: リピート終わりの意味は「対応するリピート始めへ戻って繰り返す」と明示する案を検討。現状は Wikipedia 系の表現に合わせる。
+
+**根拠・補足**
+- Wikipedia は多言語版が相互リンクされ、教材アプリのオフライン JSON として参照 URL を `decisions.md` / `architecture.md` に固定できる。
+- 学術辞典（Grove 等）は権威が高いがライセンス・オフライン運用の観点で MVP では Wikipedia を優先。
+
+**影響**
+- 更新: `docs/architecture.md` §公式コンテンツの参照元、`docs/decisions.md`（本エントリ）
+
+---
+
 ### [2026-07-09] T-120 音符拡充 — ト音記号に続きヘ音記号
 
 **質問**

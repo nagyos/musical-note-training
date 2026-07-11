@@ -117,6 +117,21 @@ assets/
     ├── notes.json
     └── ...
 
+### 公式コンテンツの参照元
+
+`assets/content/*.json` の用語名・意味（`hint`、学習選択肢の意味ラベル）は **Wikipedia を第一参照**とする（決定: `decisions.md` 2026-07-12）。
+
+| 用途 | 参照 |
+|------|------|
+| 速度・演奏記号の意味（日） | [演奏記号](https://ja.wikipedia.org/wiki/%E6%BC%94%E5%A5%8F%E8%A8%98%E5%8F%B7) |
+| 強弱（日） | [強弱法](https://ja.wikipedia.org/wiki/%E5%BC%B7%E5%BC%B1%E6%B3%95) |
+| 臨時記号（日） | [変化記号](https://ja.wikipedia.org/wiki/%E5%A4%89%E5%8C%96%E8%A8%98%E5%8F%B7) |
+| 反復（日） | [反復記号](https://ja.wikipedia.org/wiki/%E5%8F%8D%E5%BE%A9%E8%A8%98%E5%8F%B7) |
+| 楽語・速度等（英） | [Glossary of music terminology](https://en.wikipedia.org/wiki/Glossary_of_music_terminology) |
+| グリフ・SMuFL 名 | [SMuFL](https://w3c.github.io/smufl/)（Bravura 描画用。意味定義には使わない） |
+
+新規カードは上記の該当節に沿って `hint` を書き、強弱・記号は `名前（意味）`、速度は意味のみを選択肢に使う（`decisions.md` #25）。
+
 test/
 ├── shared/
 ├── features/
