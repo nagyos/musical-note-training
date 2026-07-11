@@ -26,8 +26,12 @@ class StudySessionNotifier extends Notifier<StudySessionState?> {
     final cards = await ref.read(studyLaunchServiceProvider).loadCards(target);
     if (cards.isEmpty) return;
 
-    final locale = ref.read(answerLocaleProvider);
-    state = StudySessionLogic.startSession(lessonCards: cards, locale: locale);
+    final settings = ref.read(appSettingsProvider);
+    state = StudySessionLogic.startSession(
+      lessonCards: cards,
+      noteAnswerLocale: settings.answerLocaleKey,
+      uiLocale: settings.uiLocaleCode,
+    );
   }
 
   void submitAnswer(String choice) {

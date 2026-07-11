@@ -73,12 +73,12 @@ class StaffNotationLayout {
         Clef.bass => layout.bassClefAdvance,
       };
 
+  /// Horizontal center of the five staff lines (independent of clef width).
+  double get staffCenterX => (layout.staffLeft + layout.staffRight) / 2;
+
   Offset noteCenter(NotationElement element) {
-    final noteAreaLeft = layout.staffLeft + clefAdvance;
-    final noteSpan = layout.staffRight - noteAreaLeft;
-    final x = noteAreaLeft + noteSpan * StaffMetrics.noteXRatio;
     final y = layout.yForStaffStep(element.staffStep);
-    return Offset(x, y);
+    return Offset(staffCenterX, y);
   }
 
   double noteHeadRadius(NotationElement element) {
@@ -145,6 +145,14 @@ class StaffNotationLayout {
 
   double get bassClefAnchorY =>
       layout.yForStaffStep(StaffMetrics.bassClefAnchorStep);
+
+  Offset restGlyphOffset(NotationElement element, TextPainter textPainter) {
+    final anchorY = layout.yForStaffStep(element.staffStep);
+    return Offset(
+      noteCenter(element).dx - textPainter.width / 2,
+      anchorY - textPainter.height * StaffMetrics.restAnchorRatio,
+    );
+  }
 
   Offset bassClefOffset(TextPainter textPainter) {
     final bounds = bassClefBounds();

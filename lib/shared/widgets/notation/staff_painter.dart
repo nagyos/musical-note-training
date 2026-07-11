@@ -178,20 +178,22 @@ class StaffPainter extends CustomPainter {
     NotationElement element,
     Paint paint,
   ) {
-    final center = layout.noteCenter(element);
-    final width = layout.noteHeadRadius(element) * StaffMetrics.restWidthScale;
-    final height = layout.layout.lineSpacing * StaffMetrics.restHeightScale;
-    final rect = Rect.fromCenter(
-      center: center,
-      width: width,
-      height: height,
-    );
-    canvas.drawRect(
-      rect,
-      paint
-        ..style = PaintingStyle.fill
-        ..color = paint.color,
-    );
+    final fontSize =
+        layout.layout.lineSpacing * StaffMetrics.restFontSizeInSpaces;
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: String.fromCharCode(StaffMetrics.smuflRestFor(element.value)),
+        style: TextStyle(
+          fontFamily: StaffMetrics.notationFontFamily,
+          fontSize: fontSize,
+          height: 1,
+          color: paint.color,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    textPainter.paint(canvas, layout.restGlyphOffset(element, textPainter));
   }
 
   @override

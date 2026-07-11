@@ -1,3 +1,4 @@
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
 
 enum StudyPhase {
@@ -29,7 +30,8 @@ class StudySessionState {
     required this.currentIndex,
     required this.phase,
     required this.choices,
-    required this.locale,
+    required this.noteAnswerLocale,
+    required this.uiLocale,
     this.correctCount = 0,
     this.mistakes = const [],
     this.eliminatedChoices = const {},
@@ -39,7 +41,8 @@ class StudySessionState {
   final int currentIndex;
   final StudyPhase phase;
   final List<String> choices;
-  final String locale;
+  final String noteAnswerLocale;
+  final String uiLocale;
   final int correctCount;
   final List<StudyMistake> mistakes;
 
@@ -56,12 +59,21 @@ class StudySessionState {
 
   bool get isRevealingCorrect => phase == StudyPhase.revealingCorrect;
 
+  String localeFor(Card card) => StudyAnswerChoices.localeForCategory(
+        category: card.categoryType,
+        noteAnswerLocale: noteAnswerLocale,
+        uiLocale: uiLocale,
+      );
+
+  String get currentLocale => localeFor(currentCard);
+
   StudySessionState copyWith({
     List<Card>? cards,
     int? currentIndex,
     StudyPhase? phase,
     List<String>? choices,
-    String? locale,
+    String? noteAnswerLocale,
+    String? uiLocale,
     int? correctCount,
     List<StudyMistake>? mistakes,
     Set<String>? eliminatedChoices,
@@ -71,7 +83,8 @@ class StudySessionState {
       currentIndex: currentIndex ?? this.currentIndex,
       phase: phase ?? this.phase,
       choices: choices ?? this.choices,
-      locale: locale ?? this.locale,
+      noteAnswerLocale: noteAnswerLocale ?? this.noteAnswerLocale,
+      uiLocale: uiLocale ?? this.uiLocale,
       correctCount: correctCount ?? this.correctCount,
       mistakes: mistakes ?? this.mistakes,
       eliminatedChoices: eliminatedChoices ?? this.eliminatedChoices,

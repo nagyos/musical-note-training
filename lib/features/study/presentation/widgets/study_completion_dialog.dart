@@ -40,7 +40,9 @@ Future<StudyCompletionAction?> showStudyCompletionDialog(
                     child: Text(
                       l10n.studyWrongAnswerLine(
                         mistake.selectedAnswer,
-                        mistake.card.answer.resolve(session.locale),
+                        mistake.card.answer.resolve(
+                          session.localeFor(mistake.card),
+                        ),
                       ),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),

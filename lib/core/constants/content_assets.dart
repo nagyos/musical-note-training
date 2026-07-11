@@ -4,6 +4,7 @@ abstract final class ContentAssets {
 
   static const Map<String, String> categoryBundles = {
     'note': 'assets/content/notes.json',
+    'rest': 'assets/content/rests.json',
   };
 
   static String bundleForCategory(String categoryId) {

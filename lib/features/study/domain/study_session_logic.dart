@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
+import 'package:musical_note_training/shared/domain/models/card_category_type.dart';
 
 /// Pure functions for study session transitions (unit-testable).
 abstract final class StudySessionLogic {
@@ -12,13 +13,23 @@ abstract final class StudySessionLogic {
     return copy;
   }
 
-  static List<String> buildChoices({required String locale}) {
-    return StudyAnswerChoices.forLocale(locale);
+  static List<String> buildChoices({
+    required CardCategoryType category,
+    required String noteAnswerLocale,
+    required String uiLocale,
+  }) {
+    final locale = StudyAnswerChoices.localeForCategory(
+      category: category,
+      noteAnswerLocale: noteAnswerLocale,
+      uiLocale: uiLocale,
+    );
+    return StudyAnswerChoices.forCategory(category, locale);
   }
 
   static StudySessionState startSession({
     required List<Card> lessonCards,
-    required String locale,
+    required String noteAnswerLocale,
+    required String uiLocale,
     Random? random,
   }) {
     final shuffled = shuffleCards(lessonCards, random: random);
@@ -26,8 +37,13 @@ abstract final class StudySessionLogic {
       cards: shuffled,
       currentIndex: 0,
       phase: StudyPhase.questioning,
-      choices: buildChoices(locale: locale),
-      locale: locale,
+      choices: buildChoices(
+        category: shuffled.first.categoryType,
+        noteAnswerLocale: noteAnswerLocale,
+        uiLocale: uiLocale,
+      ),
+      noteAnswerLocale: noteAnswerLocale,
+      uiLocale: uiLocale,
     );
   }
 
@@ -38,7 +54,8 @@ abstract final class StudySessionLogic {
     if (state.phase != StudyPhase.questioning) return state;
     if (state.eliminatedChoices.contains(selected)) return state;
 
-    final correct = state.currentCard.answer.resolve(state.locale);
+    final correct =
+        state.currentCard.answer.resolve(state.currentLocale);
     if (selected == correct) {
       return state.copyWith(
         phase: StudyPhase.revealingCorrect,
@@ -76,12 +93,18 @@ abstract final class StudySessionLogic {
     }
 
     final nextIndex = state.currentIndex + 1;
+    final nextCard = state.cards[nextIndex];
     return StudySessionState(
       cards: state.cards,
       currentIndex: nextIndex,
       phase: StudyPhase.questioning,
-      choices: buildChoices(locale: state.locale),
-      locale: state.locale,
+      choices: buildChoices(
+        category: nextCard.categoryType,
+        noteAnswerLocale: state.noteAnswerLocale,
+        uiLocale: state.uiLocale,
+      ),
+      noteAnswerLocale: state.noteAnswerLocale,
+      uiLocale: state.uiLocale,
       correctCount: state.correctCount,
       mistakes: state.mistakes,
     );

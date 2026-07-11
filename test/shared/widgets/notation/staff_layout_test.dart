@@ -110,6 +110,18 @@ void main() {
       );
     });
 
+    test('places note and rest anchors at horizontal staff center', () {
+      const layout = StaffLayout(size: Size(320, 140));
+      final notationLayout = StaffNotationLayout(layout, clef: Clef.treble);
+      const element = NotationElement(staffStep: 4, value: NoteValue.quarter);
+
+      final center = notationLayout.noteCenter(element);
+      final expectedX = (layout.staffLeft + layout.staffRight) / 2;
+
+      expect(center.dx, closeTo(expectedX, 0.001));
+      expect(center.dx, closeTo(layout.size.width / 2, 0.001));
+    });
+
     test('keeps middle C ledger note inside canvas', () {
       const layout = StaffLayout(size: Size(320, 140));
       final notationLayout = StaffNotationLayout(layout, clef: Clef.treble);

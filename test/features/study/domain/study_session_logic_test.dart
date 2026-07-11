@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/features/study/domain/study_session.dart';
 import 'package:musical_note_training/features/study/domain/study_session_logic.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
@@ -11,16 +12,17 @@ import 'package:musical_note_training/shared/domain/models/sync_metadata.dart';
 
 void main() {
   final cards = [
-    _card('note-c4', 'ド'),
-    _card('note-d4', 'レ'),
-    _card('note-e4', 'ミ'),
+    _card('note-c4', 'ド', enAnswer: 'C'),
+    _card('note-d4', 'レ', enAnswer: 'D'),
+    _card('note-e4', 'ミ', enAnswer: 'E'),
   ];
 
   group('StudySessionLogic', () {
-    test('startSession shuffles cards and exposes fixed seven choices', () {
+    test('startSession shuffles cards and exposes fixed seven solfege choices', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
         random: Random(1),
       );
 
@@ -36,10 +38,21 @@ void main() {
       );
     });
 
+    test('startSession uses letter names when note style is en', () {
+      final session = StudySessionLogic.startSession(
+        lessonCards: cards,
+        noteAnswerLocale: 'en',
+        uiLocale: 'ja',
+      );
+
+      expect(session.choices, StudyAnswerChoices.letters);
+    });
+
     test('submitAnswer reveals correct without advancing immediately', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
         random: Random(0),
       );
       final correct = session.currentCard.answer.resolve('ja');
@@ -53,7 +66,8 @@ void main() {
     test('submitAnswer eliminates wrong choices and stays on card', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
         random: Random(0),
       );
       final wrong = session.choices.firstWhere(
@@ -69,7 +83,8 @@ void main() {
     test('submitAnswer records only the first mistake per card', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
         random: Random(0),
       );
       final correct = session.currentCard.answer.resolve('ja');
@@ -87,7 +102,8 @@ void main() {
     test('submitAnswer ignores eliminated choices', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
         random: Random(0),
       );
       final correct = session.currentCard.answer.resolve('ja');
@@ -102,7 +118,8 @@ void main() {
     test('advanceAfterCorrect moves to next question', () {
       final session = StudySessionLogic.startSession(
         lessonCards: cards,
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
         random: Random(0),
       );
       final correct = session.currentCard.answer.resolve('ja');
@@ -114,10 +131,52 @@ void main() {
       expect(next.eliminatedChoices, isEmpty);
     });
 
+    test('rest choices follow ui locale even when note style is letter', () {
+      final restCards = [
+        _card(
+          'rest-whole',
+          '全休符',
+          enAnswer: 'Whole rest',
+          categoryType: CardCategoryType.rest,
+        ),
+        _card(
+          'rest-half',
+          '二分休符',
+          enAnswer: 'Half rest',
+          categoryType: CardCategoryType.rest,
+        ),
+      ];
+      final session = StudySessionLogic.startSession(
+        lessonCards: restCards,
+        noteAnswerLocale: 'en',
+        uiLocale: 'ja',
+      );
+
+      expect(session.choices, StudyAnswerChoices.restsJa);
+    });
+
+    test('rest correct answer resolves with ui locale', () {
+      final restCard = _card(
+        'rest-whole',
+        '全休符',
+        enAnswer: 'Whole rest',
+        categoryType: CardCategoryType.rest,
+      );
+      final session = StudySessionLogic.startSession(
+        lessonCards: [restCard],
+        noteAnswerLocale: 'en',
+        uiLocale: 'ja',
+      );
+
+      final answered = StudySessionLogic.submitAnswer(session, '全休符');
+      expect(answered.phase, StudyPhase.revealingCorrect);
+    });
+
     test('advanceAfterCorrect completes session on last card', () {
       final session = StudySessionLogic.startSession(
         lessonCards: [cards.first],
-        locale: 'ja',
+        noteAnswerLocale: 'ja',
+        uiLocale: 'ja',
       );
       final correct = session.currentCard.answer.resolve('ja');
       final revealed = StudySessionLogic.submitAnswer(session, correct);
@@ -128,13 +187,20 @@ void main() {
   });
 }
 
-Card _card(String id, String jaAnswer) {
+Card _card(
+  String id,
+  String jaAnswer, {
+  String? enAnswer,
+  CardCategoryType categoryType = CardCategoryType.note,
+}) {
   final now = DateTime.utc(2026, 7, 8);
   return Card(
     id: id,
-    categoryType: CardCategoryType.note,
+    categoryType: categoryType,
     lessonId: 'note-middle-c',
-    answer: LocalizedText(values: {'ja': jaAnswer, 'en': jaAnswer}),
+    answer: LocalizedText(
+      values: {'ja': jaAnswer, 'en': enAnswer ?? jaAnswer},
+    ),
     sortOrder: 0,
     sync: SyncMetadata(version: 1, updatedAt: now),
   );

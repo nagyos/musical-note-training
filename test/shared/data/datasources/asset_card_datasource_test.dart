@@ -21,5 +21,18 @@ void main() {
         'note-bass-middle-c',
       ]);
     });
+
+    test('loads rest seed with one lesson and five cards', () async {
+      final bundle = await datasource.loadCategoryBundle('rest');
+
+      expect(bundle.lessons, hasLength(1));
+      expect(bundle.cards, hasLength(5));
+      expect(bundle.lessons.map((l) => l.id), ['rest']);
+    });
+
+    test('loadCategories includes note and rest', () async {
+      final categories = await datasource.loadCategories();
+      expect(categories.map((c) => c.id), ['note', 'rest']);
+    });
   });
 }
