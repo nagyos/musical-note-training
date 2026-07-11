@@ -6,6 +6,7 @@ import 'package:musical_note_training/shared/domain/models/notation_element.dart
 import 'package:musical_note_training/shared/domain/models/notation_payload.dart';
 import 'package:musical_note_training/shared/domain/models/note_value.dart';
 import 'package:musical_note_training/shared/domain/models/clef.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_engraving_rules.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 
 /// Layout constants and coordinate helpers for staff rendering.
@@ -19,6 +20,9 @@ class StaffLayout {
   final Size size;
   final int lineCount;
   final double padding;
+
+  /// Distance between adjacent staff-line centers (spatium / staff space).
+  double get spatium => lineSpacing;
 
   double get lineSpacing {
     final staffHalfSteps = (lineCount - 1) * 2;
@@ -43,11 +47,11 @@ class StaffLayout {
 
   /// Horizontal space the treble clef occupies before the first note.
   double get trebleClefAdvance =>
-      lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
+      lineSpacing * StaffEngravingRules.trebleClefStaffWidthInSpaces;
 
   /// Horizontal space the bass clef occupies before the first note.
   double get bassClefAdvance =>
-      lineSpacing * StaffMetrics.bassClefStaffWidthScale;
+      lineSpacing * StaffEngravingRules.bassClefStaffWidthInSpaces;
 
   double yForStaffStep(int staffStep) {
     return bottomLineY - staffStep * _halfLine;
@@ -68,6 +72,8 @@ class StaffNotationLayout {
   final StaffLayout layout;
   final Clef clef;
 
+  double get spatium => layout.spatium;
+
   double get clefAdvance => switch (clef) {
         Clef.treble => layout.trebleClefAdvance,
         Clef.bass => layout.bassClefAdvance,
@@ -84,8 +90,8 @@ class StaffNotationLayout {
   double noteHeadRadius(NotationElement element) {
     return switch (element.value) {
       NoteValue.whole || NoteValue.half =>
-        layout.lineSpacing * StaffMetrics.wholeNoteHeadScale,
-      _ => layout.lineSpacing * StaffMetrics.quarterNoteHeadScale,
+        spatium * StaffEngravingRules.wholeNoteHeadRadiusInSpaces,
+      _ => spatium * StaffEngravingRules.quarterNoteHeadRadiusInSpaces,
     };
   }
 
@@ -97,71 +103,70 @@ class StaffNotationLayout {
   }
 
   double stemHeight(NotationElement element) {
-    return layout.lineSpacing * StaffMetrics.stemHeightScale;
+    return spatium * StaffEngravingRules.stemHeightInSpaces;
   }
 
   bool stemUp(NotationElement element) {
-    return element.staffStep >= StaffMetrics.stemUpThresholdStep;
+    return element.staffStep >= StaffEngravingRules.stemUpThresholdStep;
   }
 
   double get trebleClefFontSize =>
-      layout.lineSpacing * StaffMetrics.trebleClefFontSizeInSpaces;
+      spatium * StaffEngravingRules.trebleClefFontSizeInSpaces;
 
   Rect trebleClefBounds() {
     final left = layout.staffLeft -
-        layout.lineSpacing * StaffMetrics.trebleClefLeftOverhangScale;
-    final right =
-        layout.staffLeft + layout.lineSpacing * StaffMetrics.trebleClefStaffWidthScale;
+        spatium * StaffEngravingRules.trebleClefLeftOverhangInSpaces;
+    final right = layout.staffLeft +
+        spatium * StaffEngravingRules.trebleClefStaffWidthInSpaces;
     return Rect.fromLTRB(left, layout.padding, right, layout.size.height - layout.padding);
   }
 
-  /// Y coordinate of the G line used to anchor the treble clef glyph.
   double get trebleClefAnchorY =>
-      layout.yForStaffStep(StaffMetrics.trebleClefAnchorStep);
+      layout.yForStaffStep(StaffEngravingRules.trebleClefAnchorStep);
 
   double get _clefMinLeftX =>
       layout.padding +
-      layout.lineSpacing * StaffMetrics.clefCanvasLeftMarginInSpaces;
+      spatium * StaffEngravingRules.clefCanvasLeftMarginInSpaces;
 
   Offset trebleClefOffset(TextPainter textPainter) {
     final bounds = trebleClefBounds();
     return Offset(
       math.max(bounds.left, _clefMinLeftX),
       trebleClefAnchorY -
-          textPainter.height * StaffMetrics.trebleClefGLineAnchorRatio,
+          textPainter.height * StaffEngravingRules.trebleClefGLineAnchorRatio,
     );
   }
 
   double get bassClefFontSize =>
-      layout.lineSpacing * StaffMetrics.bassClefFontSizeInSpaces;
+      spatium * StaffEngravingRules.bassClefFontSizeInSpaces;
 
   Rect bassClefBounds() {
-    final left =
-        layout.staffLeft - layout.lineSpacing * StaffMetrics.bassClefLeftOverhangScale;
-    final right =
-        layout.staffLeft + layout.lineSpacing * StaffMetrics.bassClefStaffWidthScale;
+    final left = layout.staffLeft -
+        spatium * StaffEngravingRules.bassClefLeftOverhangInSpaces;
+    final right = layout.staffLeft +
+        spatium * StaffEngravingRules.bassClefStaffWidthInSpaces;
     return Rect.fromLTRB(left, layout.padding, right, layout.size.height - layout.padding);
   }
 
   double get bassClefAnchorY =>
-      layout.yForStaffStep(StaffMetrics.bassClefAnchorStep);
+      layout.yForStaffStep(StaffEngravingRules.bassClefAnchorStep);
 
   Offset restGlyphOffset(NotationElement element, TextPainter textPainter) {
     final anchorY = layout.yForStaffStep(element.staffStep);
     return Offset(
       noteCenter(element).dx - textPainter.width / 2,
-      anchorY - textPainter.height * StaffMetrics.restAnchorRatio,
+      anchorY - textPainter.height * StaffEngravingRules.restAnchorRatio,
     );
   }
 
   Offset bassClefOffset(TextPainter textPainter) {
     final bounds = bassClefBounds();
     final x = bounds.left +
-        layout.lineSpacing * StaffMetrics.bassClefHorizontalNudgeInSpaces;
+        spatium * StaffEngravingRules.bassClefHorizontalNudgeInSpaces;
     return Offset(
       math.max(x, _clefMinLeftX),
       bassClefAnchorY -
-          textPainter.height * StaffMetrics.bassClefFLineAnchorRatio,
+          textPainter.height * StaffEngravingRules.bassClefFLineAnchorRatio,
     );
   }
 }

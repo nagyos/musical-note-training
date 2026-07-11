@@ -4,10 +4,10 @@ import 'package:musical_note_training/shared/domain/models/clef.dart';
 import 'package:musical_note_training/shared/domain/models/note_value.dart';
 import 'package:musical_note_training/shared/domain/models/notation_element.dart';
 import 'package:musical_note_training/shared/domain/models/notation_payload.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_engraving_rules.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_layout.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_ledger.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
-
 
 /// Draws a five-line staff with treble or bass clef and notes.
 class StaffPainter extends CustomPainter {
@@ -26,9 +26,10 @@ class StaffPainter extends CustomPainter {
     if (clef == null) return;
 
     final notationLayout = StaffNotationLayout(layout, clef: clef);
+    final spatium = notationLayout.spatium;
     final paint = Paint()
       ..color = color
-      ..strokeWidth = StaffMetrics.strokeWidth
+      ..strokeWidth = spatium * StaffEngravingRules.staffLineWidthInSpaces
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
@@ -69,8 +70,8 @@ class StaffPainter extends CustomPainter {
     final center = notationLayout.noteCenter(element);
     final noteRadius = notationLayout.noteHeadRadius(element);
     final halfWidth = noteRadius *
-        StaffMetrics.noteHeadWidthScale *
-        StaffMetrics.ledgerHalfWidthNoteScale;
+        StaffEngravingRules.noteHeadWidthInSpaces *
+        StaffEngravingRules.ledgerHalfWidthNoteScale;
 
     for (final step in StaffLedger.ledgerStepsForNote(element.staffStep)) {
       final y = layout.yForStaffStep(step);
@@ -136,8 +137,8 @@ class StaffPainter extends CustomPainter {
     final radius = layout.noteHeadRadius(element);
     final headRect = Rect.fromCenter(
       center: center,
-      width: radius * StaffMetrics.noteHeadWidthScale,
-      height: radius * StaffMetrics.noteHeadHeightScale,
+      width: radius * StaffEngravingRules.noteHeadWidthInSpaces,
+      height: radius * StaffEngravingRules.noteHeadHeightInSpaces,
     );
 
     final headPaint = Paint()
@@ -149,7 +150,7 @@ class StaffPainter extends CustomPainter {
 
     canvas.save();
     canvas.translate(center.dx, center.dy);
-    canvas.rotate(StaffMetrics.noteHeadRotationRadians);
+    canvas.rotate(StaffEngravingRules.noteHeadRotationRadians);
     canvas.translate(-center.dx, -center.dy);
     canvas.drawOval(headRect, headPaint);
     canvas.restore();
@@ -159,7 +160,7 @@ class StaffPainter extends CustomPainter {
     }
 
     final stemUp = layout.stemUp(element);
-    final inset = StaffMetrics.stemHorizontalInset;
+    final inset = layout.spatium * StaffEngravingRules.stemHorizontalInsetInSpaces;
     final stemX = stemUp ? headRect.right - inset : headRect.left + inset;
     final stemTop = stemUp
         ? center.dy - layout.stemHeight(element)
@@ -181,8 +182,7 @@ class StaffPainter extends CustomPainter {
     NotationElement element,
     Paint paint,
   ) {
-    final fontSize =
-        layout.layout.lineSpacing * StaffMetrics.restFontSizeInSpaces;
+    final fontSize = layout.spatium * StaffEngravingRules.restFontSizeInSpaces;
     final textPainter = TextPainter(
       text: TextSpan(
         text: String.fromCharCode(StaffMetrics.smuflRestFor(element.value)),

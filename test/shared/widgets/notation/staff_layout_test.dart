@@ -4,11 +4,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:musical_note_training/shared/domain/models/clef.dart';
 import 'package:musical_note_training/shared/domain/models/note_value.dart';
 import 'package:musical_note_training/shared/domain/models/notation_element.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_engraving_rules.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_layout.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_scale.dart';
 
 void main() {
   group('StaffLayout', () {
+    test('spatium equals lineSpacing and scales with available height', () {
+      const small = StaffLayout(size: Size(320, 140));
+      const large = StaffLayout(size: Size(320, 280));
+
+      expect(small.spatium, small.lineSpacing);
+      final heightRatio =
+          (280 - StaffMetrics.padding * 2) / (140 - StaffMetrics.padding * 2);
+      expect(large.spatium, closeTo(small.spatium * heightRatio, 0.001));
+      expect(
+        StaffScale.spatiumForCanvasHeight(140),
+        closeTo(small.spatium, 0.001),
+      );
+    });
+
     test('maps staff steps to increasing y offsets', () {
       const layout = StaffLayout(size: Size(320, 140));
 
@@ -53,7 +69,8 @@ void main() {
     test('clef glyphs respect left canvas margin', () {
       const layout = StaffLayout(size: Size(320, 140));
       final minLeft =
-          StaffMetrics.padding + layout.lineSpacing * StaffMetrics.clefCanvasLeftMarginInSpaces;
+          StaffMetrics.padding +
+              layout.lineSpacing * StaffEngravingRules.clefCanvasLeftMarginInSpaces;
 
       for (final clef in [Clef.treble, Clef.bass]) {
         final notationLayout = StaffNotationLayout(layout, clef: clef);
@@ -101,7 +118,7 @@ void main() {
       final offset = notationLayout.bassClefOffset(textPainter);
       final fLineY = notationLayout.bassClefAnchorY;
       final glyphCenterY =
-          offset.dy + textPainter.height * StaffMetrics.bassClefFLineAnchorRatio;
+          offset.dy + textPainter.height * StaffEngravingRules.bassClefFLineAnchorRatio;
 
       expect(glyphCenterY, closeTo(fLineY, layout.lineSpacing * 0.05));
       expect(
@@ -130,7 +147,7 @@ void main() {
       final center = notationLayout.noteCenter(element);
       final radius = notationLayout.noteHeadRadius(element);
       final headHalfHeight =
-          radius * StaffMetrics.noteHeadHeightScale / 2;
+          radius * StaffEngravingRules.noteHeadHeightInSpaces / 2;
 
       expect(center.dy - headHalfHeight, greaterThanOrEqualTo(0));
       expect(center.dy + headHalfHeight, lessThanOrEqualTo(140));

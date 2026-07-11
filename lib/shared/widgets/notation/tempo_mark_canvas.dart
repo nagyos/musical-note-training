@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:musical_note_training/shared/domain/notation/tempo_mark_glyph.dart';
+import 'package:musical_note_training/shared/widgets/notation/staff_glyph_paint.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 
 /// Renders an Italian tempo mark in Bravura score typography (not UI text).
@@ -49,26 +50,14 @@ class _TempoMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final fontSize = size.height * 0.55;
-    final textPainter = TextPainter(
-      text: TextSpan(
-        text: scoreText,
-        style: TextStyle(
-          fontFamily: StaffMetrics.notationFontFamily,
-          fontSize: fontSize,
-          height: 1,
-          fontStyle: FontStyle.italic,
-          color: color,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-
-    final offset = Offset(
-      (size.width - textPainter.width) / 2,
-      (size.height - textPainter.height) / 2,
+    StaffGlyphPaint.paintCenteredGlyph(
+      canvas,
+      size,
+      text: scoreText,
+      color: color,
+      fontStyle: FontStyle.italic,
+      fontSize: StaffGlyphPaint.tempoMarkFontSize(size.height),
     );
-    textPainter.paint(canvas, offset);
   }
 
   @override

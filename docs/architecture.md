@@ -132,6 +132,13 @@ assets/
 
 新規カードは上記の該当節に沿って `hint` を書き、強弱・記号は `名前（意味）`、速度は意味のみを選択肢に使う（`decisions.md` #25）。
 
+### 楽譜描画のスケール（spatium）
+
+- **spatium** = 隣接する五線の中心間距離（`StaffLayout.spatium` / `lineSpacing`）
+- 係数は `lib/shared/widgets/notation/staff_engraving_rules.dart`（無次元）。描画時は `spatium × 係数`
+- キャンバス高さからの逆算は `staff_scale.dart`
+- 五線なしの記号カード（強弱・記号・速度）は `staff_glyph_paint.dart` で同一係数を使用
+
 test/
 ├── shared/
 ├── features/
@@ -167,11 +174,12 @@ integration_test/
 | 塊 | 置き場 | 例 |
 |----|--------|-----|
 | アプリ全体の余白スケール | `core/theme/app_spacing.dart` | `AppSpacing.sm`, `lg` |
-| 楽譜描画の比率・閾値 | `shared/widgets/notation/staff_metrics.dart` | `noteXRatio`, `stemUpThresholdStep` |
+| 楽譜描画の spatium 係数 | `shared/widgets/notation/staff_engraving_rules.dart` | `restFontSizeInSpaces`, `trebleClefFontSizeInSpaces` 等 |
+| 楽譜キャンバス枠・SMuFL ID | `shared/widgets/notation/staff_metrics.dart` | `padding`, `smuflTrebleClef` |
 | アプリ名など不変の識別子 | `core/constants/app_constants.dart` | 既存 |
 | 1 画面だけの一度きりの値 | その Widget 内 | 無理に共通化しない |
 
-`StaffLayout` / `StaffPainter` は **計算と描画** に専念し、チューニング値は `StaffMetrics` に集約する。
+`StaffLayout` / `StaffPainter` は **計算と描画** に専念し、無次元係数は `StaffEngravingRules` に集約する。
 
 ---
 
