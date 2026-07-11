@@ -44,5 +44,18 @@ void main() {
       expect(payload.tempoMark, 'andante');
       expect(payload.clef, isNull);
     });
+
+    test('isRestOnly when restMark is set without clef', () {
+      const payload = NotationPayload(restMark: 'quarter');
+      expect(payload.isRestOnly, isTrue);
+      expect(payload.isDynamicOnly, isFalse);
+    });
+
+    test('fromJson parses rest-only payload', () {
+      final payload = NotationPayload.fromJson({'restMark': 'whole'});
+      expect(payload.restMark, 'whole');
+      expect(payload.clef, isNull);
+      expect(payload.elements, isEmpty);
+    });
   });
 }

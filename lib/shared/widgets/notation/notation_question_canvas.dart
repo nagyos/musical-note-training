@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:musical_note_training/shared/domain/models/notation_payload.dart';
 import 'package:musical_note_training/shared/widgets/notation/dynamic_mark_canvas.dart';
+import 'package:musical_note_training/shared/widgets/notation/rest_mark_canvas.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_canvas.dart';
 import 'package:musical_note_training/shared/widgets/notation/staff_metrics.dart';
 import 'package:musical_note_training/shared/widgets/notation/symbol_mark_canvas.dart';
@@ -28,6 +29,9 @@ class NotationQuestionCanvas extends StatelessWidget {
     }
     if (payload.isDynamicOnly) {
       return DynamicMarkCanvas(mark: payload.dynamicMark!, height: height);
+    }
+    if (payload.isRestOnly) {
+      return RestMarkCanvas(mark: payload.restMark!, height: height);
     }
     return StaffCanvas(payload: payload, height: height);
   }

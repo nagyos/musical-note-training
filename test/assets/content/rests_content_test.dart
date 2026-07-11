@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:musical_note_training/features/study/domain/study_answer_choices.dart';
 import 'package:musical_note_training/shared/domain/models/card.dart';
-import 'package:musical_note_training/shared/domain/notation/rest_staff_pitch.dart';
+import 'package:musical_note_training/shared/domain/notation/rest_mark_glyph.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -20,24 +21,37 @@ void main() {
           .toList();
     });
 
-    test('each seed card staffStep matches rest pitch map', () {
+    test('each card uses rest-only notation', () {
       for (final card in cards) {
-        final expected = RestStaffPitch.staffStepForCardId(card.id);
-        if (expected == null) continue;
+        expect(card.notation?.isRestOnly, isTrue);
+      }
+    });
 
-        final element = card.notation!.elements.first;
-        expect(element.isRest, isTrue);
+    test('rest marks match seed map', () {
+      for (final card in cards) {
         expect(
-          element.staffStep,
-          expected,
-          reason: '${card.id} staffStep should match rest position',
+          card.notation?.restMark,
+          RestMarkGlyph.markForCardId(card.id),
         );
       }
     });
 
-    test('covers all five seed rest cards', () {
+    test('covers all registered seed rest cards', () {
       final ids = cards.map((c) => c.id).toSet();
-      expect(ids, containsAll(RestStaffPitch.seedCardStaffSteps.keys));
+      expect(ids, containsAll(RestMarkGlyph.seedCardMarks.keys));
+    });
+
+    test('answers match fixed choice labels', () {
+      for (final card in cards) {
+        expect(
+          StudyAnswerChoices.restsJa,
+          contains(card.answer.resolve('ja')),
+        );
+        expect(
+          StudyAnswerChoices.restsEn,
+          contains(card.answer.resolve('en')),
+        );
+      }
     });
   });
 }

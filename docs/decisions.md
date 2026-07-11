@@ -719,6 +719,33 @@ Phase 3+: 必要になる可能性大
 
 ---
 
+### [2026-07-12] T-112 休符クイズ — 五線なし孤立表示と `restMark` フィールド（#24）
+
+**質問**
+- 休符カードは五線譜・ト音記号付きのままか、強弱・記号と同様の孤立表示にするか。
+- JSON の notation フィールドは今後の拡張に備えどう設計するか。
+
+**回答（ユーザー）**
+- **案 A**: 五線なしの孤立表示にする。
+- JSON は可能な限りシンプルに。**一次独立**（既存・将来の要素と直交）を守り、追加時の依存と影響を最小化したい。
+
+**決定**
+- 休符クイズは `RestMarkCanvas` で孤立グリフ表示（`isolatedGlyphFontSizeInSpaces`）。
+- コンテンツ JSON は `{ "restMark": "whole" }` 等の**専用フィールド**のみ。`clef` / `elements` / `staffStep` は使わない。
+- `NotationPayload` の standalone フィールド（`dynamicMark`, `symbolMark`, `tempoMark`, `restMark`）は互いに直交。五線上の音符は `clef` + `elements` のみ。
+- 五線上の休符描画（`elements` + `isRest`）は将来のカスタムカード等用に `StaffPainter` に残すが、シード休符では使わない。
+
+**根拠・補足**
+- FR-REST-01 は「形状と名称」が中心。位置の説明は `hint` で補う。
+- `rest_staff_pitch.dart` はシード検証用だったため削除。`rest_mark_glyph.dart` に置き換え。
+
+**影響**
+- 新規: `rest_mark_glyph.dart`, `rest_mark_canvas.dart`
+- 更新: `notation_payload.dart`, `notation_question_canvas.dart`, `rests.json`, 関連テスト
+- 削除: `rest_staff_pitch.dart`
+
+---
+
 ### [2026-07-09] T-120 音符拡充 — ト音記号に続きヘ音記号
 
 **質問**
