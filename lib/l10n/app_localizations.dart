@@ -433,6 +433,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No route for {uri}'**
   String routeNotFoundMessage(String uri);
+
+  /// No description provided for @settingsBackupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data backup'**
+  String get settingsBackupTitle;
+
+  /// No description provided for @backupGoogleNotLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Google account not linked (data won\'t transfer across devices)'**
+  String get backupGoogleNotLinked;
+
+  /// No description provided for @backupGoogleUnavailableDesktop.
+  ///
+  /// In en, this message translates to:
+  /// **'Google link and auto-sync are available on Android and iOS. On this device, only export / import is supported.'**
+  String get backupGoogleUnavailableDesktop;
+
+  /// No description provided for @backupGoogleLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked: {email}'**
+  String backupGoogleLinked(String email);
+
+  /// No description provided for @backupGoogleSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Link with Google'**
+  String get backupGoogleSignIn;
+
+  /// No description provided for @backupGoogleSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink Google'**
+  String get backupGoogleSignOut;
+
+  /// No description provided for @backupGoogleSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Google account unlinked'**
+  String get backupGoogleSignedOut;
+
+  /// No description provided for @backupGoogleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to link Google account'**
+  String get backupGoogleSignInFailed;
+
+  /// No description provided for @backupSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get backupSyncNow;
+
+  /// No description provided for @backupSyncSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync completed'**
+  String get backupSyncSuccess;
+
+  /// No description provided for @backupSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed: {error}'**
+  String backupSyncFailed(String error);
+
+  /// No description provided for @backupExportShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Export learning backup (share)'**
+  String get backupExportShare;
+
+  /// No description provided for @backupExportSaveFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Export learning backup'**
+  String get backupExportSaveFile;
+
+  /// No description provided for @backupExportShareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Musical Note Training backup'**
+  String get backupExportShareSubject;
+
+  /// No description provided for @backupExportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Export completed'**
+  String get backupExportSuccess;
+
+  /// No description provided for @backupExportSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'File saved: {path}'**
+  String backupExportSaved(String path);
+
+  /// No description provided for @backupExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed: {error}'**
+  String backupExportFailed(String error);
+
+  /// No description provided for @backupImportPickFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Import backup file'**
+  String get backupImportPickFile;
+
+  /// No description provided for @backupImportConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import this backup?'**
+  String get backupImportConfirmTitle;
+
+  /// No description provided for @backupImportConfirmScopeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What is included'**
+  String get backupImportConfirmScopeTitle;
+
+  /// No description provided for @backupImportConfirmScopeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'· Decks you created\n· Weak items\n· Lesson study progress\n· Display settings (language, note names)\n\nOfficial catalog cards (built into the app) are not included.'**
+  String get backupImportConfirmScopeBody;
+
+  /// No description provided for @backupImportConfirmWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Any current records in the list above that are not in the backup will be removed. This cannot be undone.'**
+  String get backupImportConfirmWarning;
+
+  /// No description provided for @backupImportConfirmCountHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Count changes (now → after import)'**
+  String get backupImportConfirmCountHeader;
+
+  /// No description provided for @backupImportConfirmCountDecks.
+  ///
+  /// In en, this message translates to:
+  /// **'Decks'**
+  String get backupImportConfirmCountDecks;
+
+  /// No description provided for @backupImportConfirmCountWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get backupImportConfirmCountWeak;
+
+  /// No description provided for @backupImportConfirmCountProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get backupImportConfirmCountProgress;
+
+  /// No description provided for @backupImportConfirmCountLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} → {after}'**
+  String backupImportConfirmCountLine(int current, int after);
+
+  /// No description provided for @backupImportConfirmDeltaPlus.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String backupImportConfirmDeltaPlus(int count);
+
+  /// No description provided for @backupImportConfirmDeltaMinus.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}'**
+  String backupImportConfirmDeltaMinus(int count);
+
+  /// No description provided for @backupImportConfirmDeltaZero.
+  ///
+  /// In en, this message translates to:
+  /// **'±0'**
+  String get backupImportConfirmDeltaZero;
+
+  /// No description provided for @backupImportConfirmSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display setting changes'**
+  String get backupImportConfirmSettingsTitle;
+
+  /// No description provided for @backupImportConfirmSettingsLocale.
+  ///
+  /// In en, this message translates to:
+  /// **'Language: {from} → {to}'**
+  String backupImportConfirmSettingsLocale(String from, String to);
+
+  /// No description provided for @backupImportConfirmSettingsNoteNames.
+  ///
+  /// In en, this message translates to:
+  /// **'Note names: {from} → {to}'**
+  String backupImportConfirmSettingsNoteNames(String from, String to);
+
+  /// No description provided for @backupImportConfirmExportedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup created: {exportedAt}'**
+  String backupImportConfirmExportedAt(String exportedAt);
+
+  /// No description provided for @backupImportConfirmApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get backupImportConfirmApply;
+
+  /// No description provided for @backupImportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Import completed'**
+  String get backupImportSuccess;
+
+  /// No description provided for @backupImportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed: {error}'**
+  String backupImportFailed(String error);
+
+  /// No description provided for @backupHelpLink.
+  ///
+  /// In en, this message translates to:
+  /// **'How to transfer data'**
+  String get backupHelpLink;
+
+  /// No description provided for @backupHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data transfer guide'**
+  String get backupHelpTitle;
+
+  /// No description provided for @backupHelpGoogleSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended: Google link'**
+  String get backupHelpGoogleSection;
+
+  /// No description provided for @backupHelpGoogleBody.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap \"Link with Google\" in Settings\n2. Sign in with the same account on another device\n3. Data syncs on launch, or tap \"Sync now\"'**
+  String get backupHelpGoogleBody;
+
+  /// No description provided for @backupHelpExportSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual backup (fallback)'**
+  String get backupHelpExportSection;
+
+  /// No description provided for @backupHelpExportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap \"Export learning backup\" to create a backup file (JSON)\n2. Send it to your new device (email, cloud storage, etc.)\n3. On the new device, tap \"Import backup file\" and choose it'**
+  String get backupHelpExportBody;
+
+  /// No description provided for @backupHelpImportSection.
+  ///
+  /// In en, this message translates to:
+  /// **'About import'**
+  String get backupHelpImportSection;
+
+  /// No description provided for @backupHelpImportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected backup file replaces this device\'s decks, weak items, and progress (same for moving to a new device).'**
+  String get backupHelpImportBody;
+
+  /// No description provided for @backupHelpClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get backupHelpClose;
+
+  /// No description provided for @onboardingGoogleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect your data with Google'**
+  String get onboardingGoogleTitle;
+
+  /// No description provided for @onboardingGoogleBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your study data is backed up to Google Drive automatically. Use the same progress across devices or after changing phones.'**
+  String get onboardingGoogleBody;
+
+  /// No description provided for @onboardingGoogleBenefit.
+  ///
+  /// In en, this message translates to:
+  /// **'You can link Google later from Settings.'**
+  String get onboardingGoogleBenefit;
+
+  /// No description provided for @onboardingGoogleSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Link with Google'**
+  String get onboardingGoogleSignIn;
+
+  /// No description provided for @onboardingGoogleSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Later (stay as guest)'**
+  String get onboardingGoogleSkip;
 }
 
 class _AppLocalizationsDelegate

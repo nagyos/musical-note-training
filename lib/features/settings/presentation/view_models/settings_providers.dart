@@ -39,4 +39,9 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     state = next;
     await ref.read(settingsRepositoryProvider).save(next);
   }
+
+  Future<void> reloadFromStorage() async {
+    final loaded = await ref.read(settingsRepositoryProvider).load();
+    state = loaded;
+  }
 }

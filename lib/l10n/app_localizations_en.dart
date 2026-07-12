@@ -202,4 +202,189 @@ class AppLocalizationsEn extends AppLocalizations {
   String routeNotFoundMessage(String uri) {
     return 'No route for $uri';
   }
+
+  @override
+  String get settingsBackupTitle => 'Data backup';
+
+  @override
+  String get backupGoogleNotLinked =>
+      'Google account not linked (data won\'t transfer across devices)';
+
+  @override
+  String get backupGoogleUnavailableDesktop =>
+      'Google link and auto-sync are available on Android and iOS. On this device, only export / import is supported.';
+
+  @override
+  String backupGoogleLinked(String email) {
+    return 'Linked: $email';
+  }
+
+  @override
+  String get backupGoogleSignIn => 'Link with Google';
+
+  @override
+  String get backupGoogleSignOut => 'Unlink Google';
+
+  @override
+  String get backupGoogleSignedOut => 'Google account unlinked';
+
+  @override
+  String get backupGoogleSignInFailed => 'Failed to link Google account';
+
+  @override
+  String get backupSyncNow => 'Sync now';
+
+  @override
+  String get backupSyncSuccess => 'Sync completed';
+
+  @override
+  String backupSyncFailed(String error) {
+    return 'Sync failed: $error';
+  }
+
+  @override
+  String get backupExportShare => 'Export learning backup (share)';
+
+  @override
+  String get backupExportSaveFile => 'Export learning backup';
+
+  @override
+  String get backupExportShareSubject => 'Musical Note Training backup';
+
+  @override
+  String get backupExportSuccess => 'Export completed';
+
+  @override
+  String backupExportSaved(String path) {
+    return 'File saved: $path';
+  }
+
+  @override
+  String backupExportFailed(String error) {
+    return 'Export failed: $error';
+  }
+
+  @override
+  String get backupImportPickFile => 'Import backup file';
+
+  @override
+  String get backupImportConfirmTitle => 'Import this backup?';
+
+  @override
+  String get backupImportConfirmScopeTitle => 'What is included';
+
+  @override
+  String get backupImportConfirmScopeBody =>
+      '· Decks you created\n· Weak items\n· Lesson study progress\n· Display settings (language, note names)\n\nOfficial catalog cards (built into the app) are not included.';
+
+  @override
+  String get backupImportConfirmWarning =>
+      'Any current records in the list above that are not in the backup will be removed. This cannot be undone.';
+
+  @override
+  String get backupImportConfirmCountHeader =>
+      'Count changes (now → after import)';
+
+  @override
+  String get backupImportConfirmCountDecks => 'Decks';
+
+  @override
+  String get backupImportConfirmCountWeak => 'Weak';
+
+  @override
+  String get backupImportConfirmCountProgress => 'Progress';
+
+  @override
+  String backupImportConfirmCountLine(int current, int after) {
+    return '$current → $after';
+  }
+
+  @override
+  String backupImportConfirmDeltaPlus(int count) {
+    return '+$count';
+  }
+
+  @override
+  String backupImportConfirmDeltaMinus(int count) {
+    return '$count';
+  }
+
+  @override
+  String get backupImportConfirmDeltaZero => '±0';
+
+  @override
+  String get backupImportConfirmSettingsTitle => 'Display setting changes';
+
+  @override
+  String backupImportConfirmSettingsLocale(String from, String to) {
+    return 'Language: $from → $to';
+  }
+
+  @override
+  String backupImportConfirmSettingsNoteNames(String from, String to) {
+    return 'Note names: $from → $to';
+  }
+
+  @override
+  String backupImportConfirmExportedAt(String exportedAt) {
+    return 'Backup created: $exportedAt';
+  }
+
+  @override
+  String get backupImportConfirmApply => 'Import';
+
+  @override
+  String get backupImportSuccess => 'Import completed';
+
+  @override
+  String backupImportFailed(String error) {
+    return 'Import failed: $error';
+  }
+
+  @override
+  String get backupHelpLink => 'How to transfer data';
+
+  @override
+  String get backupHelpTitle => 'Data transfer guide';
+
+  @override
+  String get backupHelpGoogleSection => 'Recommended: Google link';
+
+  @override
+  String get backupHelpGoogleBody =>
+      '1. Tap \"Link with Google\" in Settings\n2. Sign in with the same account on another device\n3. Data syncs on launch, or tap \"Sync now\"';
+
+  @override
+  String get backupHelpExportSection => 'Manual backup (fallback)';
+
+  @override
+  String get backupHelpExportBody =>
+      '1. Tap \"Export learning backup\" to create a backup file (JSON)\n2. Send it to your new device (email, cloud storage, etc.)\n3. On the new device, tap \"Import backup file\" and choose it';
+
+  @override
+  String get backupHelpImportSection => 'About import';
+
+  @override
+  String get backupHelpImportBody =>
+      'The selected backup file replaces this device\'s decks, weak items, and progress (same for moving to a new device).';
+
+  @override
+  String get backupHelpClose => 'Close';
+
+  @override
+  String get onboardingGoogleTitle => 'Protect your data with Google';
+
+  @override
+  String get onboardingGoogleBody =>
+      'Your study data is backed up to Google Drive automatically. Use the same progress across devices or after changing phones.';
+
+  @override
+  String get onboardingGoogleBenefit =>
+      'You can link Google later from Settings.';
+
+  @override
+  String get onboardingGoogleSignIn => 'Link with Google';
+
+  @override
+  String get onboardingGoogleSkip => 'Later (stay as guest)';
 }

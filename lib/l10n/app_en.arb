@@ -125,5 +125,114 @@
     "placeholders": {
       "uri": { "type": "String" }
     }
-  }
+  },
+  "settingsBackupTitle": "Data backup",
+  "backupGoogleNotLinked": "Google account not linked (data won't transfer across devices)",
+  "backupGoogleUnavailableDesktop": "Google link and auto-sync are available on Android and iOS. On this device, only export / import is supported.",
+  "backupGoogleLinked": "Linked: {email}",
+  "@backupGoogleLinked": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "backupGoogleSignIn": "Link with Google",
+  "backupGoogleSignOut": "Unlink Google",
+  "backupGoogleSignedOut": "Google account unlinked",
+  "backupGoogleSignInFailed": "Failed to link Google account",
+  "backupSyncNow": "Sync now",
+  "backupSyncSuccess": "Sync completed",
+  "backupSyncFailed": "Sync failed: {error}",
+  "@backupSyncFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "backupExportShare": "Export learning backup (share)",
+  "backupExportSaveFile": "Export learning backup",
+  "backupExportShareSubject": "Musical Note Training backup",
+  "backupExportSuccess": "Export completed",
+  "backupExportSaved": "File saved: {path}",
+  "@backupExportSaved": {
+    "placeholders": {
+      "path": { "type": "String" }
+    }
+  },
+  "backupExportFailed": "Export failed: {error}",
+  "@backupExportFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "backupImportPickFile": "Import backup file",
+  "backupImportConfirmTitle": "Import this backup?",
+  "backupImportConfirmScopeTitle": "What is included",
+  "backupImportConfirmScopeBody": "· Decks you created\n· Weak items\n· Lesson study progress\n· Display settings (language, note names)\n\nOfficial catalog cards (built into the app) are not included.",
+  "backupImportConfirmWarning": "Any current records in the list above that are not in the backup will be removed. This cannot be undone.",
+  "backupImportConfirmCountHeader": "Count changes (now → after import)",
+  "backupImportConfirmCountDecks": "Decks",
+  "backupImportConfirmCountWeak": "Weak",
+  "backupImportConfirmCountProgress": "Progress",
+  "backupImportConfirmCountLine": "{current} → {after}",
+  "@backupImportConfirmCountLine": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "after": { "type": "int" }
+    }
+  },
+  "backupImportConfirmDeltaPlus": "+{count}",
+  "@backupImportConfirmDeltaPlus": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "backupImportConfirmDeltaMinus": "{count}",
+  "@backupImportConfirmDeltaMinus": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "backupImportConfirmDeltaZero": "±0",
+  "backupImportConfirmSettingsTitle": "Display setting changes",
+  "backupImportConfirmSettingsLocale": "Language: {from} → {to}",
+  "@backupImportConfirmSettingsLocale": {
+    "placeholders": {
+      "from": { "type": "String" },
+      "to": { "type": "String" }
+    }
+  },
+  "backupImportConfirmSettingsNoteNames": "Note names: {from} → {to}",
+  "@backupImportConfirmSettingsNoteNames": {
+    "placeholders": {
+      "from": { "type": "String" },
+      "to": { "type": "String" }
+    }
+  },
+  "backupImportConfirmExportedAt": "Backup created: {exportedAt}",
+  "@backupImportConfirmExportedAt": {
+    "placeholders": {
+      "exportedAt": { "type": "String" }
+    }
+  },
+  "backupImportConfirmApply": "Import",
+  "backupImportSuccess": "Import completed",
+  "backupImportFailed": "Import failed: {error}",
+  "@backupImportFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "backupHelpLink": "How to transfer data",
+  "backupHelpTitle": "Data transfer guide",
+  "backupHelpGoogleSection": "Recommended: Google link",
+  "backupHelpGoogleBody": "1. Tap \"Link with Google\" in Settings\n2. Sign in with the same account on another device\n3. Data syncs on launch, or tap \"Sync now\"",
+  "backupHelpExportSection": "Manual backup (fallback)",
+  "backupHelpExportBody": "1. Tap \"Export learning backup\" to create a backup file (JSON)\n2. Send it to your new device (email, cloud storage, etc.)\n3. On the new device, tap \"Import backup file\" and choose it",
+  "backupHelpImportSection": "About import",
+  "backupHelpImportBody": "The selected backup file replaces this device's decks, weak items, and progress (same for moving to a new device).",
+  "backupHelpClose": "Close",
+  "onboardingGoogleTitle": "Protect your data with Google",
+  "onboardingGoogleBody": "Your study data is backed up to Google Drive automatically. Use the same progress across devices or after changing phones.",
+  "onboardingGoogleBenefit": "You can link Google later from Settings.",
+  "onboardingGoogleSignIn": "Link with Google",
+  "onboardingGoogleSkip": "Later (stay as guest)"
 }

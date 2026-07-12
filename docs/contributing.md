@@ -194,6 +194,23 @@ flutter run
 | 2026-07-08 | T-004 | `dart run build_runner build` | `app_database.g.dart` 生成 |
 | 2026-07-09 | T-014 | `flutter pub add flutter_localizations --sdk=flutter` | UI 多言語（ARB） |
 | 2026-07-09 | T-014 | `flutter pub add intl shared_preferences` | 日付フォーマット・設定永続化 |
+| 2026-07-13 | T-180〜T-189 | `flutter pub add share_plus file_picker google_sign_in googleapis extension_google_sign_in_as_googleapis_auth http` | データ引き継ぎ（エクスポート/インポート・Google Drive 同期） |
+| 2026-07-13 | #26 | `flutter pub add file_selector` | Linux デスクトップのファイル選択・保存ダイアログ |
+
+### Google Sign-In / Drive 同期の開発者設定（T-188）
+
+実機で Google 連携・Drive 同期を試す前に、Google Cloud Console で OAuth クライアントを作成する。
+
+1. [Google Cloud Console](https://console.cloud.google.com/) でプロジェクトを作成（または既存を選択）
+2. **API とサービス → ライブラリ** で **Google Drive API** を有効化
+3. **API とサービス → OAuth 同意画面** を設定（テスト段階は「外部」＋テストユーザー追加で可）
+4. **認証情報 → 認証情報を作成 → OAuth クライアント ID**
+   - **Android**: パッケージ名 `com.example.musical_note_training`（`android/app/build.gradle.kts` の `applicationId` に合わせる）＋ SHA-1（`keytool -list -v -keystore ~/.android/debug.keystore` 等）
+   - **iOS**: Bundle ID（`ios/Runner/Info.plist` の `CFBundleIdentifier`）＋必要なら URL スキーム
+5. Android は `android/app/build.gradle.kts` の default 設定で `google-services` 不要（`google_sign_in` 7.x はクライアント ID をプラットフォーム設定から読む）。iOS は `ios/Runner/Info.plist` に `GIDClientID`（または `GoogleService-Info.plist`）を追加
+6. スコープ: `https://www.googleapis.com/auth/drive.appdata`（アプリ専用の非表示フォルダ）
+
+ローカル検証は **Android 実機 / エミュレータ** または **iOS 実機** を推奨（Linux デスクトップは Google Sign-In 非対応のため Drive 同期 UI は無効化されないが動作しない）。
 
 ### コード生成（drift スキーマ変更時）
 

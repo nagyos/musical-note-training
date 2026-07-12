@@ -6,6 +6,7 @@ import 'package:musical_note_training/core/theme/app_spacing.dart';
 import 'package:musical_note_training/shared/widgets/app_page_app_bar.dart';
 import 'package:musical_note_training/features/settings/domain/note_name_style.dart';
 import 'package:musical_note_training/features/settings/presentation/view_models/settings_providers.dart';
+import 'package:musical_note_training/features/settings/presentation/widgets/settings_backup_section.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -52,6 +53,8 @@ class SettingsPage extends ConsumerWidget {
               notifier.setNoteNameStyle(selection.first);
             },
           ),
+          const SizedBox(height: AppSpacing.lg),
+          const SettingsBackupSection(),
         ],
       ),
     );
