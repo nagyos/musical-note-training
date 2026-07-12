@@ -13,7 +13,7 @@
 | [../AGENTS.md](../AGENTS.md) | **AI エージェント向けルール**（Grok が自動読み込み。確認タイミング・Q&A 記録・事実ベースの進め方） |
 | [overview.md](./overview.md) | アプリ概要・コンセプト・技術スタック・収益モデル |
 | [functional-requirements.md](./functional-requirements.md) | 機能要件（MVP / 将来機能） |
-| [non-functional-requirements.md](./non-functional-requirements.md) | 非機能要件（性能・多言語・課金・広告など） |
+| [non-functional-requirements.md](./non-functional-requirements.md) | 非機能要件（性能・**縦画面 UI 方針** §3.1・多言語・課金・広告など） |
 | [roadmap.md](./roadmap.md) | フェーズ別ロードマップ（MVP → 将来） |
 | [tasks.md](./tasks.md) | 開発タスク一覧（フェーズ・優先度付き） |
 | [optional-features.md](./optional-features.md) | オプション機能のアイデア（フラッシュ・リズム練習など） |

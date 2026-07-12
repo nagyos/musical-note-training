@@ -179,6 +179,8 @@ integration_test/
 | アプリ名など不変の識別子 | `core/constants/app_constants.dart` | 既存 |
 | 1 画面だけの一度きりの値 | その Widget 内 | 無理に共通化しない |
 
+**UI デザイン**: 画面向き・楽譜キャンバスの前提は [non-functional-requirements.md](./non-functional-requirements.md) §3.1（**縦画面固定**）。`presentation/` のレイアウトはポートレート 1 カラムを基準にする。
+
 `StaffLayout` / `StaffPainter` は **計算と描画** に専念し、無次元係数は `StaffEngravingRules` に集約する。
 
 ---
